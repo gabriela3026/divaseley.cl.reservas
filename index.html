@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SPA DIVAS ELEY — Plataforma Web Integral & Sistema Lujo</title>
 
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -34,10 +35,12 @@
         }
     </script>
 
+    <!-- React 18 + ReactDOM + Babel CDN -->
     <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
@@ -76,12 +79,11 @@
         const SPA_ADDRESS = "Valdivia 548, Galería Monte Dorado stand 34 y 35, Los Ángeles";
 
         const PAYMENT_METHODS = [
-            { id: 'EFECTIVO', label: 'Efectivo', icon: '💵' },
-            { id: 'DEBITO', label: 'Tarjeta Débito', icon: '💳' },
-            { id: 'CREDITO', label: 'Tarjeta Crédito', icon: '💳' },
-            { id: 'TRANSFERENCIA', label: 'Transferencia', icon: '🏦' },
-            { id: 'PAGO_DIGITAL', label: 'Pago Digital', icon: '📱' },
-            { id: 'QR', label: 'Código QR', icon: '📲' },
+            { id: 'Transferencia BancoEstado', label: 'Transferencia BancoEstado', icon: '🏦' },
+            { id: 'Transferencia MACH', label: 'Transferencia MACH', icon: '📱' },
+            { id: 'Mercado Pago', label: 'Mercado Pago', icon: '💳' },
+            { id: 'Efectivo', label: 'Efectivo', icon: '💵' },
+            { id: 'Débito / Crédito', label: 'Débito / Crédito', icon: '💳' },
             { id: 'GIFT_CARD', label: 'Gift Card', icon: '🎁' },
             { id: 'MIXTO', label: 'Pago Mixto', icon: '🔄' }
         ];
@@ -211,7 +213,7 @@
                 { id: 1, fecha: '2026-08-01', tecnicas: 'Masajes Reductivos + Maderoterapia', observaciones: 'Cintura: 68cm. Piel con buena elasticidad inicial.' },
                 { id: 2, fecha: '2026-08-05', tecnicas: 'Radiofrecuencia + Drenaje Linfático', observaciones: 'Cintura: 67.5cm (-0.5cm). Notable mejoría en textura.' },
                 { id: 3, fecha: '2026-08-10', tecnicas: 'Cavitación + Vacumterapia', observaciones: 'Cintura: 67cm (-1cm). Reducción de adiposidad en flancos.' },
-                { id: 4, fecha: '2026-08-15', tecnicas: 'Ondas Rusas + Termoterapia', observaciones: 'Tonificación muscular sustained.' },
+                { id: 4, fecha: '2026-08-15', tecnicas: 'Ondas Rusas + Termoterapia', observaciones: 'Tonificación muscular sostenida.' },
                 { id: 5, fecha: '2026-08-20', tecnicas: 'Masaje Reductivo + Maderoterapia', observaciones: 'Cintura: 66cm (-2cm acumulados).' },
                 { id: 6, fecha: '2026-08-25', tecnicas: 'Radiofrecuencia + Drenaje Linfático', observaciones: 'Piel firme, sin flacidez.' },
                 { id: 7, fecha: '2026-08-28', tecnicas: 'Maderoterapia + Vacumterapia', observaciones: 'Cintura: 65.5cm (-2.5cm totales).' },
@@ -229,17 +231,17 @@
             {
                 id: 'res_101', clientId: 'c-1', clientName: 'Valeria Silva', date: new Date().toISOString().split('T')[0], time: '12:00', status: 'confirmada',
                 items: [{ serviceId: 'cap-8', serviceName: 'Maquillaje Profesional', professionalId: 'acc-6', professionalName: 'Aline Pereira', price: 35000 }],
-                total: 35000, paidAmount: 17500, balance: 17500, abonoPercentage: 50, paymentMethod: 'TRANSFERENCIA'
+                total: 35000, paidAmount: 17500, balance: 17500, abonoPercentage: 50, paymentMethod: 'Transferencia BancoEstado'
             },
             {
                 id: 'res_102', clientId: 'c-2', clientName: 'Sofía Valdés', date: new Date().toISOString().split('T')[0], time: '14:00', status: 'por_confirmar',
                 items: [{ serviceId: 'pes-2', serviceName: 'Lifting + Botox + Tinte', professionalId: 'acc-4', professionalName: 'Camila Rodríguez', price: 25000 }],
-                total: 25000, paidAmount: 12500, balance: 12500, abonoPercentage: 50, paymentMethod: 'DEBITO'
+                total: 25000, paidAmount: 12500, balance: 12500, abonoPercentage: 50, paymentMethod: 'Débito / Crédito'
             },
             {
                 id: 'res_103', clientId: 'c-3', clientName: 'Constanza Valenzuela', date: new Date().toISOString().split('T')[0], time: '16:30', status: 'confirmada',
                 items: [{ serviceId: 'fac-1', serviceName: 'Limpieza Facial Profunda Premium', professionalId: 'acc-2', professionalName: 'Nicol Inostroza', price: 35000 }],
-                total: 35000, paidAmount: 35000, balance: 0, abonoPercentage: 100, paymentMethod: 'CREDITO'
+                total: 35000, paidAmount: 35000, balance: 0, abonoPercentage: 100, paymentMethod: 'Transferencia MACH'
             }
         ];
 
@@ -249,7 +251,7 @@
         ];
 
         const INITIAL_AUDIT_LOGS = [
-            { id: 'aud_1', timestamp: new Date().toISOString(), userName: 'Gabriela Manrique (ADMIN)', action: 'INICIALIZACION_SISTEMA', entity: 'SYSTEM', details: 'Plataforma web SPA DIVAS ELEY iniciada correctamente con buscador de gift cards, edición de estado de cita y reportes por rango de fechas.' }
+            { id: 'aud_1', timestamp: new Date().toISOString(), userName: 'Gabriela Manrique (ADMIN)', action: 'INICIALIZACION_SISTEMA', entity: 'SYSTEM', details: 'Plataforma web SPA DIVAS ELEY iniciada correctamente con selector múltiple de servicios (carrito) en reservas, buscador de gift cards, edición de citas y reportes.' }
         ];
 
         function App() {
@@ -270,7 +272,7 @@
             const [activeTab, setActiveTab] = useState('dashboard');
             const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
-            // Datasets con Persistencia y Manejo Seguro de Errores
+            // Datasets con Persistencia Local Storage
             const [users, setUsers] = useState(() => {
                 try { return JSON.parse(localStorage.getItem('divas_staff')) || INITIAL_USER_ACCOUNTS; } catch(e) { return INITIAL_USER_ACCOUNTS; }
             });
@@ -313,7 +315,7 @@
             const [isEditReservationModalOpen, setIsEditReservationModalOpen] = useState(false);
             const [reservationToEdit, setReservationToEdit] = useState(null);
             const [editReservationForm, setEditReservationForm] = useState({
-                id: '', clientId: '', clientName: '', date: '', time: '', serviceId: '', professionalId: '', total: 0, paidAmount: 0, paymentMethod: 'TRANSFERENCIA', status: 'confirmada'
+                id: '', clientId: '', clientName: '', date: '', time: '', serviceId: '', professionalId: '', total: 0, paidAmount: 0, paymentMethod: 'Transferencia BancoEstado', status: 'confirmada'
             });
 
             // Target Objects
@@ -325,10 +327,21 @@
             const [staffToEdit, setStaffToEdit] = useState(null);
             const [staffForm, setStaffForm] = useState({ id: '', name: '', email: '', password: '', role: 'PROFESIONAL', phone: '', specialty: '', photo: '' });
 
-            // Formularios
+            // Formulario Reserva Múltiple (Carrito)
             const [bookingForm, setBookingForm] = useState({
-                clientFirstName: 'Valeria', clientLastName: 'Silva', clientPhone: '+56987654321', clientRut: '18.452.912-3', clientEmail: 'valeria.silva@gmail.com', serviceId: '', date: new Date().toISOString().split('T')[0], time: '12:00', professionalId: 'acc-6', paymentMethod: 'TRANSFERENCIA', abonoPercentage: 50
+                clientFirstName: 'Valeria',
+                clientLastName: 'Silva',
+                clientPhone: '+56987654321',
+                clientRut: '18.452.912-3',
+                clientEmail: 'valeria.silva@gmail.com',
+                selectedServiceIds: ['fac-1'], // Soporta Múltiples Servicios
+                date: new Date().toISOString().split('T')[0],
+                time: '12:00',
+                professionalId: 'acc-6',
+                paymentMethod: 'Transferencia BancoEstado',
+                abonoPercentage: 50
             });
+            const [bookingSearchService, setBookingSearchService] = useState('');
 
             const [giftCardForm, setGiftCardForm] = useState({
                 id: null, recipientName: 'Sofía Valdés', senderName: 'Ignacio', serviceName: 'Masaje Relajante', amount: 25000, message: 'Feliz cumpleaños, te lo mereces.', code: 'DIVAS-8842', status: 'Activa'
@@ -384,6 +397,21 @@
                     salesToday, salesMonth, todayResCount: todayRes.length, pendingPayments, totalClients: clients.length, estimatedProfit: Math.round(salesMonth * 0.65)
                 };
             }, [reservations, clients]);
+
+            // Servicios seleccionados en el Carrito de la Reserva
+            const selectedCartServices = useMemo(() => {
+                if (!Array.isArray(catalog) || !Array.isArray(bookingForm.selectedServiceIds)) return [];
+                return catalog.filter(s => bookingForm.selectedServiceIds.includes(s.id));
+            }, [catalog, bookingForm.selectedServiceIds]);
+
+            // Cálculo dinámico de Total, Abono y Saldo del Carrito
+            const cartCalculated = useMemo(() => {
+                const total = selectedCartServices.reduce((sum, s) => sum + (s.basePrice || 0), 0);
+                const abonoPct = Number(bookingForm.abonoPercentage) || 0;
+                const abono = Math.round((total * abonoPct) / 100);
+                const saldo = Math.max(0, total - abono);
+                return { total, abono, saldo };
+            }, [selectedCartServices, bookingForm.abonoPercentage]);
 
             const reportFilteredReservations = useMemo(() => {
                 const safeRes = Array.isArray(reservations) ? reservations : [];
@@ -485,52 +513,112 @@
                 }));
             };
 
+            const toggleServiceInCart = (serviceId) => {
+                setBookingForm(prev => {
+                    const exists = prev.selectedServiceIds.includes(serviceId);
+                    if (exists) {
+                        // Impedir dejarlo vacío de golpe si solo hay uno
+                        if (prev.selectedServiceIds.length === 1) {
+                            showToast('Debes mantener al menos 1 servicio seleccionado', 'error');
+                            return prev;
+                        }
+                        return { ...prev, selectedServiceIds: prev.selectedServiceIds.filter(id => id !== serviceId) };
+                    } else {
+                        return { ...prev, selectedServiceIds: [...prev.selectedServiceIds, serviceId] };
+                    }
+                });
+            };
+
             const startBookingForClient = (client = null, defaultServiceId = '') => {
-                const defaultSrv = defaultServiceId || (catalog[0] ? catalog[0].id : '');
+                const initialSrvs = defaultServiceId ? [defaultServiceId] : [catalog[0]?.id || 'cap-1'];
                 if (client) {
                     const nameParts = (client.name || '').split(' ');
                     setBookingForm({
-                        clientFirstName: nameParts[0] || '', clientLastName: nameParts.slice(1).join(' ') || '', clientPhone: client.phone || '', clientRut: client.rut || '', clientEmail: client.email || '', serviceId: defaultSrv, date: new Date().toISOString().split('T')[0], time: '12:00', professionalId: 'acc-6', paymentMethod: 'TRANSFERENCIA', abonoPercentage: 50
+                        clientFirstName: nameParts[0] || '',
+                        clientLastName: nameParts.slice(1).join(' ') || '',
+                        clientPhone: client.phone || '',
+                        clientRut: client.rut || '',
+                        clientEmail: client.email || '',
+                        selectedServiceIds: initialSrvs,
+                        date: new Date().toISOString().split('T')[0],
+                        time: '12:00',
+                        professionalId: 'acc-[#D4AF37]' ? 'acc-6' : users[0]?.id,
+                        paymentMethod: 'Transferencia BancoEstado',
+                        abonoPercentage: 50
                     });
                 } else {
                     setBookingForm({
-                        clientFirstName: 'Valeria', clientLastName: 'Silva', clientPhone: '+56987654321', clientRut: '18.452.912-3', clientEmail: 'valeria.silva@gmail.com', serviceId: defaultSrv, date: new Date().toISOString().split('T')[0], time: '12:00', professionalId: 'acc-6', paymentMethod: 'TRANSFERENCIA', abonoPercentage: 50
+                        clientFirstName: 'Valeria',
+                        clientLastName: 'Silva',
+                        clientPhone: '+56987654321',
+                        clientRut: '18.452.912-3',
+                        clientEmail: 'valeria.silva@gmail.com',
+                        selectedServiceIds: initialSrvs,
+                        date: new Date().toISOString().split('T')[0],
+                        time: '12:00',
+                        professionalId: 'acc-6',
+                        paymentMethod: 'Transferencia BancoEstado',
+                        abonoPercentage: 50
                     });
                 }
+                setBookingSearchService('');
                 setIsBookingModalOpen(true);
             };
 
             const handleCreateReservation = () => {
-                if (!bookingForm.clientFirstName || !bookingForm.clientRut) {
+                const fullName = `${bookingForm.clientFirstName} ${bookingForm.clientLastName}`.trim();
+                if (!fullName || !bookingForm.clientRut) {
                     showToast('Ingresa Nombre y RUT de la clienta.', 'error');
                     return;
                 }
-                const srv = catalog.find(s => s.id === bookingForm.serviceId) || catalog[0];
-                const prof = users.find(u => u.id === bookingForm.professionalId) || users[3];
-                const fullClientName = `${bookingForm.clientFirstName} ${bookingForm.clientLastName}`.trim();
+                if (selectedCartServices.length === 0) {
+                    showToast('Selecciona al menos 1 servicio del catálogo.', 'error');
+                    return;
+                }
 
-                const totalPrice = srv.basePrice;
-                const paidNow = Math.round((totalPrice * bookingForm.abonoPercentage) / 100);
-                const remaining = totalPrice - paidNow;
+                const prof = users.find(u => u.id === bookingForm.professionalId) || users[0];
+                const totalPrice = cartCalculated.total;
+                const paidNow = cartCalculated.abono;
+                const remaining = cartCalculated.saldo;
+
+                // Construir lista de items seleccionados
+                const itemsList = selectedCartServices.map(srv => ({
+                    serviceId: srv.id,
+                    serviceName: srv.name,
+                    professionalId: prof.id,
+                    professionalName: prof.name,
+                    price: srv.basePrice
+                }));
 
                 let clientObj = clients.find(c => c.rut === bookingForm.clientRut || (c.email && c.email.toLowerCase() === bookingForm.clientEmail.toLowerCase()));
                 if (!clientObj) {
                     clientObj = {
-                        id: `c_${Date.now()}`, name: fullClientName, rut: bookingForm.clientRut, phone: bookingForm.clientPhone, email: bookingForm.clientEmail, address: 'Av. Alemania 120, Los Ángeles', age: 29, birthDate: '1995-04-12', status: 'NUEVA', totalSpent: paidNow, visitsCount: 1, lastVisit: 'Hoy', facialFicha: DEFAULT_FACIAL_FICHA, bodyFicha: DEFAULT_BODY_FICHA
+                        id: `c_${Date.now()}`, name: fullName, rut: bookingForm.clientRut, phone: bookingForm.clientPhone, email: bookingForm.clientEmail, address: 'Av. Alemania 120, Los Ángeles', age: 29, birthDate: '1995-04-12', status: 'NUEVA', totalSpent: paidNow, visitsCount: 1, lastVisit: 'Hoy', facialFicha: DEFAULT_FACIAL_FICHA, bodyFicha: DEFAULT_BODY_FICHA
                     };
                     setClients(prev => [clientObj, ...prev]);
-                    showToast(`Clienta ${fullClientName} registrada.`);
+                    showToast(`Clienta ${fullName} registrada en sistema.`);
                 } else {
-                    setClients(prev => prev.map(c => c.id === clientObj.id ? { ...c, name: fullClientName, phone: bookingForm.clientPhone, email: bookingForm.clientEmail, totalSpent: (c.totalSpent || 0) + paidNow, visitsCount: (c.visitsCount || 0) + 1, lastVisit: 'Hoy' } : c));
+                    setClients(prev => prev.map(c => c.id === clientObj.id ? { ...c, name: fullName, phone: bookingForm.clientPhone, email: bookingForm.clientEmail, totalSpent: (c.totalSpent || 0) + paidNow, visitsCount: (c.visitsCount || 0) + 1, lastVisit: 'Hoy' } : c));
                 }
 
                 const newRes = {
-                    id: `res_${Date.now()}`, clientId: clientObj.id, clientName: fullClientName, date: bookingForm.date, time: bookingForm.time, status: 'confirmada', items: [{ serviceId: srv.id, serviceName: srv.name, professionalId: prof.id, professionalName: prof.name, price: srv.basePrice }], total: totalPrice, paidAmount: paidNow, balance: remaining, abonoPercentage: bookingForm.abonoPercentage, paymentMethod: bookingForm.paymentMethod
+                    id: `res_${Date.now()}`,
+                    clientId: clientObj.id,
+                    clientName: fullName,
+                    date: bookingForm.date,
+                    time: bookingForm.time,
+                    status: 'confirmada',
+                    items: itemsList,
+                    total: totalPrice,
+                    paidAmount: paidNow,
+                    balance: remaining,
+                    abonoPercentage: bookingForm.abonoPercentage,
+                    paymentMethod: bookingForm.paymentMethod
                 };
 
                 setReservations(prev => [newRes, ...prev]);
-                logAudit('CREAR_RESERVA', 'RESERVATION', `Cita para ${newRes.clientName} por ${formatCLP(srv.basePrice)}`);
-                showToast(`Reserva creada. Abono: ${formatCLP(paidNow)}`);
+                logAudit('CREAR_RESERVA', 'RESERVATION', `Cita para ${fullName} con ${itemsList.length} servicio(s) por ${formatCLP(totalPrice)}. Abono: ${formatCLP(paidNow)}`);
+                showToast(`¡Reserva creada exitosamente! (${itemsList.length} servicios)`);
                 setIsBookingModalOpen(false);
             };
 
@@ -555,7 +643,7 @@
                     professionalId: item0.professionalId || (users[0] ? users[0].id : ''),
                     total: res.total || 0,
                     paidAmount: res.paidAmount || 0,
-                    paymentMethod: res.paymentMethod || 'TRANSFERENCIA',
+                    paymentMethod: res.paymentMethod || 'Transferencia BancoEstado',
                     status: res.status || 'confirmada'
                 });
                 setIsEditReservationModalOpen(true);
@@ -741,7 +829,7 @@
                 const servicesList = itemsList.map(i => i?.serviceName || 'Tratamiento').join(', ');
                 const profName = itemsList[0]?.professionalName || 'Especialista DIVAS';
 
-                const message = `Hola *${res.clientName || 'Estimada Clienta'}* ✨, te saludamos de *SPA DIVAS ELEY* 💖.\n\nTe confirmamos tu cita:\n📅 *Fecha:* ${res.date}\n⏰ *Hora:* ${res.time} hrs\n💆‍♀️ *Tratamiento:* ${servicesList}\n👩‍💼 *Especialista:* ${profName}\n💵 *Abono Recibido:* ${formatCLP(res.paidAmount)}\n💳 *Saldo Pendiente:* ${formatCLP(res.balance)}\n\n📍 *Dirección:* ${SPA_ADDRESS}\n*Tu belleza, tu bienestar, tu momento.* ✨\n\n¿Nos confirmas tu asistencia? 😊`;
+                const message = `Hola *${res.clientName || 'Estimada Clienta'}* ✨, te saludamos de *SPA DIVAS ELEY* 💖.\n\nTe confirmamos tu cita:\n📅 *Fecha:* ${res.date}\n⏰ *Hora:* ${res.time} hrs\n💆‍♀️ *Tratamiento(s):* ${servicesList}\n👩‍💼 *Especialista:* ${profName}\n💵 *Abono Recibido:* ${formatCLP(res.paidAmount)}\n💳 *Saldo Pendiente:* ${formatCLP(res.balance)}\n\n📍 *Dirección:* ${SPA_ADDRESS}\n*Tu belleza, tu bienestar, tu momento.* ✨\n\n¿Nos confirmas tu asistencia? 😊`;
 
                 window.open(`https://wa.me/${formattedPhone}?text=${encodeURIComponent(message)}`, '_blank');
                 showToast(`Mensaje preparado para ${res.clientName}`);
@@ -770,8 +858,8 @@
                                 </button>
                             </form>
                             <div className="text-[10px] text-slate-400">
-                                Admin: <strong>administracion@divaseley.cl</strong> / <strong>...............</strong><br/>
-                                Staff: <strong>staff@divaseley.cl</strong> / <strong>......</strong>
+                                Admin: <strong>administracion@divaseley.cl</strong> / <strong>...........</strong><br/>
+                                Staff: <strong>staff@divaseley.cl</strong> / <strong>..........</strong>
                             </div>
                         </div>
                     </div>
@@ -780,6 +868,7 @@
 
             return (
                 <div className="min-h-screen flex flex-col md:flex-row bg-[#FBF9F5]">
+                    {/* Sidebar */}
                     <aside className={`fixed md:sticky top-0 left-0 z-40 h-screen w-64 bg-white border-r border-[#EAE3D2] flex flex-col justify-between p-4 transition-transform duration-300 ${isMobileSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}>
                         <div className="space-y-6">
                             <div className="flex items-center space-x-3 pb-4 border-b border-[#EAE3D2]">
@@ -827,6 +916,7 @@
                         </div>
                     </aside>
 
+                    {/* Main Content View */}
                     <main className="flex-1 p-4 md:p-8 space-y-6 overflow-y-auto">
                         <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white rounded-3xl border border-[#EAE3D2] p-5 shadow-sm">
                             <div className="flex items-center space-x-3">
@@ -844,6 +934,7 @@
                             </div>
                         </header>
 
+                        {}
                         {activeTab === 'dashboard' && (
                             <div className="space-y-6">
                                 <section className="bg-white border border-[#EAE3D2] rounded-3xl p-5 shadow-sm space-y-4">
@@ -912,7 +1003,7 @@
                                     <div className="flex flex-wrap items-center gap-2">
                                         <input type="text" placeholder="🔎 Buscar clienta o servicio..." value={searchReservationQuery} onChange={(e) => setSearchReservationQuery(e.target.value)} className="p-2 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-[#D4AF37] outline-none" />
                                         {currentUser.role !== 'PROFESIONAL' && (
-                                            <button onClick={() => startBookingForClient(null)} className="px-4 py-2 rounded-xl bg-[#D4AF37] text-white font-bold text-xs shadow-sm hover:opacity-95">+ Crear Cita</button>
+                                            <button onClick={() => startBookingForClient(null)} className="px-4 py-2 rounded-xl bg-[#D4AF37] text-white font-bold text-xs shadow-sm hover:opacity-95">📅 NUEVA RESERVA</button>
                                         )}
                                     </div>
                                 </div>
@@ -931,7 +1022,7 @@
                                             <tr>
                                                 <th className="py-3 px-4">Fecha & Hora</th>
                                                 <th className="py-3 px-4">Clienta</th>
-                                                <th className="py-3 px-4">Tratamiento</th>
+                                                <th className="py-3 px-4">Tratamiento(s)</th>
                                                 <th className="py-3 px-4">Total</th>
                                                 <th className="py-3 px-4">Abono</th>
                                                 <th className="py-3 px-4">Saldo</th>
@@ -1151,7 +1242,6 @@
                                                     <h3 className="font-bold text-slate-900 text-base leading-snug">{srv.name}</h3>
 
                                                     <p className="text-xs text-slate-600 line-clamp-2">{srv.description}</p>
-                                                                                        <div><label className="font-bold">Foto Perfil (URL):</label><input type="text" value={staffForm.photo} onChange={(e) => setStaffForm({ ...staffForm, photo: e.target.value })} className="w-full p-2.5 rounded-xl border mt-1" /></div>
 
                                                     <div className="flex justify-between items-center text-xs font-bold pt-1">
                                                         <span className="text-[#B38F2D] text-base">{formatCLP(srv.basePrice)}</span>
@@ -1207,7 +1297,7 @@
                                                     <td className="py-3 px-4 font-bold">{r.clientName}</td>
                                                     <td className="py-3 px-4">{Array.isArray(r.items) ? r.items.map(i => i.serviceName).join(', ') : ''}</td>
                                                     <td className="py-3 px-4 font-bold text-emerald-700">{formatCLP(r.paidAmount)}</td>
-                                                    <td className="py-3 px-4"><span className="px-2 py-0.5 bg-amber-100 font-bold rounded">{r.paymentMethod}</span></td>
+                                                    <td className="py-3 px-4"><span className="px-2 py-0.5 bg-amber-100 font-bold rounded text-[11px]">{r.paymentMethod}</span></td>
                                                 </tr>
                                             ))}
                                         </tbody>
@@ -1293,6 +1383,236 @@
                         )}
                     </main>
 
+                    {}
+                    {/* MODAL: NUEVA RESERVA MULTI-SERVICIO (CARRITO) */}
+                    {isBookingModalOpen && (
+                        <div className="fixed inset-0 z-50 bg-slate-900/65 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+                            <div className="bg-white rounded-3xl border border-[#D4AF37]/50 max-w-2xl w-full p-6 shadow-2xl space-y-4 my-8 max-h-[90vh] overflow-y-auto">
+                                <div className="flex justify-between items-center pb-3 border-b border-slate-100">
+                                    <div className="flex items-center space-x-2">
+                                        <span className="p-2 rounded-2xl bg-[#D4AF37]/15 text-[#B38F2D] text-base font-bold">📅</span>
+                                        <div>
+                                            <h3 className="font-bold font-serif text-slate-900 text-lg">NUEVA RESERVA — SPA DIVAS ELEY</h3>
+                                            <p className="text-[11px] text-slate-500">Selecciona una o más prestaciones para construir el carrito de atención.</p>
+                                        </div>
+                                    </div>
+                                    <button onClick={() => setIsBookingModalOpen(false)} className="text-slate-400 hover:text-slate-600 font-bold text-xl p-1">✕</button>
+                                </div>
+
+                                <div className="space-y-4 text-xs">
+                                    {/* 1. Datos de la Clienta */}
+                                    <div>
+                                        <span className="font-bold text-xs text-[#B38F2D] uppercase tracking-wider block mb-2 pb-1 border-b border-amber-100">👤 1. Datos de la Clienta</span>
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                            <div>
+                                                <label className="font-bold text-slate-700 block mb-1">Nombre Completo *</label>
+                                                <input
+                                                    type="text"
+                                                    placeholder="Ej. María González"
+                                                    value={bookingForm.clientFirstName}
+                                                    onChange={(e) => setBookingForm({ ...bookingForm, clientFirstName: e.target.value })}
+                                                    className="w-full p-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-[#D4AF37] outline-none font-medium"
+                                                    required
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="font-bold text-slate-700 block mb-1">RUT de la Clienta *</label>
+                                                <input
+                                                    type="text"
+                                                    placeholder="12.345.678-K"
+                                                    value={bookingForm.clientRut}
+                                                    onChange={(e) => setBookingForm({ ...bookingForm, clientRut: e.target.value })}
+                                                    className="w-full p-2.5 rounded-xl border border-slate-200 font-mono focus:ring-2 focus:ring-[#D4AF37] outline-none font-medium"
+                                                    required
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="font-bold text-slate-700 block mb-1">Celular / WhatsApp *</label>
+                                                <input
+                                                    type="tel"
+                                                    placeholder="+56 9 1234 5678"
+                                                    value={bookingForm.clientPhone}
+                                                    onChange={(e) => setBookingForm({ ...bookingForm, clientPhone: e.target.value })}
+                                                    className="w-full p-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-[#D4AF37] outline-none font-medium"
+                                                    required
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="font-bold text-slate-700 block mb-1">Correo Electrónico</label>
+                                                <input
+                                                    type="email"
+                                                    placeholder="cliente@correo.cl"
+                                                    value={bookingForm.clientEmail}
+                                                    onChange={(e) => setBookingForm({ ...bookingForm, clientEmail: e.target.value })}
+                                                    className="w-full p-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-[#D4AF37] outline-none font-medium"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* 2. Selección Múltiple de Servicios */}
+                                    <div>
+                                        <span className="font-bold text-xs text-[#B38F2D] uppercase tracking-wider block mb-2 pb-1 border-b border-amber-100">💅 2. Servicios Solicitados (Selecciona 1 o más)</span>
+                                        
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                            {/* Selector Box */}
+                                            <div className="space-y-2">
+                                                <input
+                                                    type="text"
+                                                    placeholder="🔎 Filtrar servicio en lista..."
+                                                    value={bookingSearchService}
+                                                    onChange={(e) => setBookingSearchService(e.target.value)}
+                                                    className="w-full p-2 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-[#D4AF37] outline-none"
+                                                />
+                                                <div className="max-h-52 overflow-y-auto space-y-1.5 p-2 bg-[#FAF7EE]/60 border border-amber-200/80 rounded-2xl scrollbar-none">
+                                                    {catalog
+                                                        .filter(s => (s.name || '').toLowerCase().includes((bookingSearchService || '').toLowerCase()) || (s.category || '').toLowerCase().includes((bookingSearchService || '').toLowerCase()))
+                                                        .map(srv => {
+                                                            const isSelected = bookingForm.selectedServiceIds.includes(srv.id);
+                                                            return (
+                                                                <label key={srv.id} className={`flex items-center space-x-2.5 p-2 rounded-xl border cursor-pointer transition-all ${isSelected ? 'bg-[#D4AF37]/20 border-[#D4AF37] font-bold text-slate-900 shadow-sm' : 'bg-white border-slate-200 hover:bg-amber-50/50 text-slate-700'}`}>
+                                                                    <input
+                                                                        type="checkbox"
+                                                                        checked={isSelected}
+                                                                        onChange={() => toggleServiceInCart(srv.id)}
+                                                                        className="w-4 h-4 rounded text-[#D4AF37] accent-[#D4AF37] cursor-pointer"
+                                                                    />
+                                                                    <div className="flex-1 min-w-0 flex justify-between items-center text-[11px]">
+                                                                        <span className="truncate pr-2">{srv.name}</span>
+                                                                        <span className="font-bold text-[#B38F2D] whitespace-nowrap">{formatCLP(srv.basePrice)}</span>
+                                                                    </div>
+                                                                </label>
+                                                            );
+                                                        })
+                                                    }
+                                                </div>
+                                            </div>
+
+                                            {/* Carrito de Servicios Seleccionados */}
+                                            <div className="p-3.5 bg-[#FFFDF9] border border-amber-200 rounded-2xl space-y-2 flex flex-col justify-between">
+                                                <div>
+                                                    <span className="font-bold text-slate-900 block text-xs border-b border-amber-100 pb-1 mb-2">🛒 Carrito de Atención ({selectedCartServices.length})</span>
+                                                    {selectedCartServices.length === 0 ? (
+                                                        <div className="text-slate-400 italic text-[11px] py-4 text-center">No has seleccionado ningún servicio aún.</div>
+                                                    ) : (
+                                                        <ul className="space-y-1.5 max-h-40 overflow-y-auto pr-1">
+                                                            {selectedCartServices.map(srv => (
+                                                                <li key={srv.id} className="flex justify-between items-center text-[11px] bg-amber-50/80 p-2 rounded-xl border border-amber-200/60">
+                                                                    <span className="font-medium text-slate-800 truncate max-w-[150px]">• {srv.name}</span>
+                                                                    <div className="flex items-center space-x-1.5">
+                                                                        <span className="font-bold text-[#B38F2D]">{formatCLP(srv.basePrice)}</span>
+                                                                        <button onClick={() => toggleServiceInCart(srv.id)} className="text-rose-600 hover:text-rose-800 font-bold px-1" title="Quitar">✕</button>
+                                                                    </div>
+                                                                </li>
+                                                            ))}
+                                                        </ul>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* 3. Agenda y Especialista */}
+                                    <div>
+                                        <span className="font-bold text-xs text-[#B38F2D] uppercase tracking-wider block mb-2 pb-1 border-b border-amber-100">🗓️ 3. Agenda y Especialista</span>
+                                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                                            <div>
+                                                <label className="font-bold text-slate-700 block mb-1">Fecha *</label>
+                                                <input
+                                                    type="date"
+                                                    value={bookingForm.date}
+                                                    onChange={(e) => setBookingForm({ ...bookingForm, date: e.target.value })}
+                                                    className="w-full p-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-[#D4AF37] outline-none font-medium"
+                                                    required
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="font-bold text-slate-700 block mb-1">Hora *</label>
+                                                <input
+                                                    type="time"
+                                                    value={bookingForm.time}
+                                                    onChange={(e) => setBookingForm({ ...bookingForm, time: e.target.value })}
+                                                    className="w-full p-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-[#D4AF37] outline-none font-medium"
+                                                    required
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="font-bold text-slate-700 block mb-1">Profesional / Especialista *</label>
+                                                <select
+                                                    value={bookingForm.professionalId}
+                                                    onChange={(e) => setBookingForm({ ...bookingForm, professionalId: e.target.value })}
+                                                    className="w-full p-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-[#D4AF37] outline-none font-medium"
+                                                    required
+                                                >
+                                                    {users.map(u => (
+                                                        <option key={u.id} value={u.id}>{u.name} ({u.specialty || u.role})</option>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* 4. Pago y Abono */}
+                                    <div>
+                                        <span className="font-bold text-xs text-[#B38F2D] uppercase tracking-wider block mb-2 pb-1 border-b border-amber-100">💳 4. Pago y Abono</span>
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                            <div>
+                                                <label className="font-bold text-slate-700 block mb-1">% de Abono Requerido *</label>
+                                                <div className="flex items-center space-x-2">
+                                                    <input
+                                                        type="number"
+                                                        min="0"
+                                                        max="100"
+                                                        value={bookingForm.abonoPercentage}
+                                                        onChange={(e) => setBookingForm({ ...bookingForm, abonoPercentage: Math.min(100, Math.max(0, Number(e.target.value))) })}
+                                                        className="w-full p-2.5 rounded-xl border border-slate-200 font-bold focus:ring-2 focus:ring-[#D4AF37] outline-none"
+                                                        required
+                                                    />
+                                                    <span className="font-bold text-slate-600">%</span>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <label className="font-bold text-slate-700 block mb-1">Medio de Pago *</label>
+                                                <select
+                                                    value={bookingForm.paymentMethod}
+                                                    onChange={(e) => setBookingForm({ ...bookingForm, paymentMethod: e.target.value })}
+                                                    className="w-full p-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-[#D4AF37] outline-none font-medium"
+                                                    required
+                                                >
+                                                    {PAYMENT_METHODS.map(m => (
+                                                        <option key={m.id} value={m.id}>{m.label}</option>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Cálculo Totales en Vivo */}
+                                    <div className="p-4 bg-gradient-to-r from-[#FAF7EE] via-[#F4EEDC] to-[#E8DCB8] rounded-2xl border border-[#D4AF37] flex flex-wrap justify-between items-center text-xs font-bold gap-2 shadow-inner">
+                                        <div className="text-slate-800">
+                                            <span className="block text-[10px] text-slate-500 uppercase">Total Carrito:</span>
+                                            <span className="text-base text-slate-900">{formatCLP(cartCalculated.total)}</span>
+                                        </div>
+                                        <div className="text-emerald-800">
+                                            <span className="block text-[10px] text-emerald-600 uppercase">Abono a Cancelar ({bookingForm.abonoPercentage}%):</span>
+                                            <span className="text-base">{formatCLP(cartCalculated.abono)}</span>
+                                        </div>
+                                        <div className="text-rose-700">
+                                            <span className="block text-[10px] text-rose-500 uppercase">Saldo Pendiente:</span>
+                                            <span className="text-base">{formatCLP(cartCalculated.saldo)}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="flex gap-2 pt-3 border-t border-slate-100">
+                                    <button onClick={() => setIsBookingModalOpen(false)} className="flex-1 py-3 bg-slate-100 text-slate-700 font-bold text-xs rounded-xl hover:bg-slate-200 transition-all">Cancelar</button>
+                                    <button onClick={handleCreateReservation} className="flex-1 py-3 bg-gradient-to-r from-[#D4AF37] to-[#B38F2D] text-white font-bold text-xs rounded-xl shadow-md hover:opacity-95 transition-all">✨ Confirmar y Guardar Reserva</button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {}
                     {isClientModalOpen && (
                         <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
                             <div className="bg-white rounded-3xl border border-[#EAE3D2] max-w-lg w-full p-6 shadow-2xl space-y-4">
@@ -1319,60 +1639,16 @@
                         </div>
                     )}
 
-                    {isBookingModalOpen && (
-                        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
-                            <div className="bg-white rounded-3xl border max-w-lg w-full p-6 shadow-2xl space-y-4">
-                                <div className="flex justify-between items-center pb-2 border-b">
-                                    <h3 className="font-bold font-serif text-slate-900">Nueva Cita SPA DIVAS ELEY</h3>
-                                    <button onClick={() => setIsBookingModalOpen(false)}>✕</button>
-                                </div>
-                                <div className="space-y-3 text-xs">
-                                    <div className="grid grid-cols-2 gap-3">
-                                        <input type="text" placeholder="Nombre Clienta" value={bookingForm.clientFirstName} onChange={(e) => setBookingForm({ ...bookingForm, clientFirstName: e.target.value })} className="p-2.5 rounded-xl border" />
-                                        <input type="text" placeholder="RUT Clienta" value={bookingForm.clientRut} onChange={(e) => setBookingForm({ ...bookingForm, clientRut: e.target.value })} className="p-2.5 rounded-xl border font-mono" />
-                                    </div>
-                                    <div>
-                                        <select value={bookingForm.serviceId} onChange={(e) => setBookingForm({ ...bookingForm, serviceId: e.target.value })} className="w-full p-2.5 rounded-xl border">
-                                            {catalog.map(s => <option key={s.id} value={s.id}>{s.name} - {formatCLP(s.basePrice)}</option>)}
-                                        </select>
-                                    </div>
-                                    <div className="grid grid-cols-2 gap-3">
-                                        <input type="date" value={bookingForm.date} onChange={(e) => setBookingForm({ ...bookingForm, date: e.target.value })} className="p-2 rounded-xl border" />
-                                        <input type="time" value={bookingForm.time} onChange={(e) => setBookingForm({ ...bookingForm, time: e.target.value })} className="p-2 rounded-xl border" />
-                                    </div>
-                                    <div className="grid grid-cols-2 gap-3">
-                                        <div>
-                                            <label className="font-bold block mb-1">Abono %:</label>
-                                            <select value={bookingForm.abonoPercentage} onChange={(e) => setBookingForm({ ...bookingForm, abonoPercentage: Number(e.target.value) })} className="w-full p-2 rounded-xl border">
-                                                <option value={20}>20% Abono</option>
-                                                <option value={50}>50% Abono</option>
-                                                <option value={100}>100% Pago Completo</option>
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <label className="font-bold block mb-1">Medio Pago:</label>
-                                            <select value={bookingForm.paymentMethod} onChange={(e) => setBookingForm({ ...bookingForm, paymentMethod: e.target.value })} className="w-full p-2 rounded-xl border">
-                                                {PAYMENT_METHODS.map(m => <option key={m.id} value={m.id}>{m.label}</option>)}
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="flex gap-2 pt-3 border-t">
-                                    <button onClick={() => setIsBookingModalOpen(false)} className="flex-1 py-2.5 bg-slate-100 font-bold text-xs rounded-xl">Cancelar</button>
-                                    <button onClick={handleCreateReservation} className="flex-1 py-2.5 bg-slate-900 text-white font-bold text-xs rounded-xl">Crear Cita</button>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-
+                    {}
+                    {/* MODAL: FICHA TÉCNICA CLÍNICA FACIAL Y CORPORAL COMPLETA */}
                     {isFichaClinicalModalOpen && selectedClientForFicha && (
                         <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4 modal-print-container">
-                            <div className="bg-white rounded-3xl border border-[#EAE3D2] max-w-4xl w-full p-6 shadow-2xl space-y-4 max-h-[95vh] overflow-y-auto">
+                            <div className="bg-white rounded-3xl border border-[#EAE3D2] max-w-5xl w-full p-6 shadow-2xl space-y-4 max-h-[95vh] overflow-y-auto">
                                 <div className="flex justify-between items-center pb-3 border-b border-slate-100 no-print">
                                     <div className="flex items-center space-x-3">
                                         <img src={OFFICIAL_LOGO} alt="SPA DIVAS ELEY" className="h-8 w-auto object-contain" />
                                         <div>
-                                            <h3 className="text-base font-bold font-serif text-slate-900">Ficha Técnica Clínica: {selectedClientForFicha.name}</h3>
+                                            <h3 className="text-base font-bold font-serif text-slate-900">Ficha Técnica Clínica Integral: {selectedClientForFicha.name}</h3>
                                             <span className="text-xs text-slate-500 font-mono">RUT: {selectedClientForFicha.rut} | Tel: {selectedClientForFicha.phone}</span>
                                         </div>
                                     </div>
@@ -1386,46 +1662,126 @@
 
                                 <div className="flex gap-2 border-b border-slate-200 pb-2 no-print">
                                     <button onClick={() => setFichaTypeTab('facial')} className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${fichaTypeTab === 'facial' ? 'bg-[#D4AF37] text-white shadow-sm' : 'bg-slate-100 text-slate-700'}`}>
-                                        🌸 1 & 2. FICHA TÉCNICA DIAGNÓSTICO FACIAL (ANAMNESIS & EXAMEN PIEL)
+                                        🌸 1 & 2. FICHA TÉCNICA DIAGNÓSTICO FACIAL COMPLETA
                                     </button>
                                     <button onClick={() => setFichaTypeTab('body')} className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${fichaTypeTab === 'body' ? 'bg-[#212121] text-white shadow-sm' : 'bg-slate-100 text-slate-700'}`}>
-                                        🔥 3. FICHA TÉCNICA DE MOLDEO CORPORAL (SEGUIMIENTO 12 SESIONES)
+                                        🔥 3. FICHA TÉCNICA MOLDEO CORPORAL & 12 SESIONES
                                     </button>
                                 </div>
 
                                 <div className="print-only text-center pb-4 border-b border-slate-300">
                                     <img src={OFFICIAL_LOGO} alt="SPA DIVAS ELEY" className="h-12 mx-auto object-contain mb-1" />
-                                    <h2 className="text-lg font-bold font-serif uppercase text-slate-900">SPA DIVAS ELEY — REGISTRO CLÍNICO TÉCNICO</h2>
+                                    <h2 className="text-lg font-bold font-serif uppercase text-slate-900">SPA DIVAS ELEY — REGISTRO CLÍNICO TÉCNICO COMPLETO</h2>
                                     <p className="text-xs text-slate-600">Clienta: {selectedClientForFicha.name} | RUT: {selectedClientForFicha.rut} | Fecha Registro: {new Date().toLocaleDateString('es-CL')}</p>
                                 </div>
 
-                                {/* FORMULARIO FACIAL */}
+                                {/* FORMULARIO FACIAL COMPLETO */}
                                 {(fichaTypeTab === 'facial' || window.matchMedia('print').matches) && (
                                     <div className="space-y-6 text-xs text-slate-800">
+                                        {/* 1. Datos Personales y de Contacto */}
                                         <div className="bg-amber-50/70 p-4 rounded-2xl border border-amber-200 space-y-3">
-                                            <h4 className="font-bold text-amber-900 font-serif text-sm">ANAMNESIS & ANTECEDENTES PERSONALES DE LA CLIENTA</h4>
+                                            <h4 className="font-bold text-amber-900 font-serif text-sm">1. ANAMNESIS & DATOS PERSONALES DE LA CLIENTA</h4>
                                             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                                                 <div>
-                                                    <label className="font-bold text-slate-700">Estudiante / Profesional:</label>
-                                                    <input type="text" value={facialForm.estudiante} onChange={(e) => setFacialForm({ ...facialForm, estudiante: e.target.value })} className="w-full p-2 rounded-xl border mt-1" />
+                                                    <label className="font-bold text-slate-700 block mb-1">Especialista / Cosmetóloga:</label>
+                                                    <input type="text" value={facialForm.estudiante || ''} onChange={(e) => setFacialForm({ ...facialForm, estudiante: e.target.value })} className="w-full p-2 rounded-xl border bg-white" />
                                                 </div>
                                                 <div>
-                                                    <label className="font-bold text-slate-700">Nombre Clienta:</label>
-                                                    <input type="text" value={selectedClientForFicha.name} readOnly className="w-full p-2 rounded-xl border mt-1 bg-slate-100 font-bold" />
+                                                    <label className="font-bold text-slate-700 block mb-1">Nombre Clienta:</label>
+                                                    <input type="text" value={selectedClientForFicha.name} readOnly className="w-full p-2 rounded-xl border bg-slate-100 font-bold" />
                                                 </div>
                                                 <div>
-                                                    <label className="font-bold text-slate-700">Edad:</label>
-                                                    <input type="text" value={facialForm.edad} onChange={(e) => setFacialForm({ ...facialForm, edad: e.target.value })} className="w-full p-2 rounded-xl border mt-1" />
+                                                    <label className="font-bold text-slate-700 block mb-1">Edad:</label>
+                                                    <input type="text" value={facialForm.edad || ''} onChange={(e) => setFacialForm({ ...facialForm, edad: e.target.value })} className="w-full p-2 rounded-xl border bg-white" />
                                                 </div>
                                                 <div>
-                                                    <label className="font-bold text-slate-700">Ocupación:</label>
-                                                    <input type="text" value={facialForm.ocupacion} onChange={(e) => setFacialForm({ ...facialForm, ocupacion: e.target.value })} className="w-full p-2 rounded-xl border mt-1" />
+                                                    <label className="font-bold text-slate-700 block mb-1">Ocupación:</label>
+                                                    <input type="text" value={facialForm.ocupacion || ''} onChange={(e) => setFacialForm({ ...facialForm, ocupacion: e.target.value })} className="w-full p-2 rounded-xl border bg-white" />
+                                                </div>
+                                                <div>
+                                                    <label className="font-bold text-slate-700 block mb-1">Teléfono:</label>
+                                                    <input type="text" value={facialForm.telefono || ''} onChange={(e) => setFacialForm({ ...facialForm, telefono: e.target.value })} className="w-full p-2 rounded-xl border bg-white" />
+                                                </div>
+                                                <div>
+                                                    <label className="font-bold text-slate-700 block mb-1">Correo Electrónico:</label>
+                                                    <input type="email" value={facialForm.email || ''} onChange={(e) => setFacialForm({ ...facialForm, email: e.target.value })} className="w-full p-2 rounded-xl border bg-white" />
+                                                </div>
+                                                <div>
+                                                    <label className="font-bold text-slate-700 block mb-1">Dirección:</label>
+                                                    <input type="text" value={facialForm.direccion || ''} onChange={(e) => setFacialForm({ ...facialForm, direccion: e.target.value })} className="w-full p-2 rounded-xl border bg-white" />
+                                                </div>
+                                                <div>
+                                                    <label className="font-bold text-slate-700 block mb-1">Hijos / Embarazos:</label>
+                                                    <input type="text" value={facialForm.hijos || ''} onChange={(e) => setFacialForm({ ...facialForm, hijos: e.target.value })} className="w-full p-2 rounded-xl border bg-white" />
                                                 </div>
                                             </div>
                                         </div>
 
+                                        {/* 2. Historial Salud y Antecedentes Médicos */}
+                                        <div className="bg-white p-4 rounded-2xl border border-slate-200 space-y-3">
+                                            <h4 className="font-bold text-slate-900 font-serif text-sm border-b pb-1">2. ANTECEDENTES MÉDICOS & SALUD DERMATOLÓGICA</h4>
+                                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                                                <div>
+                                                    <label className="font-bold text-slate-700 block mb-1">Enfermedades Crónicas:</label>
+                                                    <input type="text" value={facialForm.enfermedadCronica || ''} onChange={(e) => setFacialForm({ ...facialForm, enfermedadCronica: e.target.value })} className="w-full p-2 rounded-xl border" placeholder="Ej: Diabetes, HTA..." />
+                                                </div>
+                                                <div>
+                                                    <label className="font-bold text-slate-700 block mb-1">Medicamentos Actuales:</label>
+                                                    <input type="text" value={facialForm.medicamentacionActual || ''} onChange={(e) => setFacialForm({ ...facialForm, medicamentacionActual: e.target.value })} className="w-full p-2 rounded-xl border" placeholder="Ej: Ninguno" />
+                                                </div>
+                                                <div>
+                                                    <label className="font-bold text-slate-700 block mb-1">Alergia a Cosméticos / Principios:</label>
+                                                    <input type="text" value={facialForm.alergiaCosmeticos || ''} onChange={(e) => setFacialForm({ ...facialForm, alergiaCosmeticos: e.target.value })} className="w-full p-2 rounded-xl border" placeholder="Ej: Ácido Glicólico, Níquel" />
+                                                </div>
+                                                <div>
+                                                    <label className="font-bold text-slate-700 block mb-1">Cirugías / Tratamientos Previos:</label>
+                                                    <input type="text" value={facialForm.cirugiasTratamientos || ''} onChange={(e) => setFacialForm({ ...facialForm, cirugiasTratamientos: e.target.value })} className="w-full p-2 rounded-xl border" placeholder="Ej: Peeling, Bótox..." />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* 3. Hábitos y Estilo de Vida */}
+                                        <div className="bg-white p-4 rounded-2xl border border-slate-200 space-y-3">
+                                            <h4 className="font-bold text-slate-900 font-serif text-sm border-b pb-1">3. HÁBITOS DE VIDA & CUIDADO DIARIO</h4>
+                                            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                                                <div>
+                                                    <label className="font-bold text-slate-700 block mb-1">Exposición Solar:</label>
+                                                    <input type="text" value={facialForm.sol || ''} onChange={(e) => setFacialForm({ ...facialForm, sol: e.target.value })} className="w-full p-2 rounded-xl border" />
+                                                </div>
+                                                <div>
+                                                    <label className="font-bold text-slate-700 block mb-1">Protector Solar Diario:</label>
+                                                    <input type="text" value={facialForm.proteccionPiel || ''} onChange={(e) => setFacialForm({ ...facialForm, proteccionPiel: e.target.value })} className="w-full p-2 rounded-xl border" />
+                                                </div>
+                                                <div>
+                                                    <label className="font-bold text-slate-700 block mb-1">Tabaco:</label>
+                                                    <input type="text" value={facialForm.tabaco || ''} onChange={(e) => setFacialForm({ ...facialForm, tabaco: e.target.value })} className="w-full p-2 rounded-xl border" />
+                                                </div>
+                                                <div>
+                                                    <label className="font-bold text-slate-700 block mb-1">Consumo de Corticoides:</label>
+                                                    <input type="text" value={facialForm.corticoides || ''} onChange={(e) => setFacialForm({ ...facialForm, corticoides: e.target.value })} className="w-full p-2 rounded-xl border" />
+                                                </div>
+                                                <div>
+                                                    <label className="font-bold text-slate-700 block mb-1">Dieta Habitual:</label>
+                                                    <input type="text" value={facialForm.dietaHabitual || ''} onChange={(e) => setFacialForm({ ...facialForm, dietaHabitual: e.target.value })} className="w-full p-2 rounded-xl border" />
+                                                </div>
+                                                <div>
+                                                    <label className="font-bold text-slate-700 block mb-1">Deporte / Ejercicio:</label>
+                                                    <input type="text" value={facialForm.deportes || ''} onChange={(e) => setFacialForm({ ...facialForm, deportes: e.target.value })} className="w-full p-2 rounded-xl border" />
+                                                </div>
+                                                <div>
+                                                    <label className="font-bold text-slate-700 block mb-1">Ingestión de Agua/Líquidos:</label>
+                                                    <input type="text" value={facialForm.ingestionLiquidos || ''} onChange={(e) => setFacialForm({ ...facialForm, ingestionLiquidos: e.target.value })} className="w-full p-2 rounded-xl border" />
+                                                </div>
+                                                <div>
+                                                    <label className="font-bold text-slate-700 block mb-1">Drogas / Medicación Hábitat:</label>
+                                                    <input type="text" value={facialForm.drogas || ''} onChange={(e) => setFacialForm({ ...facialForm, drogas: e.target.value })} className="w-full p-2 rounded-xl border" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* 4. Examen Diagnóstico Cutáneo */}
                                         <div className="space-y-3">
-                                            <h4 className="font-bold text-slate-900 border-b pb-1 font-serif text-sm">EXAMEN DE LA PIEL & BIOTIPO DERMATOLÓGICO</h4>
+                                            <h4 className="font-bold text-slate-900 border-b pb-1 font-serif text-sm">4. EXAMEN DE LA PIEL & BIOTIPO DERMATOLÓGICO</h4>
                                             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 bg-amber-50/50 p-4 rounded-2xl border border-amber-200">
                                                 <div>
                                                     <span className="font-bold block mb-1 text-slate-900">TEXTURA:</span>
@@ -1436,7 +1792,7 @@
                                                     ))}
                                                 </div>
                                                 <div>
-                                                    <span className="font-bold block mb-1 text-slate-900">OSTIUM:</span>
+                                                    <span className="font-bold block mb-1 text-slate-900">OSTIUM FOLICULAR:</span>
                                                     {['VISIBLE', 'DILATADO', 'OBSTRUIDOS'].map(opt => (
                                                         <label key={opt} className="block cursor-pointer my-0.5">
                                                             <input type="radio" name="ostium" checked={facialForm.ostium === opt} onChange={() => setFacialForm({ ...facialForm, ostium: opt })} className="mr-1.5 accent-[#D4AF37]" /> ({facialForm.ostium === opt ? 'X' : ' '}) {opt}
@@ -1444,7 +1800,7 @@
                                                     ))}
                                                 </div>
                                                 <div>
-                                                    <span className="font-bold block mb-1 text-slate-900">ASPECTOS:</span>
+                                                    <span className="font-bold block mb-1 text-slate-900">ASPECTO GENERAL:</span>
                                                     {['OPACO', 'MARCHITO', 'LUMINOSO'].map(opt => (
                                                         <label key={opt} className="block cursor-pointer my-0.5">
                                                             <input type="radio" name="aspecto" checked={facialForm.aspecto === opt} onChange={() => setFacialForm({ ...facialForm, aspecto: opt })} className="mr-1.5 accent-[#D4AF37]" /> ({facialForm.aspecto === opt ? 'X' : ' '}) {opt}
@@ -1452,7 +1808,7 @@
                                                     ))}
                                                 </div>
                                                 <div>
-                                                    <span className="font-bold block mb-1 text-slate-900">TACTO:</span>
+                                                    <span className="font-bold block mb-1 text-slate-900">TACTO CUTÁNEO:</span>
                                                     {['ÁSPERO', 'UNTUOSO', 'ESCAMOSO'].map(opt => (
                                                         <label key={opt} className="block cursor-pointer my-0.5">
                                                             <input type="radio" name="tacto" checked={facialForm.tacto === opt} onChange={() => setFacialForm({ ...facialForm, tacto: opt })} className="mr-1.5 accent-[#D4AF37]" /> ({facialForm.tacto === opt ? 'X' : ' '}) {opt}
@@ -1460,25 +1816,88 @@
                                                     ))}
                                                 </div>
                                             </div>
+
+                                            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 bg-white p-4 rounded-2xl border border-slate-200">
+                                                <div>
+                                                    <label className="font-bold text-slate-700 block mb-1">Secreción Sudorípara:</label>
+                                                    <input type="text" value={facialForm.secrecionSudoripara || ''} onChange={(e) => setFacialForm({ ...facialForm, secrecionSudoripara: e.target.value })} className="w-full p-2 rounded-xl border" placeholder="Normal, Exceso, Defecto" />
+                                                </div>
+                                                <div>
+                                                    <label className="font-bold text-slate-700 block mb-1">Secreción Sebácea:</label>
+                                                    <input type="text" value={facialForm.secrecionSebacea || ''} onChange={(e) => setFacialForm({ ...facialForm, secrecionSebacea: e.target.value })} className="w-full p-2 rounded-xl border" placeholder="Normal, Exceso, Defecto" />
+                                                </div>
+                                                <div>
+                                                    <label className="font-bold text-slate-700 block mb-1">Emulsión Epicutánea:</label>
+                                                    <input type="text" value={facialForm.emulsion || ''} onChange={(e) => setFacialForm({ ...facialForm, emulsion: e.target.value })} className="w-full p-2 rounded-xl border" placeholder="Epicutánea alipídica, Eudérmica..." />
+                                                </div>
+                                                <div>
+                                                    <label className="font-bold text-slate-700 block mb-1">pH Cutáneo Estimado:</label>
+                                                    <input type="text" value={facialForm.phCutaneo || ''} onChange={(e) => setFacialForm({ ...facialForm, phCutaneo: e.target.value })} className="w-full p-2 rounded-xl border" placeholder="5.5 (Equilibrado)" />
+                                                </div>
+                                                <div>
+                                                    <label className="font-bold text-slate-700 block mb-1">Vellosidad Facial:</label>
+                                                    <input type="text" value={facialForm.vellosidad || ''} onChange={(e) => setFacialForm({ ...facialForm, vellosidad: e.target.value })} className="w-full p-2 rounded-xl border" placeholder="NO, Hirsutismo, etc." />
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 )}
 
-                                {/* FORMULARIO CORPORAL */}
+                                {/* FORMULARIO CORPORAL COMPLETO */}
                                 {(fichaTypeTab === 'body' || window.matchMedia('print').matches) && (
                                     <div className="space-y-6 text-xs text-slate-800">
+                                        {/* 1. Datos Personales y Evaluación Inicial */}
                                         <div className="bg-purple-50/70 p-4 rounded-2xl border border-purple-200 space-y-3">
-                                            <h4 className="font-bold text-purple-900 font-serif text-sm">FICHA TÉCNICA DE MOLDEO CORPORAL & ANTECEDENTES MÉDICOS</h4>
+                                            <h4 className="font-bold text-purple-900 font-serif text-sm">1. FICHA TÉCNICA MOLDEO CORPORAL & DATOS PERSONALES</h4>
                                             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                                                <div><label className="font-bold">Nombre y Apellido:</label><input type="text" value={selectedClientForFicha.name} readOnly className="w-full p-2 rounded-xl border mt-1 bg-slate-100 font-bold" /></div>
-                                                <div><label className="font-bold">Edad:</label><input type="text" value={bodyForm.edad} onChange={(e) => setBodyForm({ ...bodyForm, edad: e.target.value })} className="w-full p-2 rounded-xl border mt-1" /></div>
-                                                <div><label className="font-bold">Teléfono:</label><input type="text" value={bodyForm.telefono} onChange={(e) => setBodyForm({ ...bodyForm, telefono: e.target.value })} className="w-full p-2 rounded-xl border mt-1" /></div>
-                                                <div><label className="font-bold">Fecha Evaluación:</label><input type="date" value={bodyForm.fechaEvaluacion} onChange={(e) => setBodyForm({ ...bodyForm, fechaEvaluacion: e.target.value })} className="w-full p-2 rounded-xl border mt-1" /></div>
+                                                <div><label className="font-bold text-slate-700 block mb-1">Nombre y Apellido:</label><input type="text" value={selectedClientForFicha.name} readOnly className="w-full p-2 rounded-xl border bg-slate-100 font-bold" /></div>
+                                                <div><label className="font-bold text-slate-700 block mb-1">Edad:</label><input type="text" value={bodyForm.edad || ''} onChange={(e) => setBodyForm({ ...bodyForm, edad: e.target.value })} className="w-full p-2 rounded-xl border bg-white" /></div>
+                                                <div><label className="font-bold text-slate-700 block mb-1">Teléfono:</label><input type="text" value={bodyForm.telefono || ''} onChange={(e) => setBodyForm({ ...bodyForm, telefono: e.target.value })} className="w-full p-2 rounded-xl border bg-white" /></div>
+                                                <div><label className="font-bold text-slate-700 block mb-1">Fecha Evaluación:</label><input type="date" value={bodyForm.fechaEvaluacion || ''} onChange={(e) => setBodyForm({ ...bodyForm, fechaEvaluacion: e.target.value })} className="w-full p-2 rounded-xl border bg-white" /></div>
+                                                <div><label className="font-bold text-slate-700 block mb-1">Ocupación:</label><input type="text" value={bodyForm.ocupacion || ''} onChange={(e) => setBodyForm({ ...bodyForm, ocupacion: e.target.value })} className="w-full p-2 rounded-xl border bg-white" /></div>
+                                                <div><label className="font-bold text-slate-700 block mb-1">Email:</label><input type="email" value={bodyForm.email || ''} onChange={(e) => setBodyForm({ ...bodyForm, email: e.target.value })} className="w-full p-2 rounded-xl border bg-white" /></div>
+                                                <div className="col-span-2"><label className="font-bold text-slate-700 block mb-1">Dirección:</label><input type="text" value={bodyForm.direccion || ''} onChange={(e) => setBodyForm({ ...bodyForm, direccion: e.target.value })} className="w-full p-2 rounded-xl border bg-white" /></div>
                                             </div>
                                         </div>
 
+                                        {/* 2. Antecedentes Clínicos y Contraindicaciones */}
+                                        <div className="bg-white p-4 rounded-2xl border border-slate-200 space-y-3">
+                                            <h4 className="font-bold text-slate-900 font-serif text-sm border-b pb-1">2. ANTECEDENTES CLÍNICOS & CONTRAINDICACIONES</h4>
+                                            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                                                <div>
+                                                    <label className="font-bold text-slate-700 block mb-1">Enfermedades Crónicas:</label>
+                                                    <input type="text" value={bodyForm.enfermedadesCronicas || ''} onChange={(e) => setBodyForm({ ...bodyForm, enfermedadesCronicas: e.target.value })} className="w-full p-2 rounded-xl border" placeholder="NO / Cuadro" />
+                                                </div>
+                                                <div>
+                                                    <label className="font-bold text-slate-700 block mb-1">Problemas Circulatorios / Varices:</label>
+                                                    <input type="text" value={bodyForm.problemasCirculatorios || ''} onChange={(e) => setBodyForm({ ...bodyForm, problemasCirculatorios: e.target.value })} className="w-full p-2 rounded-xl border" placeholder="NO / Sí" />
+                                                </div>
+                                                <div>
+                                                    <label className="font-bold text-slate-700 block mb-1">Marcapasos / Prótesis Metálicas:</label>
+                                                    <input type="text" value={bodyForm.marcapasosProtesis || ''} onChange={(e) => setBodyForm({ ...bodyForm, marcapasosProtesis: e.target.value })} className="w-full p-2 rounded-xl border" placeholder="NO / Ubicación" />
+                                                </div>
+                                                <div>
+                                                    <label className="font-bold text-slate-700 block mb-1">Embarazo / Lactancia:</label>
+                                                    <input type="text" value={bodyForm.embarazoLactancia || ''} onChange={(e) => setBodyForm({ ...bodyForm, embarazoLactancia: e.target.value })} className="w-full p-2 rounded-xl border" placeholder="NO / Sí" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* 3. Estilo de Vida & Medidas Iniciales */}
+                                        <div className="bg-white p-4 rounded-2xl border border-slate-200 space-y-3">
+                                            <h4 className="font-bold text-slate-900 font-serif text-sm border-b pb-1">3. ESTILO DE VIDA & MEDIDAS ANTROPOMÉTRICAS INICIALES</h4>
+                                            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                                                <div><label className="font-bold text-slate-700 block mb-1">Consumo de Agua Diario:</label><input type="text" value={bodyForm.consumoAgua || ''} onChange={(e) => setBodyForm({ ...bodyForm, consumoAgua: e.target.value })} className="w-full p-2 rounded-xl border" placeholder="2 Litros diarios" /></div>
+                                                <div><label className="font-bold text-slate-700 block mb-1">Actividad Física:</label><input type="text" value={bodyForm.actividadFisica || ''} onChange={(e) => setBodyForm({ ...bodyForm, actividadFisica: e.target.value })} className="w-full p-2 rounded-xl border" placeholder="Pilates 2x semana" /></div>
+                                                <div><label className="font-bold text-slate-700 block mb-1">Peso Actual (kg):</label><input type="text" value={bodyForm.pesoActual || ''} onChange={(e) => setBodyForm({ ...bodyForm, pesoActual: e.target.value })} className="w-full p-2 rounded-xl border font-bold" /></div>
+                                                <div><label className="font-bold text-slate-700 block mb-1">Estatura (cm):</label><input type="text" value={bodyForm.estatura || ''} onChange={(e) => setBodyForm({ ...bodyForm, estatura: e.target.value })} className="w-full p-2 rounded-xl border font-bold" /></div>
+                                                <div className="col-span-2 sm:col-span-4"><label className="font-bold text-slate-700 block mb-1">Perímetros e Historial Medidas Iniciales:</label><input type="text" value={bodyForm.perimetroInicial || ''} onChange={(e) => setBodyForm({ ...bodyForm, perimetroInicial: e.target.value })} className="w-full p-2 rounded-xl border font-mono text-[11px]" placeholder="Abdomen Alto: 72cm | Cintura: 68cm | Abdomen Bajo: 81cm" /></div>
+                                            </div>
+                                        </div>
+
+                                        {/* 4. Tabla de Seguimiento de 12 Sesiones */}
                                         <div className="space-y-3">
-                                            <h4 className="font-bold text-slate-900 font-serif text-sm">CONTROL DE SESIONES Y SEGUIMIENTO DE EVOLUCIÓN (12 SESIONES)</h4>
+                                            <h4 className="font-bold text-slate-900 font-serif text-sm">4. CONTROL DE SESIONES Y SEGUIMIENTO DE EVOLUCIÓN (12 SESIONES)</h4>
                                             <div className="overflow-x-auto">
                                                 <table className="w-full text-left text-xs border border-slate-200 rounded-xl overflow-hidden">
                                                     <thead className="bg-[#212121] text-white uppercase text-[10px]">
@@ -1486,29 +1905,29 @@
                                                             <th className="p-2.5 text-center w-24">N° Sesión</th>
                                                             <th className="p-2.5 w-32">Fecha Cita</th>
                                                             <th className="p-2.5">Técnicas Aplicadas</th>
-                                                            <th className="p-2.5">Observaciones & Medidas</th>
+                                                            <th className="p-2.5">Observaciones & Medidas Obtención</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody className="divide-y divide-slate-200 bg-white">
-                                                        {bodyForm.sessions.map((s, idx) => (
+                                                        {Array.isArray(bodyForm.sessions) && bodyForm.sessions.map((s, idx) => (
                                                             <tr key={s.id} className="hover:bg-slate-50">
                                                                 <td className="p-2 font-bold text-center bg-slate-100 text-slate-900">Sesión {s.id}</td>
                                                                 <td className="p-2">
-                                                                    <input type="date" value={s.fecha} onChange={(e) => {
+                                                                    <input type="date" value={s.fecha || ''} onChange={(e) => {
                                                                         const updated = [...bodyForm.sessions];
                                                                         updated[idx].fecha = e.target.value;
                                                                         setBodyForm({ ...bodyForm, sessions: updated });
                                                                     }} className="w-full p-1.5 border rounded-lg text-xs" />
                                                                 </td>
                                                                 <td className="p-2">
-                                                                    <input type="text" placeholder="Ej: Maderoterapia + Cavitación" value={s.tecnicas} onChange={(e) => {
+                                                                    <input type="text" placeholder="Ej: Maderoterapia + Cavitación" value={s.tecnicas || ''} onChange={(e) => {
                                                                         const updated = [...bodyForm.sessions];
                                                                         updated[idx].tecnicas = e.target.value;
                                                                         setBodyForm({ ...bodyForm, sessions: updated });
                                                                     }} className="w-full p-1.5 border rounded-lg text-xs" />
                                                                 </td>
                                                                 <td className="p-2">
-                                                                    <input type="text" placeholder="Ej: Cintura antes: 68cm -> después: 67.5cm (-0.5cm)" value={s.observaciones} onChange={(e) => {
+                                                                    <input type="text" placeholder="Ej: Cintura antes: 68cm -> después: 67.5cm (-0.5cm)" value={s.observaciones || ''} onChange={(e) => {
                                                                         const updated = [...bodyForm.sessions];
                                                                         updated[idx].observaciones = e.target.value;
                                                                         setBodyForm({ ...bodyForm, sessions: updated });
@@ -1710,10 +2129,9 @@
                                                 <option value="PROFESIONAL">PROFESIONAL</option>
                                             </select>
                                         </div>
-                                       
-                                       <div><label className="font-bold">Foto Perfil (URL):</label><input type="text" value={staffForm.photo} onChange={(e) => setStaffForm({ ...staffForm, photo: e.target.value })} className="w-full p-2.5 rounded-xl border mt-1" /></div>
-                                         <div><label className="font-bold block mb-1">Especialidad:</label><input type="text" value={staffForm.specialty} onChange={(e) => setStaffForm({ ...staffForm, specialty: e.target.value })} className="w-full p-2.5 rounded-xl border" /></div>
+                                        <div><label className="font-bold block mb-1">Especialidad:</label><input type="text" value={staffForm.specialty} onChange={(e) => setStaffForm({ ...staffForm, specialty: e.target.value })} className="w-full p-2.5 rounded-xl border" /></div>
                                     </div>
+                                    <div><label className="font-bold block mb-1">Foto Perfil (URL):</label><input type="text" value={staffForm.photo} onChange={(e) => setStaffForm({ ...staffForm, photo: e.target.value })} className="w-full p-2.5 rounded-xl border" /></div>
                                 </div>
                                 <div className="flex gap-2 pt-3 border-t">
                                     <button onClick={() => setIsStaffModalOpen(false)} className="flex-1 py-2.5 bg-slate-100 font-bold text-xs rounded-xl">Cancelar</button>
@@ -1723,7 +2141,6 @@
                         </div>
                     )}
 
-                    {}
                     {isEditReservationModalOpen && (
                         <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
                             <div className="bg-white rounded-3xl border border-[#EAE3D2] max-w-lg w-full p-6 shadow-2xl space-y-4">
