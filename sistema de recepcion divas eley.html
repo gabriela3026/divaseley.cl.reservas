@@ -1,0 +1,1840 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPA DIVAS ELEY — Plataforma Web Integral & Sistema Lujo</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gold: {
+                            50: '#FAF7EE',
+                            100: '#F4EEDC',
+                            200: '#E8DCB8',
+                            300: '#DCCB95',
+                            400: '#D0B971',
+                            500: '#D4AF37', // Official Gold SPA DIVAS ELEY
+                            600: '#B38F2D',
+                            700: '#8C6E20',
+                            800: '#664E14',
+                            900: '#40300A'
+                        },
+                        graphite: '#212121'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        serif: ['Playfair Display', 'Georgia', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FBF9F5;
+            background-image: radial-gradient(#EAE3D2 0.7px, transparent 0.7px), radial-gradient(#EAE3D2 0.7px, #FBF9F5 0.7px);
+            background-size: 28px 28px;
+            background-position: 0 0, 14px 14px;
+            color: #212121;
+            overflow-x: hidden;
+        }
+        .font-serif { font-family: 'Playfair Display', Georgia, serif; }
+        .scrollbar-none::-webkit-scrollbar { display: none; }
+        .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
+
+        @media print {
+            .no-print { display: none !important; }
+            .print-only { display: block !important; }
+            body { background-color: #ffffff !important; background-image: none !important; color: #000 !important; }
+            .modal-print-container { position: absolute; left: 0; top: 0; width: 100%; height: auto; overflow: visible; }
+        }
+        .print-only { display: none; }
+    </style>
+</head>
+<body class="antialiased selection:bg-amber-100 selection:text-amber-900">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useMemo, useRef } = React;
+
+        const OFFICIAL_LOGO = "https://6a891d2297833836f65581a1.imgix.net/sandbox/DIVAS%20logo.png";
+        const BRAND_SLOGAN = "Tu belleza, tu bienestar, tu momento.";
+        const SPA_ADDRESS = "Valdivia 548, Galería Monte Dorado stand 34 y 35, Los Ángeles";
+
+        const PAYMENT_METHODS = [
+            { id: 'EFECTIVO', label: 'Efectivo', icon: '💵' },
+            { id: 'DEBITO', label: 'Tarjeta Débito', icon: '💳' },
+            { id: 'CREDITO', label: 'Tarjeta Crédito', icon: '💳' },
+            { id: 'TRANSFERENCIA', label: 'Transferencia', icon: '🏦' },
+            { id: 'PAGO_DIGITAL', label: 'Pago Digital', icon: '📱' },
+            { id: 'QR', label: 'Código QR', icon: '📲' },
+            { id: 'GIFT_CARD', label: 'Gift Card', icon: '🎁' },
+            { id: 'MIXTO', label: 'Pago Mixto', icon: '🔄' }
+        ];
+
+        const CATALOG_CATEGORIES = [
+            { id: 'all', label: '✨ TODOS' },
+            { id: 'capilar', label: '💇‍♀️ Servicios Capilares', categoryName: '💇‍♀️ SERVICIOS CAPILARES' },
+            { id: 'depilacion-facial', label: '🌸 Depilación Facial', categoryName: '🌸 DEPILACIÓN FACIAL' },
+            { id: 'pestanas', label: '👁️ Pestañas', categoryName: '👁️ PESTAÑAS' },
+            { id: 'cejas', label: '👑 Cejas Perfectas', categoryName: '👑 CEJAS PERFECTAS' },
+            { id: 'unas', label: '💅 Uñas', categoryName: '💅 UÑAS' },
+            { id: 'depilacion-corporal', label: '🦵 Depilación Corporal', categoryName: '🦵 DEPILACIÓN CORPORAL' },
+            { id: 'cuidado-facial', label: '🧖‍♀️ Cuidado Facial', categoryName: '🧖‍♀️ CUIDADO FACIAL' },
+            { id: 'estetica-corporal', label: '🔥 Planes Reductivos', categoryName: '🔥 PLANES Y TRATAMIENTOS REDUCTIVOS' },
+            { id: 'masajes', label: '💆‍♀️ Masajes', categoryName: '💆‍♀️ MASAJES RELAJANTES' }
+        ];
+
+        const formatCLP = (amount) => {
+            return new Intl.NumberFormat('es-CL', {
+                style: 'currency',
+                currency: 'CLP',
+                maximumFractionDigits: 0
+            }).format(amount || 0);
+        };
+
+        const INITIAL_USER_ACCOUNTS = [
+            { id: 'acc-1', email: 'gabrielamanrique@divaseley.cl', password: 'admin1234', name: 'Gabriela Manrique', role: 'ADMIN', phone: '+56 9 8765 4321', avatar: 'GM', specialty: 'Directora & Master Spa', photo: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=300&q=80', entryTime: '08:45', lunchOut: '13:00', lunchIn: '14:00', exitTime: '', status: 'PRESENT' },
+            { id: 'acc-2', email: 'nicolinostroza@divaseley.cl', password: 'admin1234', name: 'Nicol Inostroza', role: 'ADMIN', phone: '+56 9 8765 4322', avatar: 'NI', specialty: 'Especialista Cosmetología', photo: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=300&q=80', entryTime: '09:00', lunchOut: '13:30', lunchIn: '14:30', exitTime: '', status: 'PRESENT' },
+            { id: 'acc-3', email: 'recepcion@divaseley.cl', password: 'Rec1234', name: 'Recepción DIVAS', role: 'RECEPCION', phone: '+56 9 1234 5678', avatar: 'RC', specialty: 'Atención al Cliente', photo: 'https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?auto=format&fit=crop&w=300&q=80', entryTime: '08:30', lunchOut: '13:00', lunchIn: '14:00', exitTime: '', status: 'PRESENT' },
+            { id: 'acc-4', email: 'cami@divaseley.cl', password: 'prof1234', name: 'Camila Rodríguez', role: 'PROFESIONAL', phone: '+56 9 8123 4567', avatar: 'CR', specialty: 'Lash Designer & Master', photo: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80', entryTime: '09:00', lunchOut: '13:00', lunchIn: '14:00', exitTime: '', status: 'PRESENT' },
+            { id: 'acc-5', email: 'kati@divaseley.cl', password: 'prof12345', name: 'Carolina Rodríguez', role: 'PROFESIONAL', phone: '+56 9 8234 5678', avatar: 'CR', specialty: 'Especialista Corporal', photo: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80', entryTime: '10:15', lunchOut: '13:30', lunchIn: '', exitTime: '', status: 'LUNCH' },
+            { id: 'acc-6', email: 'aline@divaseley.cl', password: 'prof12345', name: 'Aline Pereira', role: 'PROFESIONAL', phone: '+56 9 8345 6789', avatar: 'AP', specialty: 'Maquillista, Peinados & Esmaltado', photo: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80', entryTime: '09:00', lunchOut: '13:30', lunchIn: '14:30', exitTime: '', status: 'PRESENT' }
+        ];
+
+        const INITIAL_CATALOG = [
+            // 💇‍♀️ SERVICIOS CAPILARES
+            { id: 'cap-1', name: 'Secado y Planchado', category: '💇‍♀️ SERVICIOS CAPILARES', tag: 'capilar', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/SECADO%20Y%20PLANCHADO.jpg', basePrice: 15000, duration: 45, description: 'Lavado y planchado de cabello.', hasVariants: true, variants: [{ name: 'Cabello corto', price: 15000 }, { name: 'Cabello largo', price: 20000 }, { name: 'Cabello extra largo', price: 25000 }] },
+            { id: 'cap-2', name: 'Lavado de Cabello', category: '💇‍♀️ SERVICIOS CAPILARES', tag: 'capilar', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/lavado.jpg', basePrice: 10000, duration: 30, description: 'Lavado profesional con champú específico.', hasVariants: true, variants: [{ name: 'Lavado estándar', price: 10000 }, { name: 'Lavado intensivo', price: 20000 }] },
+            { id: 'cap-3', name: 'Masaje capilar', category: '💇‍♀️ SERVICIOS CAPILARES', tag: 'capilar', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/masaje%20capilar.jpg', basePrice: 20000, duration: 45, description: 'Revitaliza tu hebra capilar.', hasVariants: false },
+            { id: 'cap-4', name: 'Corte de Cabello', category: '💇‍♀️ SERVICIOS CAPILARES', tag: 'capilar', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/corte.jpg', basePrice: 7000, duration: 30, description: 'Corte de puntas o estilo personalizado.', hasVariants: false },
+            { id: 'cap-5', name: 'Cubrimiento de canas', category: '💇‍♀️ SERVICIOS CAPILARES', tag: 'capilar', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/cubrimiento%20de%20canas.jpg', basePrice: 20000, duration: 60, description: 'Disimula las canas (solo crecimiento).', hasVariants: false },
+            { id: 'cap-6', name: 'Tinturación de Cabello', category: '💇‍♀️ SERVICIOS CAPILARES', tag: 'capilar', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/tinturaci%C3%B3n%20de%20cabello.jpg', basePrice: 25000, duration: 90, description: 'Tintura completa (incluye lavado).', hasVariants: true, variants: [{ name: 'Cabello corto', price: 25000 }, { name: 'Cabello largo', price: 30000 }] },
+            { id: 'cap-7', name: 'Visos', category: '💇‍♀️ SERVICIOS CAPILARES', tag: 'capilar', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/images%20(13).jpg', basePrice: 39999, duration: 120, description: 'Aclara mechones finos uniformemente.', hasVariants: false },
+            { id: 'cap-8', name: 'Balayage sin decoloración', category: '💇‍♀️ SERVICIOS CAPILARES', tag: 'capilar', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/Balagaye%20sin%20decoloracion.jpg', basePrice: 39999, duration: 150, description: 'Tinturación sin decoloración.', hasVariants: true, variants: [{ name: 'Cabello corto', price: 39999 }, { name: 'Cabello largo', price: 49999 }] },
+            { id: 'cap-9', name: 'Balayage con decoloración', category: '💇‍♀️ SERVICIOS CAPILARES', tag: 'capilar', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/balayage%20con%20decoloracion.jpg', basePrice: 50000, duration: 180, description: 'Tinturación con decoloración.', hasVariants: true, variants: [{ name: 'Cabello corto', price: 50000 }, { name: 'Cabello largo', price: 70000 }] },
+            { id: 'cap-10', name: 'Botox Capilar', category: '💇‍♀️ SERVICIOS CAPILARES', tag: 'capilar', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/botox%20capilar.jpg', basePrice: 30000, duration: 60, description: 'Hidratación y restauración intensiva.', hasVariants: false },
+            { id: 'cap-11', name: 'Alisado Fotónico', category: '💇‍♀️ SERVICIOS CAPILARES', tag: 'capilar', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/alisado%20fotonico.jpg', basePrice: 35000, duration: 120, description: 'Brillo espejo, sin formol ni frizz.', hasVariants: true, variants: [{ name: 'Cabello corto', price: 35000 }, { name: 'Cabello largo', price: 60000 }] },
+            { id: 'cap-12', name: 'Hidratación SALERM 21', category: '💇‍♀️ SERVICIOS CAPILARES', tag: 'capilar', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/hidratacion%20de%20cabello.jpg', basePrice: 35000, duration: 45, description: 'Repara cabello deshidratado o poroso.', hasVariants: false },
+            { id: 'cap-13', name: 'Peinado + Maquillaje', category: '💇‍♀️ SERVICIOS CAPILARES', tag: 'capilar', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/DUO%20PEINADO%20MAQUILLAJE.jpg', basePrice: 60000, duration: 45, description: 'Promoción Maquillaje + Peinado básico.', hasVariants: false },
+            { id: 'cap-14', name: 'Maquillaje Profesional', category: '💇‍♀️ SERVICIOS CAPILARES', tag: 'capilar', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/maquillaje%20profesional.jpg', basePrice: 35000, duration: 45, description: 'Maquillaje Profesional para eventos.', hasVariants: true, variants: [{ name: 'Maquillaje Social', price: 35000 }, { name: 'Maquillaje de Gala', price: 45000 }] },
+            { id: 'cap-15', name: 'PACK NOVIAS', category: '💇‍♀️ SERVICIOS CAPILARES', tag: 'capilar', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/PACK%20NOVIAS.jpg', basePrice: 100000, duration: 140, description: 'MAQUILLAJE NOVIA + PEINADO + ESMALTADO PERMANENTE SIMPLE + PRUEBAS.', hasVariants: false },
+
+            // 🌸 DEPILACIÓN FACIAL
+            { id: 'dep-f1', name: 'Depilación Rostro Completo + Perfilado', category: '🌸 DEPILACIÓN FACIAL', tag: 'depilacion-facial', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/depilacion%20de%20rostro%20con%20cera.jpg', basePrice: 20000, duration: 30, description: 'Cera italiana y cejas.', hasVariants: false },
+            { id: 'dep-f2', name: 'Perfilado de Cejas + Bozo', category: '🌸 DEPILACIÓN FACIAL', tag: 'depilacion-facial', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/depilacion%20de%20bozo%20y%20perfilado%20de%20cejas.jpg', basePrice: 12990, duration: 25, description: 'Diseño de mirada y bozo.', hasVariants: false },
+            { id: 'dep-f3', name: 'Depilación de Patillas', category: '🌸 DEPILACIÓN FACIAL', tag: 'depilacion-facial', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/Depilaci%C3%B3n%20de%20Patillas.jpg', basePrice: 7000, duration: 15, description: 'Retiro delicado.', hasVariants: false },
+            { id: 'dep-f4', name: 'Depilación de Bozo', category: '🌸 DEPILACIÓN FACIAL', tag: 'depilacion-facial', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/depilacion%20de%20bozo%20con%20cera%20miel11.jpg', basePrice: 3500, duration: 10, description: 'Retiro rápido.', hasVariants: false },
+            { id: 'dep-f5', name: 'Depilación de Pómulo', category: '🌸 DEPILACIÓN FACIAL', tag: 'depilacion-facial', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/Depilaci%C3%B3n%20de%20Frente%20o%20P%C3%B3mulos.jpg', basePrice: 3000, duration: 10, description: 'Pómulos suave y veloz.', hasVariants: false },
+            { id: 'dep-f6', name: 'Depilación de Frente', category: '🌸 DEPILACIÓN FACIAL', tag: 'depilacion-facial', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/depilacion%20de%20frente.jpg', basePrice: 12990, duration: 15, description: 'Depilación de frente con cera.', hasVariants: false },
+
+            // 👁️ PESTAÑAS
+            { id: 'pes-1', name: 'Lifting de Pestañas', category: '👁️ PESTAÑAS', tag: 'pestanas', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/lifting%20de%20pesta%C3%B1as1.jpg', basePrice: 20000, duration: 45, description: 'Curvatura natural.', hasVariants: false },
+            { id: 'pes-2', name: 'Lifting + Botox + Tinte', category: '👁️ PESTAÑAS', tag: 'pestanas', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/pesta%C3%B1as%20mas%20tinte%20botox.jpg', basePrice: 25000, duration: 60, description: 'Nutrición con bótox y tinte.', hasVariants: false },
+            { id: 'pes-3', name: 'Extensión Clásicas', category: '👁️ PESTAÑAS', tag: 'pestanas', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/clasicas.jpg', basePrice: 30000, duration: 90, description: 'Pelo a pelo natural.', hasVariants: false },
+            { id: 'pes-4', name: 'Extensión Rímel', category: '👁️ PESTAÑAS', tag: 'pestanas', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/Extensiones%20Efecto%20R%C3%ADmel.jpg', basePrice: 35000, duration: 90, description: 'Mayor volumen sutil.', hasVariants: false },
+            { id: 'pes-5', name: 'Closed Fans', category: '👁️ PESTAÑAS', tag: 'pestanas', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/Closed%20Fans.jpg', basePrice: 40000, duration: 100, description: 'Curvatura fija.', hasVariants: false },
+            { id: 'pes-6', name: 'Volumen', category: '👁️ PESTAÑAS', tag: 'pestanas', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/volumen.jpg', basePrice: 45000, duration: 120, description: 'Ideal para pestañas delgadas.', hasVariants: false },
+            { id: 'pes-7', name: 'Mega Volumen', category: '👁️ PESTAÑAS', tag: 'pestanas', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/Volumen%20RusoMega%20Volumen.jpg', basePrice: 50000, duration: 120, description: 'Densa y dramática.', hasVariants: false },
+
+            // 👑 CEJAS PERFECTAS
+            { id: 'cej-1', name: 'Microblading de Cejas', category: '👑 CEJAS PERFECTAS', tag: 'cejas', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/Microblading%20de%20Cejas.jpg', basePrice: 100000, duration: 120, description: 'Pigmentación pelo a pelo.', hasVariants: true, variants: [{ name: 'Nuevo', price: 100000 }, { name: 'Retoque', price: 50000 }] },
+            { id: 'cej-2', name: 'Perfilado + Visajismo + Tinte', category: '👑 CEJAS PERFECTAS', tag: 'cejas', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/Perfilado%20%2B%20Visajismo%20%2B%20Tinte.jpg', basePrice: 15000, duration: 35, description: 'Diseño adaptado a facciones.', hasVariants: false },
+            { id: 'cej-3', name: 'Perfilado + Visajismo', category: '👑 CEJAS PERFECTAS', tag: 'cejas', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/Tinte%20de%20Cejas.jpg', basePrice: 10000, duration: 25, description: 'Anchura y grosor.', hasVariants: false },
+            { id: 'cej-4', name: 'Laminado de Cejas', category: '👑 CEJAS PERFECTAS', tag: 'cejas', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/Laminado%20de%20Cejas.jpg', basePrice: 15000, duration: 45, description: 'Alisa y peina.', hasVariants: false },
+
+            // 💅 UÑAS
+            { id: 'una-1', name: 'Esmaltado Permanente', category: '💅 UÑAS', tag: 'unas', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/Esmaltado%20Permanente%20(Un%20solo%20tono).jpg', basePrice: 11999, duration: 45, description: 'Brillo efecto espejo.', hasVariants: false },
+            { id: 'una-2', name: 'Base Rubber + Diseño', category: '💅 UÑAS', tag: 'unas', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/Base%20Rubber%20%2B%20Esmaltado%20%2B%20Dise%C3%B1o.jpg', basePrice: 20000, duration: 60, description: 'Esmaltado premium + diseño.', hasVariants: false },
+            { id: 'una-3', name: 'Esmaltado Permanente + Diseño', category: '💅 UÑAS', tag: 'unas', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/smaltado%20Permanente%20%2B%20Dise%C3%B1o.jpg', basePrice: 20000, duration: 60, description: 'Color sobre largo natural.', hasVariants: false },
+            { id: 'una-4', name: 'Baño Acrílico', category: '💅 UÑAS', tag: 'unas', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/ba%C3%B1o%20acrilico.jpg', basePrice: 20000, duration: 60, description: 'Acabado clásico.', hasVariants: false },
+            { id: 'una-5', name: 'Baño Acrílico + Diseño', category: '💅 UÑAS', tag: 'unas', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/Ba%C3%B1o%20de%20Acr%C3%ADlico%20%2B%20Dise%C3%B1o.jpg', basePrice: 25000, duration: 75, description: 'Capa protectora + diseño.', hasVariants: false },
+            { id: 'una-6', name: 'Uñas Soft Gel', category: '💅 UÑAS', tag: 'unas', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/softgel.jpg', basePrice: 19990, duration: 60, description: 'Tips de gel flexible.', hasVariants: false },
+            { id: 'una-7', name: 'Uñas Soft Gel + Diseño', category: '💅 UÑAS', tag: 'unas', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/U%C3%B1as%20Soft%20Gel%20%2B%20Dise%C3%B1o.jpg', basePrice: 28000, duration: 80, description: 'Soft gel con diseño.', hasVariants: false },
+            { id: 'una-8', name: 'Acrílicas + Tip', category: '💅 UÑAS', tag: 'unas', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/Acrilicas%20%2B%20Tip.jpg', basePrice: 25000, duration: 90, description: 'Extensión con tips.', hasVariants: false },
+            { id: 'una-9', name: 'Acrílicas + Tip + Diseño', category: '💅 UÑAS', tag: 'unas', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/Acrilicas%20%2B%20Tip%20%2B%20dise%C3%B1o.jpg', basePrice: 28000, duration: 105, description: 'Acrílicas con diseño.', hasVariants: false },
+            { id: 'una-10', name: 'Acrílicas Esculpidas', category: '💅 UÑAS', tag: 'unas', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/Acrilicas%20Esculpidas%20sobre%20Tip.jpg', basePrice: 30000, duration: 110, description: 'Esculpidas impecables.', hasVariants: false },
+            { id: 'una-11', name: 'Acrílicas Esculpidas + Diseño', category: '💅 UÑAS', tag: 'unas', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/Acrilicas%20%2B%20Tip%20%2B%20dise%C3%B1o.jpg', basePrice: 35000, duration: 120, description: 'Set completo con diseño.', hasVariants: false },
+            { id: 'una-12', name: 'Uñas PoliGel + Diseño', category: '💅 UÑAS', tag: 'unas', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/PoliGel%20%2B%20Dise%C3%B1o.jpg', basePrice: 25000, duration: 90, description: 'Ultra ligeras y flexibles.', hasVariants: false },
+            { id: 'una-13', name: 'Retiro de Otro Salón', category: '💅 UÑAS', tag: 'unas', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/quita-tus-u%C3%B1as-con-acetona_opt-940x580.jpg', basePrice: 10000, duration: 30, description: 'Retiro cuidadoso.', hasVariants: false },
+            { id: 'una-14', name: 'Retiro de Nuestro Salón', category: '💅 UÑAS', tag: 'unas', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/images%20(10).jpg', basePrice: 5990, duration: 20, description: 'Retiro DIVAS ELEY.', hasVariants: false },
+
+            // 🦵 DEPILACIÓN CORPORAL
+            { id: 'dep-c1', name: 'Depilación Cuerpo Completo', category: '🦵 DEPILACIÓN CORPORAL', tag: 'depilacion-corporal', image: 'https://footandbody.es/wp-content/uploads/2021/01/Ventajas-de-la-depilaci%C3%B3n-con-cera.jpg', basePrice: 50000, duration: 60, description: 'Cera italiana integral.', hasVariants: false },
+            { id: 'dep-c2', name: 'Media Pierna', category: '🦵 DEPILACIÓN CORPORAL', tag: 'depilacion-corporal', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/Depilaci%C3%B3n%20Corporal%20Media%20Pierna.jpg', basePrice: 13000, duration: 25, description: 'Media pierna.', hasVariants: false },
+            { id: 'dep-c3', name: 'Depilación Bikini', category: '🦵 DEPILACIÓN CORPORAL', tag: 'depilacion-corporal', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/Depilaci%C3%B3n%20Bikini.jpg', basePrice: 15000, duration: 25, description: 'Zona bikini.', hasVariants: false },
+            { id: 'dep-c4', name: 'Rebaje Completo', category: '🦵 DEPILACIÓN CORPORAL', tag: 'depilacion-corporal', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/REBAJE%20COMPLETO.jpg', basePrice: 25000, duration: 35, description: 'Zona íntima completa.', hasVariants: false },
+            { id: 'dep-c5', name: 'Axilas', category: '🦵 DEPILACIÓN CORPORAL', tag: 'depilacion-corporal', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/depilacion%20de%20axilas.jpg', basePrice: 10000, duration: 15, description: 'Axilas.', hasVariants: false },
+            { id: 'dep-c6', name: 'Glúteos', category: '🦵 DEPILACIÓN CORPORAL', tag: 'depilacion-corporal', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/Depilaci%C3%B3n%20en%20gluteos.jpg', basePrice: 10000, duration: 20, description: 'Glúteos.', hasVariants: false },
+            { id: 'dep-c7', name: 'Piernas Completas', category: '🦵 DEPILACIÓN CORPORAL', tag: 'depilacion-corporal', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/piernas%20completas.jpg', basePrice: 25000, duration: 40, description: 'Ambas piernas.', hasVariants: false },
+            { id: 'dep-c8', name: 'Medio Brazo', category: '🦵 DEPILACIÓN CORPORAL', tag: 'depilacion-corporal', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/de%20medio%20brazo.jpg', basePrice: 10000, duration: 20, description: 'Medio brazo.', hasVariants: false },
+
+            // 🧖‍♀️ CUIDADO FACIAL
+            { id: 'fac-1', name: 'Limpieza Facial Profunda Premium', category: '🧖‍♀️ CUIDADO FACIAL', tag: 'cuidado-facial', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/limpieza%20facial%C2%A0.jpg', basePrice: 35000, duration: 60, description: 'Punta diamante, vapor, máscara LED.', hasVariants: false },
+            { id: 'fac-2', name: 'Peeling de Algas Marinas', category: '🧖‍♀️ CUIDADO FACIAL', tag: 'cuidado-facial', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/Peeling%20de%20Algas%20Marinas.jpg', basePrice: 50000, duration: 60, description: 'Renueva piel y reduce poros.', hasVariants: false },
+            { id: 'fac-3', name: 'DERMAPEN Rejuvenecimiento Facial', category: '🧖‍♀️ CUIDADO FACIAL', tag: 'cuidado-facial', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/Rejuvenecimiento%20Facial%20con%20DERMAPHEN.jpg', basePrice: 50000, duration: 60, description: 'Estimula producción natural de colágeno.', hasVariants: false },
+            { id: 'fac-4', name: 'BB Glow', category: '🧖‍♀️ CUIDADO FACIAL', tag: 'cuidado-facial', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/BBGLOW.jpg', basePrice: 30000, duration: 50, description: 'Efecto piel porcelana y maquillaje progresivo.', hasVariants: false },
+
+            // 🔥 PLANES Y TRATAMIENTOS REDUCTIVOS
+            { id: 'red-1', name: 'Plan Reductivo Básico', category: '🔥 PLANES Y TRATAMIENTOS REDUCTIVOS', tag: 'estetica-corporal', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/Plan%20Full%20Reductivo.jpg', basePrice: 99000, duration: 60, description: '5 sesiones. Previa evaluación.', hasVariants: false },
+            { id: 'red-2', name: 'Plan Full Reductivo', category: '🔥 PLANES Y TRATAMIENTOS REDUCTIVOS', tag: 'estetica-corporal', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/Plan%20Full%20Reductivo.jpg', basePrice: 150000, duration: 60, description: '10 sesiones (1 zona). Previa evaluación.', hasVariants: false },
+            { id: 'red-3', name: 'Plan Full Body Reductivo', category: '🔥 PLANES Y TRATAMIENTOS REDUCTIVOS', tag: 'estetica-corporal', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/FULL%20%20BODY%20REDUCTIVO.jpg', basePrice: 350000, duration: 90, description: '10 sesiones full body. Previa evaluación.', hasVariants: false },
+            { id: 'red-4', name: 'Promo Lipolaser + Maderoterapia', category: '🔥 PLANES Y TRATAMIENTOS REDUCTIVOS', tag: 'estetica-corporal', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/FULL%20%20BODY%20REDUCTIVO.jpg', basePrice: 800000, duration: 90, description: 'Incluye 6 sesiones. Previa evaluación (Precio normal $160.000)', hasVariants: false },
+            { id: 'red-5', name: 'Masaje Brasileño Drenaje', category: '🔥 PLANES Y TRATAMIENTOS REDUCTIVOS', tag: 'estetica-corporal', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/masaje%20brasile%C3%B1o.jpg', basePrice: 29000, duration: 50, description: 'Drenaje linfático y moldeador.', hasVariants: true, variants: [{ name: '1 Sesión', price: 29000 }, { name: '2 Sesiones', price: 50000 }] },
+
+            // 💆‍♀️ MASAJES RELAJANTES
+            { id: 'mas-1', name: 'Masaje Relajante', category: '💆‍♀️ MASAJES RELAJANTES', tag: 'masajes', image: 'https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?auto=format&fit=crop&w=600&q=80', basePrice: 25000, duration: 45, description: 'Alivia tensiones.', hasVariants: false },
+            { id: 'mas-2', name: 'Masaje Cuerpo Completo + Aromaterapia', category: '💆‍♀️ MASAJES RELAJANTES', tag: 'masajes', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/MASAJE%20RELAJANTE%20AROMATERAPIA.jpg', basePrice: 50000, duration: 60, description: 'Aceites esenciales y aromaterapia.', hasVariants: false }
+        ];
+
+        const DEFAULT_FACIAL_FICHA = {
+            estudiante: 'Cosmetóloga Senior', nombre: 'Valeria Silva', edad: '29', direccion: 'Av. Alemania 120, Los Ángeles', telefono: '+56987654321', email: 'valeria.silva@gmail.com', ocupacion: 'Ingeniera Comercial', hijos: '0', enfermedadCronica: 'Ninguna', medicamentacionActual: 'Ninguna', alergiaCosmeticos: 'Ninguna', cirugiasTratamientos: 'Lifting de Pestañas previo', sol: 'Moderado con protector 50+', tabaco: 'No', drogas: 'No', proteccionPiel: 'Protector solar diario', dietaHabitual: 'Equilibrada', deportes: 'Pilates 2 veces por semana', ingestionLiquidos: '2 Litros diarios', corticoides: 'No', textura: 'FINA', ostium: 'OBSTRUIDOS', aspecto: 'LUMINOSO', tacto: 'ÁSPERO', secrecionSudoripara: 'Normal', secrecionSebacea: 'Defecto', emulsion: 'Epicutánea alipídica', phCutaneo: '5.5 (Equilibrado)', vellosidad: 'NO'
+        };
+
+        const DEFAULT_BODY_FICHA = {
+            nombreApellido: 'Valeria Silva', edad: '29', telefono: '+56987654321', fechaEvaluacion: new Date().toISOString().split('T')[0], ocupacion: 'Ingeniera Comercial', email: 'valeria.silva@gmail.com', direccion: 'Av. Alemania 120, Los Ángeles', enfermedadesCronicas: 'NO', problemasCirculatorios: 'NO', marcapasosProtesis: 'NO', embarazoLactancia: 'NO', consumoAgua: '2 Litros diarios', actividadFisica: 'Pilates 2 veces por semana', pesoActual: '58.5', estatura: '165', perimetroInicial: 'Abdomen Alto: 72cm | Cintura: 68cm | Abdomen Bajo: 81cm', tecnicas: ['Masajes Reductivos', 'Drenaje Linfático', 'Radiofrecuencia', 'Maderoterapia'],
+            sessions: [
+                { id: 1, fecha: '2026-08-01', tecnicas: 'Masajes Reductivos + Maderoterapia', observaciones: 'Cintura: 68cm. Piel con buena elasticidad inicial.' },
+                { id: 2, fecha: '2026-08-05', tecnicas: 'Radiofrecuencia + Drenaje Linfático', observaciones: 'Cintura: 67.5cm (-0.5cm). Notable mejoría en textura.' },
+                { id: 3, fecha: '2026-08-10', tecnicas: 'Cavitación + Vacumterapia', observaciones: 'Cintura: 67cm (-1cm). Reducción de adiposidad en flancos.' },
+                { id: 4, fecha: '2026-08-15', tecnicas: 'Ondas Rusas + Termoterapia', observaciones: 'Tonificación muscular sustained.' },
+                { id: 5, fecha: '2026-08-20', tecnicas: 'Masaje Reductivo + Maderoterapia', observaciones: 'Cintura: 66cm (-2cm acumulados).' },
+                { id: 6, fecha: '2026-08-25', tecnicas: 'Radiofrecuencia + Drenaje Linfático', observaciones: 'Piel firme, sin flacidez.' },
+                { id: 7, fecha: '2026-08-28', tecnicas: 'Maderoterapia + Vacumterapia', observaciones: 'Cintura: 65.5cm (-2.5cm totales).' },
+                { id: 8, fecha: '', tecnicas: '', observaciones: '' }, { id: 9, fecha: '', tecnicas: '', observaciones: '' }, { id: 10, fecha: '', tecnicas: '', observaciones: '' }, { id: 11, fecha: '', tecnicas: '', observaciones: '' }, { id: 12, fecha: '', tecnicas: '', observaciones: '' }
+            ]
+        };
+
+        const INITIAL_CLIENTS = [
+            { id: 'c-1', name: 'Valeria Silva', rut: '18.452.912-3', phone: '+56987654321', email: 'valeria.silva@gmail.com', address: 'Av. Alemania 120, Los Ángeles', age: 29, birthDate: '1995-04-12', status: 'VIP', totalSpent: 450000, visitsCount: 12, lastVisit: '2026-08-28', facialFicha: DEFAULT_FACIAL_FICHA, bodyFicha: DEFAULT_BODY_FICHA },
+            { id: 'c-2', name: 'Sofía Valdés', rut: '19.823.411-K', phone: '+56991238842', email: 'sofia.valdes@gmail.com', address: 'Las Quintas 890, Los Ángeles', age: 28, birthDate: '1997-08-20', status: 'FRECUENTE', totalSpent: 380000, visitsCount: 9, lastVisit: '2026-08-25', facialFicha: DEFAULT_FACIAL_FICHA, bodyFicha: DEFAULT_BODY_FICHA },
+            { id: 'c-3', name: 'Constanza Valenzuela', rut: '17.894.321-5', phone: '+56991234567', email: 'constanza.valenzuela@gmail.com', address: 'Av. El Bosque Norte 450, Los Ángeles', age: 33, birthDate: '1993-06-15', status: 'VIP', totalSpent: 520000, visitsCount: 15, lastVisit: '2026-08-27', facialFicha: DEFAULT_FACIAL_FICHA, bodyFicha: DEFAULT_BODY_FICHA }
+        ];
+
+        const INITIAL_RESERVATIONS = [
+            {
+                id: 'res_101', clientId: 'c-1', clientName: 'Valeria Silva', date: new Date().toISOString().split('T')[0], time: '12:00', status: 'confirmada',
+                items: [{ serviceId: 'cap-8', serviceName: 'Maquillaje Profesional', professionalId: 'acc-6', professionalName: 'Aline Pereira', price: 35000 }],
+                total: 35000, paidAmount: 17500, balance: 17500, abonoPercentage: 50, paymentMethod: 'TRANSFERENCIA'
+            },
+            {
+                id: 'res_102', clientId: 'c-2', clientName: 'Sofía Valdés', date: new Date().toISOString().split('T')[0], time: '14:00', status: 'por_confirmar',
+                items: [{ serviceId: 'pes-2', serviceName: 'Lifting + Botox + Tinte', professionalId: 'acc-4', professionalName: 'Camila Rodríguez', price: 25000 }],
+                total: 25000, paidAmount: 12500, balance: 12500, abonoPercentage: 50, paymentMethod: 'DEBITO'
+            },
+            {
+                id: 'res_103', clientId: 'c-3', clientName: 'Constanza Valenzuela', date: new Date().toISOString().split('T')[0], time: '16:30', status: 'confirmada',
+                items: [{ serviceId: 'fac-1', serviceName: 'Limpieza Facial Profunda Premium', professionalId: 'acc-2', professionalName: 'Nicol Inostroza', price: 35000 }],
+                total: 35000, paidAmount: 35000, balance: 0, abonoPercentage: 100, paymentMethod: 'CREDITO'
+            }
+        ];
+
+        const INITIAL_GIFTCARDS = [
+            { id: 'gc-1', recipientName: 'Sofía Valdés', senderName: 'Ignacio', serviceName: 'Masaje Relajante', amount: 25000, message: 'Feliz cumpleaños, te lo mereces.', code: 'DIVAS-8842', status: 'Activa' },
+            { id: 'gc-2', recipientName: 'Valeria Silva', senderName: 'Gabriel', serviceName: 'Limpieza Facial Profunda Premium', amount: 35000, message: 'Con mucho cariño para tu día especial.', code: 'DIVAS-9921', status: 'Activa' }
+        ];
+
+        const INITIAL_AUDIT_LOGS = [
+            { id: 'aud_1', timestamp: new Date().toISOString(), userName: 'Gabriela Manrique (ADMIN)', action: 'INICIALIZACION_SISTEMA', entity: 'SYSTEM', details: 'Plataforma web SPA DIVAS ELEY iniciada correctamente con buscador de gift cards, edición de estado de cita y reportes por rango de fechas.' }
+        ];
+
+        function App() {
+            // Autenticación
+            const [isAuthenticated, setIsAuthenticated] = useState(() => localStorage.getItem('divas_auth') === 'true');
+            const [currentUser, setCurrentUser] = useState(() => {
+                try {
+                    const saved = localStorage.getItem('divas_user');
+                    return saved ? JSON.parse(saved) : INITIAL_USER_ACCOUNTS[0];
+                } catch(e) { return INITIAL_USER_ACCOUNTS[0]; }
+            });
+
+            // Inputs Login
+            const [emailInput, setEmailInput] = useState('');
+            const [passwordInput, setPasswordInput] = useState('');
+
+            // Menú y Navegación
+            const [activeTab, setActiveTab] = useState('dashboard');
+            const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+
+            // Datasets con Persistencia y Manejo Seguro de Errores
+            const [users, setUsers] = useState(() => {
+                try { return JSON.parse(localStorage.getItem('divas_staff')) || INITIAL_USER_ACCOUNTS; } catch(e) { return INITIAL_USER_ACCOUNTS; }
+            });
+            const [clients, setClients] = useState(() => {
+                try { return JSON.parse(localStorage.getItem('divas_clients')) || INITIAL_CLIENTS; } catch(e) { return INITIAL_CLIENTS; }
+            });
+            const [reservations, setReservations] = useState(() => {
+                try {
+                    const saved = JSON.parse(localStorage.getItem('divas_reservations'));
+                    return (Array.isArray(saved) && saved.length > 0) ? saved : INITIAL_RESERVATIONS;
+                } catch(e) { return INITIAL_RESERVATIONS; }
+            });
+            const [catalog, setCatalog] = useState(() => {
+                try {
+                    const saved = JSON.parse(localStorage.getItem('divas_catalog'));
+                    if (Array.isArray(saved) && saved.length >= INITIAL_CATALOG.length) {
+                        return saved;
+                    }
+                    return INITIAL_CATALOG;
+                } catch(e) { return INITIAL_CATALOG; }
+            });
+            const [giftCards, setGiftCards] = useState(() => {
+                try { return JSON.parse(localStorage.getItem('divas_giftcards')) || INITIAL_GIFTCARDS; } catch(e) { return INITIAL_GIFTCARDS; }
+            });
+            const [auditLogs, setAuditLogs] = useState(() => {
+                try { return JSON.parse(localStorage.getItem('divas_audit')) || INITIAL_AUDIT_LOGS; } catch(e) { return INITIAL_AUDIT_LOGS; }
+            });
+
+            // Modales
+            const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
+            const [isClientModalOpen, setIsClientModalOpen] = useState(false);
+            const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+            const [isGiftCardModalOpen, setIsGiftCardModalOpen] = useState(false);
+            const [isPrintGiftCardModalOpen, setIsPrintGiftCardModalOpen] = useState(false);
+            const [isEditServiceModalOpen, setIsEditServiceModalOpen] = useState(false);
+            const [isFichaClinicalModalOpen, setIsFichaClinicalModalOpen] = useState(false);
+            const [isStaffModalOpen, setIsStaffModalOpen] = useState(false);
+            const [isClearDemoModalOpen, setIsClearDemoModalOpen] = useState(false);
+
+            const [isEditReservationModalOpen, setIsEditReservationModalOpen] = useState(false);
+            const [reservationToEdit, setReservationToEdit] = useState(null);
+            const [editReservationForm, setEditReservationForm] = useState({
+                id: '', clientId: '', clientName: '', date: '', time: '', serviceId: '', professionalId: '', total: 0, paidAmount: 0, paymentMethod: 'TRANSFERENCIA', status: 'confirmada'
+            });
+
+            // Target Objects
+            const [selectedClientForFicha, setSelectedClientForFicha] = useState(null);
+            const [fichaTypeTab, setFichaTypeTab] = useState('facial');
+            const [facialForm, setFacialForm] = useState(DEFAULT_FACIAL_FICHA);
+            const [bodyForm, setBodyForm] = useState(DEFAULT_BODY_FICHA);
+
+            const [staffToEdit, setStaffToEdit] = useState(null);
+            const [staffForm, setStaffForm] = useState({ id: '', name: '', email: '', password: '', role: 'PROFESIONAL', phone: '', specialty: '', photo: '' });
+
+            // Formularios
+            const [bookingForm, setBookingForm] = useState({
+                clientFirstName: 'Valeria', clientLastName: 'Silva', clientPhone: '+56987654321', clientRut: '18.452.912-3', clientEmail: 'valeria.silva@gmail.com', serviceId: '', date: new Date().toISOString().split('T')[0], time: '12:00', professionalId: 'acc-6', paymentMethod: 'TRANSFERENCIA', abonoPercentage: 50
+            });
+
+            const [giftCardForm, setGiftCardForm] = useState({
+                id: null, recipientName: 'Sofía Valdés', senderName: 'Ignacio', serviceName: 'Masaje Relajante', amount: 25000, message: 'Feliz cumpleaños, te lo mereces.', code: 'DIVAS-8842', status: 'Activa'
+            });
+
+            const [selectedGiftCardToPrint, setSelectedGiftCardToPrint] = useState(null);
+            const [serviceToEdit, setServiceToEdit] = useState(null);
+            const [editServiceForm, setEditServiceForm] = useState({ id: '', name: '', category: '💇‍♀️ SERVICIOS CAPILARES', tag: 'capilar', image: '', basePrice: 0, duration: 30, description: '' });
+            
+            // Filtros de Catálogo
+            const [catalogCategoryFilter, setCatalogCategoryFilter] = useState('all');
+            const [catalogSearchQuery, setCatalogSearchQuery] = useState('');
+
+            const [searchClientQuery, setSearchClientQuery] = useState('');
+            const [searchReservationQuery, setSearchReservationQuery] = useState('');
+            const [searchGiftCardQuery, setSearchGiftCardQuery] = useState('');
+            const [reservationStatusFilter, setReservationStatusFilter] = useState('all');
+
+            const [clientForm, setClientForm] = useState({ id: '', rut: '', name: '', phone: '', email: '', address: 'Av. Alemania 120, Los Ángeles', age: 29, birthDate: '1995-04-12', status: 'NUEVA' });
+            const [editingClient, setEditingClient] = useState(null);
+
+            // Reporte por Fecha
+            const [reportStartDate, setReportStartDate] = useState(() => new Date().toISOString().split('T')[0]);
+            const [reportEndDate, setReportEndDate] = useState(() => new Date().toISOString().split('T')[0]);
+
+            // Toast Notifications
+            const [toast, setToast] = useState(null);
+            const showToast = (message, type = 'success') => {
+                setToast({ message, type });
+                setTimeout(() => setToast(null), 3500);
+            };
+
+            const logAudit = (action, entity, details) => {
+                const newLog = { id: `aud_${Date.now()}`, timestamp: new Date().toISOString(), userName: `${currentUser.name} (${currentUser.role})`, action, entity, details };
+                setAuditLogs(prev => [newLog, ...prev]);
+            };
+
+            useEffect(() => { localStorage.setItem('divas_staff', JSON.stringify(users)); }, [users]);
+            useEffect(() => { localStorage.setItem('divas_clients', JSON.stringify(clients)); }, [clients]);
+            useEffect(() => { localStorage.setItem('divas_reservations', JSON.stringify(reservations)); }, [reservations]);
+            useEffect(() => { localStorage.setItem('divas_catalog', JSON.stringify(catalog)); }, [catalog]);
+            useEffect(() => { localStorage.setItem('divas_giftcards', JSON.stringify(giftCards)); }, [giftCards]);
+            useEffect(() => { localStorage.setItem('divas_audit', JSON.stringify(auditLogs)); }, [auditLogs]);
+
+            const kpis = useMemo(() => {
+                const todayStr = new Date().toISOString().split('T')[0];
+                const safeRes = Array.isArray(reservations) ? reservations : [];
+                const todayRes = safeRes.filter(r => r && r.date === todayStr);
+                const salesToday = todayRes.reduce((sum, r) => sum + (r.paidAmount || 0), 0);
+                const salesMonth = safeRes.reduce((sum, r) => sum + (r.paidAmount || 0), 0);
+                const pendingPayments = safeRes.reduce((sum, r) => sum + (r.balance || 0), 0);
+                return {
+                    salesToday, salesMonth, todayResCount: todayRes.length, pendingPayments, totalClients: clients.length, estimatedProfit: Math.round(salesMonth * 0.65)
+                };
+            }, [reservations, clients]);
+
+            const reportFilteredReservations = useMemo(() => {
+                const safeRes = Array.isArray(reservations) ? reservations : [];
+                return safeRes.filter(r => r && r.date && r.date >= reportStartDate && r.date <= reportEndDate);
+            }, [reservations, reportStartDate, reportEndDate]);
+
+            const reportSummary = useMemo(() => {
+                const totalRecaudado = reportFilteredReservations.reduce((sum, r) => sum + (r.paidAmount || 0), 0);
+                const totalVentas = reportFilteredReservations.reduce((sum, r) => sum + (r.total || 0), 0);
+                const totalSaldos = reportFilteredReservations.reduce((sum, r) => sum + (r.balance || 0), 0);
+
+                const paymentBreakdown = {};
+                PAYMENT_METHODS.forEach(m => { paymentBreakdown[m.id] = 0; });
+                reportFilteredReservations.forEach(r => {
+                    if (r && r.paymentMethod) {
+                        paymentBreakdown[r.paymentMethod] = (paymentBreakdown[r.paymentMethod] || 0) + (r.paidAmount || 0);
+                    }
+                });
+
+                return { totalRecaudado, totalVentas, totalSaldos, count: reportFilteredReservations.length, paymentBreakdown };
+            }, [reportFilteredReservations]);
+
+            const filteredCatalog = useMemo(() => {
+                if (!Array.isArray(catalog)) return [];
+                return catalog.filter(srv => {
+                    if (!srv) return false;
+                    const matchesCategory = (catalogCategoryFilter === 'all' || srv.tag === catalogCategoryFilter);
+                    const q = (catalogSearchQuery || '').trim().toLowerCase();
+                    if (!q) return matchesCategory;
+
+                    const matchesName = (srv.name || '').toLowerCase().includes(q);
+                    const matchesDesc = (srv.description || '').toLowerCase().includes(q);
+                    const matchesCat = (srv.category || '').toLowerCase().includes(q);
+
+                    return matchesCategory && (matchesName || matchesDesc || matchesCat);
+                });
+            }, [catalog, catalogCategoryFilter, catalogSearchQuery]);
+
+            const filteredReservationsList = useMemo(() => {
+                if (!Array.isArray(reservations)) return [];
+                return reservations.filter(r => {
+                    if (!r) return false;
+                    const matchesStatus = (reservationStatusFilter === 'all' || r.status === reservationStatusFilter);
+                    const search = (searchReservationQuery || '').trim().toLowerCase();
+                    if (!search) return matchesStatus;
+
+                    const clientName = (r.clientName || '').toLowerCase();
+                    const items = Array.isArray(r.items) ? r.items : [];
+                    const matchesSearch = clientName.includes(search) || 
+                        items.some(i => (i && i.serviceName ? i.serviceName.toLowerCase() : '').includes(search));
+                    
+                    return matchesStatus && matchesSearch;
+                });
+            }, [reservations, reservationStatusFilter, searchReservationQuery]);
+
+            const handleLogin = (e) => {
+                e.preventDefault();
+                const user = users.find(u => u.email.toLowerCase() === emailInput.trim().toLowerCase() && u.password === passwordInput.trim());
+                if (user) {
+                    setIsAuthenticated(true);
+                    setCurrentUser(user);
+                    if (user.role === 'PROFESIONAL') { setActiveTab('reservas'); }
+                    localStorage.setItem('divas_auth', 'true');
+                    localStorage.setItem('divas_user', JSON.stringify(user));
+                    logAudit('LOGIN_EXITOSO', 'AUTH', `Inicio de sesión exitoso como ${user.role}`);
+                    showToast(`¡Bienvenida ${user.name}!`);
+                } else {
+                    showToast('Credenciales incorrectas.', 'error');
+                }
+            };
+
+            const handleLogout = () => {
+                setIsAuthenticated(false);
+                localStorage.removeItem('divas_auth');
+                localStorage.removeItem('divas_user');
+                showToast('Sesión cerrada');
+            };
+
+            useEffect(() => {
+                if (currentUser && currentUser.role === 'PROFESIONAL' && activeTab !== 'reservas') {
+                    setActiveTab('reservas');
+                }
+            }, [currentUser, activeTab]);
+
+            const updateStaffAttendance = (staffId, actionType) => {
+                const nowStr = new Date().toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit' });
+                setUsers(prev => prev.map(u => {
+                    if (u.id === staffId) {
+                        let newStatus = u.status;
+                        let entry = u.entryTime, lOut = u.lunchOut, lIn = u.lunchIn, ex = u.exitTime;
+
+                        if (actionType === 'ENTRY') { entry = nowStr; newStatus = 'PRESENT'; showToast(`Entrada de ${u.name} a las ${nowStr}`); }
+                        else if (actionType === 'LUNCH_OUT') { lOut = nowStr; newStatus = 'LUNCH'; showToast(`${u.name} a colación a las ${nowStr}`); }
+                        else if (actionType === 'LUNCH_IN') { lIn = nowStr; newStatus = 'PRESENT'; showToast(`${u.name} volvió de colación a las ${nowStr}`); }
+                        else if (actionType === 'EXIT') { ex = nowStr; newStatus = 'EXITED'; showToast(`Salida de ${u.name} a las ${nowStr}`); }
+                        return { ...u, status: newStatus, entryTime: entry, lunchOut: lOut, lunchIn: lIn, exitTime: ex };
+                    }
+                    return u;
+                }));
+            };
+
+            const startBookingForClient = (client = null, defaultServiceId = '') => {
+                const defaultSrv = defaultServiceId || (catalog[0] ? catalog[0].id : '');
+                if (client) {
+                    const nameParts = (client.name || '').split(' ');
+                    setBookingForm({
+                        clientFirstName: nameParts[0] || '', clientLastName: nameParts.slice(1).join(' ') || '', clientPhone: client.phone || '', clientRut: client.rut || '', clientEmail: client.email || '', serviceId: defaultSrv, date: new Date().toISOString().split('T')[0], time: '12:00', professionalId: 'acc-6', paymentMethod: 'TRANSFERENCIA', abonoPercentage: 50
+                    });
+                } else {
+                    setBookingForm({
+                        clientFirstName: 'Valeria', clientLastName: 'Silva', clientPhone: '+56987654321', clientRut: '18.452.912-3', clientEmail: 'valeria.silva@gmail.com', serviceId: defaultSrv, date: new Date().toISOString().split('T')[0], time: '12:00', professionalId: 'acc-6', paymentMethod: 'TRANSFERENCIA', abonoPercentage: 50
+                    });
+                }
+                setIsBookingModalOpen(true);
+            };
+
+            const handleCreateReservation = () => {
+                if (!bookingForm.clientFirstName || !bookingForm.clientRut) {
+                    showToast('Ingresa Nombre y RUT de la clienta.', 'error');
+                    return;
+                }
+                const srv = catalog.find(s => s.id === bookingForm.serviceId) || catalog[0];
+                const prof = users.find(u => u.id === bookingForm.professionalId) || users[3];
+                const fullClientName = `${bookingForm.clientFirstName} ${bookingForm.clientLastName}`.trim();
+
+                const totalPrice = srv.basePrice;
+                const paidNow = Math.round((totalPrice * bookingForm.abonoPercentage) / 100);
+                const remaining = totalPrice - paidNow;
+
+                let clientObj = clients.find(c => c.rut === bookingForm.clientRut || (c.email && c.email.toLowerCase() === bookingForm.clientEmail.toLowerCase()));
+                if (!clientObj) {
+                    clientObj = {
+                        id: `c_${Date.now()}`, name: fullClientName, rut: bookingForm.clientRut, phone: bookingForm.clientPhone, email: bookingForm.clientEmail, address: 'Av. Alemania 120, Los Ángeles', age: 29, birthDate: '1995-04-12', status: 'NUEVA', totalSpent: paidNow, visitsCount: 1, lastVisit: 'Hoy', facialFicha: DEFAULT_FACIAL_FICHA, bodyFicha: DEFAULT_BODY_FICHA
+                    };
+                    setClients(prev => [clientObj, ...prev]);
+                    showToast(`Clienta ${fullClientName} registrada.`);
+                } else {
+                    setClients(prev => prev.map(c => c.id === clientObj.id ? { ...c, name: fullClientName, phone: bookingForm.clientPhone, email: bookingForm.clientEmail, totalSpent: (c.totalSpent || 0) + paidNow, visitsCount: (c.visitsCount || 0) + 1, lastVisit: 'Hoy' } : c));
+                }
+
+                const newRes = {
+                    id: `res_${Date.now()}`, clientId: clientObj.id, clientName: fullClientName, date: bookingForm.date, time: bookingForm.time, status: 'confirmada', items: [{ serviceId: srv.id, serviceName: srv.name, professionalId: prof.id, professionalName: prof.name, price: srv.basePrice }], total: totalPrice, paidAmount: paidNow, balance: remaining, abonoPercentage: bookingForm.abonoPercentage, paymentMethod: bookingForm.paymentMethod
+                };
+
+                setReservations(prev => [newRes, ...prev]);
+                logAudit('CREAR_RESERVA', 'RESERVATION', `Cita para ${newRes.clientName} por ${formatCLP(srv.basePrice)}`);
+                showToast(`Reserva creada. Abono: ${formatCLP(paidNow)}`);
+                setIsBookingModalOpen(false);
+            };
+
+            const handleUpdateReservationStatus = (resId, newStatus) => {
+                setReservations(prev => prev.map(r => r.id === resId ? { ...r, status: newStatus } : r));
+                const resObj = reservations.find(r => r.id === resId);
+                const statusNames = { confirmada: 'CONFIRMADA', por_confirmar: 'POR CONFIRMAR', atendida: 'ATENDIDA', cancelada: 'CANCELADA', no_asistio: 'NO ASISTIÓ' };
+                showToast(`Estado de cita actualizado a ${statusNames[newStatus] || newStatus}`);
+                logAudit('CAMBIO_ESTADO_CITA', 'RESERVATION', `Cita #${resId} de ${resObj?.clientName || ''} cambió a ${newStatus}`);
+            };
+
+            const openEditReservationModal = (res) => {
+                setReservationToEdit(res);
+                const item0 = (Array.isArray(res.items) && res.items.length > 0) ? res.items[0] : {};
+                setEditReservationForm({
+                    id: res.id,
+                    clientId: res.clientId || '',
+                    clientName: res.clientName || '',
+                    date: res.date || new Date().toISOString().split('T')[0],
+                    time: res.time || '12:00',
+                    serviceId: item0.serviceId || (catalog[0] ? catalog[0].id : ''),
+                    professionalId: item0.professionalId || (users[0] ? users[0].id : ''),
+                    total: res.total || 0,
+                    paidAmount: res.paidAmount || 0,
+                    paymentMethod: res.paymentMethod || 'TRANSFERENCIA',
+                    status: res.status || 'confirmada'
+                });
+                setIsEditReservationModalOpen(true);
+            };
+
+            const handleSaveReservationEdits = () => {
+                if (!editReservationForm.clientName) {
+                    showToast('Ingresa el nombre de la clienta', 'error');
+                    return;
+                }
+                const srv = catalog.find(s => s.id === editReservationForm.serviceId);
+                const prof = users.find(u => u.id === editReservationForm.professionalId);
+                const totalNum = Number(editReservationForm.total);
+                const paidNum = Number(editReservationForm.paidAmount);
+                const newBalance = Math.max(0, totalNum - paidNum);
+
+                setReservations(prev => prev.map(r => {
+                    if (r.id === editReservationForm.id) {
+                        return {
+                            ...r,
+                            clientName: editReservationForm.clientName,
+                            date: editReservationForm.date,
+                            time: editReservationForm.time,
+                            status: editReservationForm.status,
+                            total: totalNum,
+                            paidAmount: paidNum,
+                            balance: newBalance,
+                            paymentMethod: editReservationForm.paymentMethod,
+                            items: [{
+                                serviceId: editReservationForm.serviceId,
+                                serviceName: srv ? srv.name : (r.items?.[0]?.serviceName || 'Tratamiento'),
+                                professionalId: editReservationForm.professionalId,
+                                professionalName: prof ? prof.name : (r.items?.[0]?.professionalName || 'Especialista'),
+                                price: totalNum
+                            }]
+                        };
+                    }
+                    return r;
+                }));
+
+                logAudit('EDITAR_RESERVA', 'RESERVATION', `Cita #${editReservationForm.id} de ${editReservationForm.clientName} modificada por ADMIN`);
+                showToast(`Cita de ${editReservationForm.clientName} actualizada correctamente`);
+                setIsEditReservationModalOpen(false);
+            };
+
+            const openFichasModal = (client) => {
+                setSelectedClientForFicha(client);
+                setFacialForm(client.facialFicha || DEFAULT_FACIAL_FICHA);
+                setBodyForm(client.bodyFicha || DEFAULT_BODY_FICHA);
+                setIsFichaClinicalModalOpen(true);
+            };
+
+            const handleSaveClinicalFichas = () => {
+                if (!selectedClientForFicha) return;
+                setClients(prev => prev.map(c => c.id === selectedClientForFicha.id ? { ...c, facialFicha: facialForm, bodyFicha: bodyForm } : c));
+                showToast('Fichas técnicas actualizadas con éxito');
+                setIsFichaClinicalModalOpen(false);
+            };
+
+            const handleSaveClient = () => {
+                if (!clientForm.name || !clientForm.rut) { showToast('Ingresa Nombre y RUT', 'error'); return; }
+                if (editingClient) {
+                    setClients(prev => prev.map(c => c.id === editingClient.id ? { ...c, ...clientForm } : c));
+                    showToast('Clienta actualizada');
+                } else {
+                    const newClient = {
+                        ...clientForm,
+                        id: `c_${Date.now()}`,
+                        totalSpent: 0,
+                        visitsCount: 0,
+                        lastVisit: 'Ninguna',
+                        facialFicha: DEFAULT_FACIAL_FICHA,
+                        bodyFicha: DEFAULT_BODY_FICHA
+                    };
+                    setClients(prev => [newClient, ...prev]);
+                    showToast('Nueva clienta registrada');
+                }
+                setIsClientModalOpen(false);
+            };
+
+            const handleDeleteClient = (clientId) => {
+                setClients(prev => prev.filter(c => c.id !== clientId));
+                showToast('Clienta eliminada');
+            };
+
+            const openGiftCardModal = (gc = null) => {
+                if (gc) { setGiftCardForm(gc); }
+                else {
+                    setGiftCardForm({
+                        id: null, recipientName: 'Sofía Valdés', senderName: 'Ignacio', serviceName: catalog[0]?.name || 'Masaje Relajante', amount: 25000, message: 'Feliz cumpleaños, te lo mereces.', code: `DIVAS-${Math.floor(1000 + Math.random() * 9000)}`, status: 'Activa'
+                    });
+                }
+                setIsGiftCardModalOpen(true);
+            };
+
+            const handleSaveGiftCard = () => {
+                if (!giftCardForm.recipientName) { showToast('Ingresa beneficiaria', 'error'); return; }
+                if (giftCardForm.id) { setGiftCards(prev => prev.map(g => g.id === giftCardForm.id ? giftCardForm : g)); showToast('Gift Card actualizada'); }
+                else { const newGc = { ...giftCardForm, id: `gc_${Date.now()}` }; setGiftCards(prev => [newGc, ...prev]); showToast('Gift Card emitida con éxito'); }
+                setIsGiftCardModalOpen(false);
+            };
+
+            const toggleGiftCardStatus = (id) => {
+                setGiftCards(prev => prev.map(g => g.id === id ? { ...g, status: g.status === 'Activa' ? 'Canjeada' : 'Activa' } : g));
+                showToast('Estado de Gift Card actualizado');
+            };
+
+            const handleDeleteGiftCard = (id) => {
+                setGiftCards(prev => prev.filter(g => g.id !== id));
+                showToast('Gift Card eliminada');
+            };
+
+            const openAddServiceModal = () => {
+                setServiceToEdit(null);
+                setEditServiceForm({ id: '', name: '', category: '💇‍♀️ SERVICIOS CAPILARES', tag: 'capilar', image: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=600&q=80', basePrice: 15000, duration: 30, description: '' });
+                setIsEditServiceModalOpen(true);
+            };
+
+            const openEditServiceModal = (srv) => {
+                setServiceToEdit(srv);
+                setEditServiceForm({ id: srv.id, name: srv.name, category: srv.category, tag: srv.tag, image: srv.image || '', basePrice: srv.basePrice, duration: srv.duration, description: srv.description || '' });
+                setIsEditServiceModalOpen(true);
+            };
+
+            const handleSaveServiceEdits = () => {
+                if (!editServiceForm.name) { showToast('Ingresa el nombre del servicio', 'error'); return; }
+                if (serviceToEdit) {
+                    setCatalog(prev => prev.map(s => s.id === editServiceForm.id ? { ...s, name: editServiceForm.name, category: editServiceForm.category, tag: editServiceForm.tag, image: editServiceForm.image, basePrice: Number(editServiceForm.basePrice), duration: Number(editServiceForm.duration), description: editServiceForm.description } : s));
+                    showToast('Servicio modificado');
+                } else {
+                    const newSrv = { ...editServiceForm, id: `srv_${Date.now()}`, basePrice: Number(editServiceForm.basePrice), duration: Number(editServiceForm.duration), hasVariants: false };
+                    setCatalog(prev => [newSrv, ...prev]);
+                    showToast('Nuevo servicio agregado');
+                }
+                setIsEditServiceModalOpen(false);
+            };
+
+            const openStaffModal = (staff = null) => {
+                if (staff) {
+                    setStaffToEdit(staff);
+                    setStaffForm({ id: staff.id, name: staff.name, email: staff.email, password: staff.password, role: staff.role, phone: staff.phone, specialty: staff.specialty || '', photo: staff.photo || '' });
+                } else {
+                    setStaffToEdit(null);
+                    setStaffForm({ id: '', name: '', email: '', password: 'prof1234', role: 'PROFESIONAL', phone: '+56 9 ', specialty: 'Especialista Cosmetología', photo: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=300&q=80' });
+                }
+                setIsStaffModalOpen(true);
+            };
+
+            const handleSaveStaff = () => {
+                if (!staffForm.name || !staffForm.email) { showToast('Ingresa Nombre y Correo', 'error'); return; }
+                if (staffToEdit) { setUsers(prev => prev.map(u => u.id === staffToEdit.id ? { ...u, ...staffForm } : u)); showToast('Profesional actualizado'); }
+                else {
+                    const newStaff = { ...staffForm, id: `acc_${Date.now()}`, avatar: staffForm.name.split(' ').map(n=>n[0]).join('').substring(0,2), entryTime: '09:00', lunchOut: '', lunchIn: '', exitTime: '', status: 'PRESENT' };
+                    setUsers(prev => [...prev, newStaff]);
+                    showToast('Profesional registrado');
+                }
+                setIsStaffModalOpen(false);
+            };
+
+            const handleDeleteStaff = (staffId) => {
+                setUsers(prev => prev.filter(u => u.id !== staffId));
+                showToast('Profesional eliminado');
+            };
+
+            const handleClearDemoData = () => {
+                localStorage.clear();
+                setUsers(INITIAL_USER_ACCOUNTS);
+                setClients(INITIAL_CLIENTS);
+                setReservations(INITIAL_RESERVATIONS);
+                setCatalog(INITIAL_CATALOG);
+                setGiftCards(INITIAL_GIFTCARDS);
+                setAuditLogs(INITIAL_AUDIT_LOGS);
+                showToast('Datos demo restaurados por defecto');
+                setIsClearDemoModalOpen(false);
+            };
+
+            const sendWhatsAppConfirmation = (res) => {
+                const clientObj = clients.find(c => c.id === res.clientId || c.name === res.clientName);
+                const phone = clientObj?.phone || res.clientPhone || '+56987654321';
+                const cleanPhone = phone.replace(/\D/g, '');
+                const formattedPhone = cleanPhone.startsWith('56') ? cleanPhone : `56${cleanPhone}`;
+                const itemsList = Array.isArray(res.items) ? res.items : [];
+                const servicesList = itemsList.map(i => i?.serviceName || 'Tratamiento').join(', ');
+                const profName = itemsList[0]?.professionalName || 'Especialista DIVAS';
+
+                const message = `Hola *${res.clientName || 'Estimada Clienta'}* ✨, te saludamos de *SPA DIVAS ELEY* 💖.\n\nTe confirmamos tu cita:\n📅 *Fecha:* ${res.date}\n⏰ *Hora:* ${res.time} hrs\n💆‍♀️ *Tratamiento:* ${servicesList}\n👩‍💼 *Especialista:* ${profName}\n💵 *Abono Recibido:* ${formatCLP(res.paidAmount)}\n💳 *Saldo Pendiente:* ${formatCLP(res.balance)}\n\n📍 *Dirección:* ${SPA_ADDRESS}\n*Tu belleza, tu bienestar, tu momento.* ✨\n\n¿Nos confirmas tu asistencia? 😊`;
+
+                window.open(`https://wa.me/${formattedPhone}?text=${encodeURIComponent(message)}`, '_blank');
+                showToast(`Mensaje preparado para ${res.clientName}`);
+            };
+
+            if (!isAuthenticated) {
+                return (
+                    <div className="min-h-screen flex items-center justify-center p-4 bg-[#FBF9F5]">
+                        <div className="bg-white rounded-3xl border border-[#EAE3D2] p-8 max-w-md w-full shadow-2xl space-y-6 text-center">
+                            <img src={OFFICIAL_LOGO} alt="SPA DIVAS ELEY" className="h-16 mx-auto object-contain" />
+                            <div>
+                                <h1 className="text-xl font-bold font-serif text-slate-900">SPA DIVAS ELEY</h1>
+                                <p className="text-xs text-[#B38F2D] italic font-medium">{BRAND_SLOGAN}</p>
+                            </div>
+                            <form onSubmit={handleLogin} className="space-y-4 text-left">
+                                <div>
+                                    <label className="text-xs font-bold text-slate-700 block mb-1">Correo Electrónico</label>
+                                    <input type="email" required placeholder="gabrielamanrique@divaseley.cl" value={emailInput} onChange={(e) => setEmailInput(e.target.value)} className="w-full p-3 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-[#D4AF37] outline-none" />
+                                </div>
+                                <div>
+                                    <label className="text-xs font-bold text-slate-700 block mb-1">Contraseña</label>
+                                    <input type="password" required placeholder="••••••••" value={passwordInput} onChange={(e) => setPasswordInput(e.target.value)} className="w-full p-3 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-[#D4AF37] outline-none" />
+                                </div>
+                                <button type="submit" className="w-full py-3 rounded-xl bg-gradient-to-r from-[#D4AF37] to-[#B38F2D] text-white font-bold text-xs shadow-md hover:opacity-95 transition-all">
+                                    Iniciar Sesión
+                                </button>
+                            </form>
+                            <div className="text-[10px] text-slate-400">
+                                Admin: <strong>gabrielamanrique@divaseley.cl</strong> / <strong>admin1234</strong><br/>
+                                Staff: <strong>cami@divaseley.cl</strong> / <strong>prof1234</strong>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            return (
+                <div className="min-h-screen flex flex-col md:flex-row bg-[#FBF9F5]">
+                    <aside className={`fixed md:sticky top-0 left-0 z-40 h-screen w-64 bg-white border-r border-[#EAE3D2] flex flex-col justify-between p-4 transition-transform duration-300 ${isMobileSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}>
+                        <div className="space-y-6">
+                            <div className="flex items-center space-x-3 pb-4 border-b border-[#EAE3D2]">
+                                <img src={OFFICIAL_LOGO} alt="SPA DIVAS ELEY" className="h-10 w-auto object-contain" />
+                                <div>
+                                    <span className="font-serif font-bold text-sm block leading-tight text-slate-900">SPA DIVAS ELEY</span>
+                                    <span className="text-[10px] text-[#B38F2D] uppercase font-semibold">Salón • Spa • Salud</span>
+                                </div>
+                            </div>
+
+                            <nav className="space-y-1 text-xs">
+                                {[
+                                    { id: 'dashboard', label: '🏠 Inicio / Dashboard', icon: '📊' },
+                                    { id: 'reservas', label: '📖 Reservas Registradas', icon: '📅' },
+                                    { id: 'fichas', label: '📋 Clientas & Fichas', icon: '📑' },
+                                    { id: 'profesionales', label: '👩‍💼 Profesionales & Staff', icon: '👩' },
+                                    { id: 'servicios', label: '💇‍♀️ Catálogo Servicios', icon: '💇' },
+                                    { id: 'ventas', label: '💰 Ventas & Caja POS', icon: '💵' },
+                                    { id: 'giftcards', label: '🎁 Gift Cards & Cupones', icon: '🎁' },
+                                    { id: 'auditoria', label: '⚙ Auditoría Sistema', icon: '🛡️' }
+                                ]
+                                .filter(item => currentUser.role !== 'PROFESIONAL' || item.id === 'reservas')
+                                .map(item => (
+                                    <button
+                                        key={item.id}
+                                        onClick={() => { setActiveTab(item.id); setIsMobileSidebarOpen(false); }}
+                                        className={`w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-2xl font-medium transition-all ${activeTab === item.id ? 'bg-[#212121] text-white shadow-sm font-bold' : 'text-slate-600 hover:bg-amber-50 hover:text-slate-900'}`}
+                                    >
+                                        <span>{item.icon}</span>
+                                        <span>{item.label}</span>
+                                    </button>
+                                ))}
+                            </nav>
+                        </div>
+
+                        <div className="pt-4 border-t border-[#EAE3D2] space-y-2">
+                            <div className="p-3 rounded-2xl bg-amber-50 border border-amber-200/60 text-xs flex items-center space-x-3">
+                                <div className="w-8 h-8 rounded-full bg-[#D4AF37] text-white font-bold flex items-center justify-center">{currentUser.avatar}</div>
+                                <div>
+                                    <div className="font-bold text-slate-900 leading-tight">{currentUser.name}</div>
+                                    <div className="text-[10px] text-[#B38F2D] uppercase font-semibold">{currentUser.role}</div>
+                                </div>
+                            </div>
+                            <button onClick={handleLogout} className="w-full py-2 rounded-xl text-xs text-rose-600 hover:bg-rose-50 font-bold transition-all">🚪 Cerrar Sesión</button>
+                        </div>
+                    </aside>
+
+                    <main className="flex-1 p-4 md:p-8 space-y-6 overflow-y-auto">
+                        <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white rounded-3xl border border-[#EAE3D2] p-5 shadow-sm">
+                            <div className="flex items-center space-x-3">
+                                <button onClick={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)} className="md:hidden p-2 rounded-xl bg-slate-100 font-bold">☰</button>
+                                <div>
+                                    <h1 className="text-xl font-bold font-serif text-slate-900">📊 Dashboard Lujo — SPA DIVAS ELEY</h1>
+                                    <p className="text-xs text-slate-500">Resumen general de gestión, agenda y operaciones del Spa.</p>
+                                </div>
+                            </div>
+                            <div className="flex items-center space-x-3 text-xs">
+                                <span className="p-2.5 rounded-xl bg-[#FAF7EE] border border-amber-200 font-bold text-amber-900">
+                                    📅 {new Date().toLocaleDateString('es-CL', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+                                </span>
+                                <span className="p-2.5 rounded-xl bg-[#212121] text-white font-bold">👤 {currentUser.name}</span>
+                            </div>
+                        </header>
+
+                        {activeTab === 'dashboard' && (
+                            <div className="space-y-6">
+                                <section className="bg-white border border-[#EAE3D2] rounded-3xl p-5 shadow-sm space-y-4">
+                                    <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3 p-4 bg-gradient-to-r from-[#FAF7EE] to-[#FFFDF9] rounded-2xl border border-amber-200 text-xs">
+                                        <div className="flex items-center space-x-3">
+                                            <span className="p-2.5 rounded-2xl bg-[#D4AF37] text-white font-bold text-base shadow-sm">📊</span>
+                                            <div>
+                                                <div className="font-bold text-slate-900 text-sm">Reporte General de Ventas por Fecha</div>
+                                                <div className="text-[11px] text-slate-500">Selecciona un rango de fechas para ver el desglose completo, caja y atenciones.</div>
+                                            </div>
+                                        </div>
+                                        <div className="flex flex-wrap items-center gap-2">
+                                            <div className="flex items-center space-x-1.5">
+                                                <span className="text-[10px] font-bold text-slate-500 uppercase">Desde:</span>
+                                                <input type="date" value={reportStartDate} onChange={(e) => setReportStartDate(e.target.value)} className="p-2 rounded-xl border border-slate-200 text-xs bg-white font-medium focus:ring-2 focus:ring-[#D4AF37] outline-none" />
+                                            </div>
+                                            <div className="flex items-center space-x-1.5">
+                                                <span className="text-[10px] font-bold text-slate-500 uppercase">Hasta:</span>
+                                                <input type="date" value={reportEndDate} onChange={(e) => setReportEndDate(e.target.value)} className="p-2 rounded-xl border border-slate-200 text-xs bg-white font-medium focus:ring-2 focus:ring-[#D4AF37] outline-none" />
+                                            </div>
+                                            <button onClick={() => setIsReportModalOpen(true)} className="px-4 py-2 rounded-xl bg-[#212121] hover:bg-slate-800 text-white font-bold text-xs shadow-md transition-all flex items-center space-x-1.5">
+                                                <span>📑 Generar Reporte / PDF</span>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <span className="text-[11px] font-bold text-slate-400 uppercase tracking-widest block">⚡ Accesos Rápidos</span>
+                                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 text-xs">
+                                        <button onClick={() => startBookingForClient(null)} className="p-3.5 rounded-2xl bg-gradient-to-r from-[#D4AF37] to-[#B38F2D] text-white font-bold shadow-sm hover:opacity-95 transition-all">📅 NUEVA RESERVA</button>
+                                        <button onClick={() => { setEditingClient(null); setClientForm({ id: '', rut: '', name: '', phone: '', email: '', address: 'Av. Alemania 120, Los Ángeles', age: 29, birthDate: '1995-04-12', status: 'NUEVA' }); setIsClientModalOpen(true); }} className="p-3.5 rounded-2xl bg-[#212121] text-white font-bold shadow-sm hover:bg-slate-800 transition-all">👩 NUEVA CLIENTA</button>
+                                        <button onClick={() => setIsReportModalOpen(true)} className="p-3.5 rounded-2xl bg-emerald-50 text-emerald-800 border border-emerald-200 font-bold hover:bg-emerald-100 transition-all">💰 POS / VENTAS</button>
+                                        <button onClick={() => openGiftCardModal(null)} className="p-3.5 rounded-2xl bg-amber-50 text-amber-800 border border-amber-200 font-bold hover:bg-amber-100 transition-all">🎁 NUEVA GIFT CARD</button>
+                                        <button onClick={() => setActiveTab('fichas')} className="p-3.5 rounded-2xl bg-purple-50 text-purple-800 border border-purple-200 font-bold hover:bg-purple-100 transition-all">📋 NUEVA FICHA</button>
+                                        <button onClick={() => setIsClearDemoModalOpen(true)} className="p-3.5 rounded-2xl bg-rose-50 text-rose-800 border border-rose-200 font-bold hover:bg-rose-100 transition-all">🗑️ BORRAR DEMO</button>
+                                    </div>
+                                </section>
+
+                                <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                                    <div className="bg-white p-5 rounded-3xl border border-[#EAE3D2] shadow-sm">
+                                        <span className="text-[10px] font-bold text-slate-400 uppercase block">VENTAS DEL DÍA</span>
+                                        <div className="text-xl font-bold font-serif text-slate-900">{formatCLP(kpis.salesToday)}</div>
+                                    </div>
+                                    <div className="bg-white p-5 rounded-3xl border border-[#EAE3D2] shadow-sm">
+                                        <span className="text-[10px] font-bold text-slate-400 uppercase block">VENTAS ACUMULADAS</span>
+                                        <div className="text-xl font-bold font-serif text-[#B38F2D]">{formatCLP(kpis.salesMonth)}</div>
+                                    </div>
+                                    <div className="bg-white p-5 rounded-3xl border border-[#EAE3D2] shadow-sm">
+                                        <span className="text-[10px] font-bold text-slate-400 uppercase block">RESERVAS DE HOY</span>
+                                        <div className="text-xl font-bold font-serif text-slate-900">{kpis.todayResCount} Citas</div>
+                                    </div>
+                                    <div className="bg-white p-5 rounded-3xl border border-[#EAE3D2] shadow-sm">
+                                        <span className="text-[10px] font-bold text-slate-400 uppercase block">PAGOS PENDIENTES</span>
+                                        <div className="text-xl font-bold font-serif text-rose-600">{formatCLP(kpis.pendingPayments)}</div>
+                                    </div>
+                                </section>
+                            </div>
+                        )}
+
+                        {activeTab === 'reservas' && (
+                            <div className="bg-white rounded-3xl border border-[#EAE3D2] p-6 shadow-sm space-y-6">
+                                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pb-4 border-b border-slate-100">
+                                    <div>
+                                        <h2 className="text-lg font-bold font-serif text-slate-900">📖 Registro Maestro de Citas ({reservations.length})</h2>
+                                        <p className="text-xs text-slate-500">Puedes cambiar el estado de la cita directamente desde la tabla.</p>
+                                    </div>
+                                    <div className="flex flex-wrap items-center gap-2">
+                                        <input type="text" placeholder="🔎 Buscar clienta o servicio..." value={searchReservationQuery} onChange={(e) => setSearchReservationQuery(e.target.value)} className="p-2 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-[#D4AF37] outline-none" />
+                                        {currentUser.role !== 'PROFESIONAL' && (
+                                            <button onClick={() => startBookingForClient(null)} className="px-4 py-2 rounded-xl bg-[#D4AF37] text-white font-bold text-xs shadow-sm hover:opacity-95">+ Crear Cita</button>
+                                        )}
+                                    </div>
+                                </div>
+
+                                <div className="flex gap-2 text-xs pb-2 border-b border-slate-100 overflow-x-auto">
+                                    {['all', 'confirmada', 'por_confirmar', 'atendida', 'cancelada', 'no_asistio'].map(st => (
+                                        <button key={st} onClick={() => setReservationStatusFilter(st)} className={`px-3 py-1.5 rounded-xl font-bold uppercase transition-all whitespace-nowrap ${reservationStatusFilter === st ? 'bg-[#212121] text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}>
+                                            {st === 'all' ? 'TODAS LAS CITAS' : st.replace('_', ' ')}
+                                        </button>
+                                    ))}
+                                </div>
+
+                                <div className="overflow-x-auto">
+                                    <table className="w-full text-left text-xs text-slate-700">
+                                        <thead className="bg-[#F7F4EA] font-bold uppercase text-[10px]">
+                                            <tr>
+                                                <th className="py-3 px-4">Fecha & Hora</th>
+                                                <th className="py-3 px-4">Clienta</th>
+                                                <th className="py-3 px-4">Tratamiento</th>
+                                                <th className="py-3 px-4">Total</th>
+                                                <th className="py-3 px-4">Abono</th>
+                                                <th className="py-3 px-4">Saldo</th>
+                                                <th className="py-3 px-4">Estado Cita</th>
+                                                <th className="py-3 px-4 text-center">Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-slate-100">
+                                            {filteredReservationsList.length === 0 ? (
+                                                <tr>
+                                                    <td colSpan="8" className="py-8 text-center text-slate-400 italic">
+                                                        No hay reservas registradas {reservationStatusFilter !== 'all' ? `con estado "${reservationStatusFilter.replace('_', ' ')}"` : ''}.
+                                                    </td>
+                                                </tr>
+                                            ) : (
+                                                filteredReservationsList.map(res => {
+                                                    const itemsArr = Array.isArray(res.items) ? res.items : [];
+                                                    const serviceNames = itemsArr.map(i => i?.serviceName || 'Tratamiento').join(', ');
+                                                    
+                                                    return (
+                                                        <tr key={res.id} className="hover:bg-slate-50 transition-colors">
+                                                            <td className="py-3 px-4 font-mono font-bold whitespace-nowrap">{res.date || '--'} {res.time || ''} hrs</td>
+                                                            <td className="py-3 px-4 font-bold text-slate-900">{res.clientName || 'Clienta'}</td>
+                                                            <td className="py-3 px-4">{serviceNames || 'Sin detalle'}</td>
+                                                            <td className="py-3 px-4 font-bold">{formatCLP(res.total)}</td>
+                                                            <td className="py-3 px-4 font-bold text-emerald-700">{formatCLP(res.paidAmount)}</td>
+                                                            <td className="py-3 px-4 font-bold text-rose-600">{formatCLP(res.balance)}</td>
+                                                            <td className="py-3 px-4">
+                                                                <select
+                                                                    value={res.status || 'confirmada'}
+                                                                    onChange={(e) => handleUpdateReservationStatus(res.id, e.target.value)}
+                                                                    className={`p-1.5 rounded-xl text-[10px] font-bold border cursor-pointer outline-none transition-all ${
+                                                                        res.status === 'confirmada' ? 'bg-emerald-100 text-emerald-800 border-emerald-300' :
+                                                                        res.status === 'por_confirmar' ? 'bg-amber-100 text-amber-800 border-amber-300' :
+                                                                        res.status === 'atendida' ? 'bg-blue-100 text-blue-800 border-blue-300' :
+                                                                        res.status === 'cancelada' ? 'bg-rose-100 text-rose-800 border-rose-300' : 'bg-slate-100 text-slate-800 border-slate-300'
+                                                                    }`}
+                                                                >
+                                                                    <option value="confirmada">🟢 CONFIRMADA</option>
+                                                                    <option value="por_confirmar">🟡 POR CONFIRMAR</option>
+                                                                    <option value="atendida">🔵 ATENDIDA</option>
+                                                                    <option value="cancelada">🔴 CANCELADA</option>
+                                                                    <option value="no_asistio">❌ NO ASISTIÓ</option>
+                                                                </select>
+                                                            </td>
+                                                            <td className="py-3 px-4 text-center flex items-center justify-center gap-2">
+                                                                {currentUser.role === 'ADMIN' && (
+                                                                    <button onClick={() => openEditReservationModal(res)} className="px-3 py-1.5 rounded-xl bg-amber-500 text-white font-bold text-[11px] hover:bg-amber-600 transition-all shadow-sm" title="Editar Cita (Exclusivo Admin)">
+                                                                        ✏️ Editar
+                                                                    </button>
+                                                                )}
+                                                                {currentUser.role !== 'PROFESIONAL' && (
+                                                                    <button onClick={() => sendWhatsAppConfirmation(res)} className="px-3 py-1.5 rounded-xl bg-emerald-600 text-white font-bold text-[11px] hover:bg-emerald-700 transition-all shadow-sm">
+                                                                        📲 WhatsApp
+                                                                    </button>
+                                                                )}
+                                                                <button onClick={() => {
+                                                                    setReservations(prev => prev.map(r => r.id === res.id ? { ...r, paidAmount: r.total, balance: 0, status: 'atendida' } : r));
+                                                                    showToast(`Saldo cobrado para ${res.clientName || 'Clienta'}`);
+                                                                }} className="px-3 py-1.5 rounded-xl bg-slate-900 text-white font-bold text-[11px] hover:bg-slate-800 transition-all shadow-sm">
+                                                                    💰 Cobrar
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    );
+                                                })
+                                            )}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        )}
+
+                        {activeTab === 'fichas' && (
+                            <div className="bg-white rounded-3xl border border-[#EAE3D2] p-6 shadow-sm space-y-6">
+                                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pb-4 border-b border-slate-100">
+                                    <div>
+                                        <h2 className="text-lg font-bold font-serif text-slate-900">📋 Base de Datos de Clientas & Fichas Clínicas ({clients.length})</h2>
+                                        <p className="text-xs text-slate-500">Busca por RUT, Nombre, Teléfono o Correo para ver y editar diagnósticos faciales y corporales.</p>
+                                    </div>
+                                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full md:w-auto">
+                                        <input type="text" placeholder="🔎 Buscar por RUT, Nombre, Teléfono o Email..." value={searchClientQuery} onChange={(e) => setSearchClientQuery(e.target.value)} className="w-full md:w-72 p-2.5 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-[#D4AF37] outline-none" />
+                                        <button onClick={() => { setEditingClient(null); setClientForm({ rut: '', name: '', phone: '', email: '', address: 'Av. Alemania 120, Los Ángeles', age: 29, birthDate: '1995-04-12', status: 'NUEVA' }); setIsClientModalOpen(true); }} className="px-4 py-2.5 rounded-xl bg-[#D4AF37] text-white font-bold text-xs hover:opacity-95 shadow-sm whitespace-nowrap">+ Agregar Nueva Clienta</button>
+                                    </div>
+                                </div>
+
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    {clients.filter(c => (c.name || '').toLowerCase().includes(searchClientQuery.toLowerCase()) || (c.rut || '').includes(searchClientQuery) || (c.email || '').toLowerCase().includes(searchClientQuery.toLowerCase())).map(client => (
+                                        <div key={client.id} className="p-5 rounded-2xl bg-gradient-to-br from-[#FFFDF9] to-[#FBF5E6] border border-amber-200 space-y-4 shadow-sm relative">
+                                            <div className="flex justify-between items-start">
+                                                <div className="space-y-1">
+                                                    <h3 className="text-base font-bold text-slate-900">{client.name}</h3>
+                                                    <div className="text-xs text-slate-600 font-mono">RUT: <strong>{client.rut}</strong></div>
+                                                    <div className="text-xs text-slate-600">📞 {client.phone}</div>
+                                                    <div className="text-xs text-slate-600">✉️ {client.email}</div>
+                                                    <div className="text-xs text-slate-600">📍 {client.address}</div>
+                                                    <div className="text-xs text-slate-600">🎂 Edad: <strong>{client.age} años</strong> ({client.birthDate})</div>
+                                                </div>
+                                                <button onClick={() => handleDeleteClient(client.id)} className="p-2 rounded-xl bg-rose-100 text-rose-700 font-bold text-xs hover:bg-rose-200" title="Eliminar Clienta">🗑️</button>
+                                            </div>
+
+                                            <div className="grid grid-cols-2 gap-2 pt-2 border-t border-amber-200 text-xs">
+                                                <button onClick={() => startBookingForClient(client)} className="py-2 px-3 rounded-xl bg-[#D4AF37] text-white font-bold hover:opacity-95 text-center">📅 Reservar Cita</button>
+                                                <button onClick={() => { setEditingClient(client); setClientForm({ rut: client.rut, name: client.name, phone: client.phone, email: client.email, address: client.address, age: client.age, birthDate: client.birthDate, status: client.status }); setIsClientModalOpen(true); }} className="py-2 px-3 rounded-xl bg-slate-900 text-white font-bold hover:bg-slate-800 text-center">✏️ Editar Datos Clienta</button>
+                                                <button onClick={() => openFichasModal(client)} className="col-span-2 py-2.5 px-3 rounded-xl bg-purple-100 text-purple-900 border border-purple-300 font-bold hover:bg-purple-200 text-center flex items-center justify-center space-x-2">
+                                                    <span>📋 Abrir / Editar Ficha Técnica Facial & Corporal (12 Sesiones)</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {activeTab === 'profesionales' && (
+                            <div className="bg-white rounded-3xl border border-[#EAE3D2] p-6 shadow-sm space-y-6">
+                                <div className="flex justify-between items-center pb-4 border-b border-slate-100">
+                                    <div>
+                                        <h2 className="text-lg font-bold font-serif text-slate-900">👩‍💼 Registro Completo de Profesionales & Staff</h2>
+                                        <p className="text-xs text-slate-500">Gestión de datos de contacto, rol, credenciales y marcas de asistencia diaria.</p>
+                                    </div>
+                                    <button onClick={() => openStaffModal(null)} className="px-4 py-2 rounded-xl bg-[#D4AF37] text-white font-bold text-xs shadow-sm hover:opacity-95">+ Registrar Profesional</button>
+                                </div>
+
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                    {users.map(prof => (
+                                        <div key={prof.id} className="p-5 rounded-3xl bg-gradient-to-br from-[#FFFDF9] to-[#FBF5E6] border border-amber-200 space-y-4 shadow-sm">
+                                            <div className="flex items-center space-x-4">
+                                                <img src={prof.photo || 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=150&q=80'} alt={prof.name} className="w-14 h-14 rounded-full object-cover border-2 border-[#D4AF37]" />
+                                                <div>
+                                                    <h3 className="font-bold text-slate-900 text-base">{prof.name}</h3>
+                                                    <div className="text-xs font-bold text-[#B38F2D]">{prof.specialty || 'Especialista Spa'}</div>
+                                                    <span className="px-2 py-0.5 rounded bg-slate-900 text-white font-mono text-[9px] font-bold uppercase">{prof.role}</span>
+                                                </div>
+                                            </div>
+
+                                            <div className="p-3 rounded-2xl bg-white border border-slate-200 space-y-1.5 text-xs">
+                                                <div><strong>Correo:</strong> {prof.email}</div>
+                                                <div><strong>Teléfono:</strong> {prof.phone}</div>
+                                                <div><strong>Contraseña Acceso:</strong> <span className="font-mono bg-slate-100 px-2 py-0.5 rounded text-slate-800 font-bold">{prof.password}</span></div>
+                                            </div>
+
+                                            <div className="p-3 rounded-2xl bg-amber-50 border border-amber-200 text-xs space-y-1">
+                                                <div className="font-bold text-amber-900 block text-[11px]">ESTADO TURNO HOY:</div>
+                                                <div>• Entrada: <strong>{prof.entryTime || '--:--'}</strong></div>
+                                                <div>• Salió a Colación: <strong>{prof.lunchOut || '--:--'}</strong> | Volvió: <strong>{prof.lunchIn || '--:--'}</strong></div>
+                                                <div>• Salida: <strong>{prof.exitTime || '--:--'}</strong></div>
+                                            </div>
+
+                                            <div className="grid grid-cols-2 gap-2 text-xs">
+                                                <button onClick={() => updateStaffAttendance(prof.id, 'ENTRY')} className="py-2 px-3 rounded-xl bg-emerald-100 text-emerald-900 font-bold hover:bg-emerald-200 text-center">● Firmó Asistencia</button>
+                                                <button onClick={() => updateStaffAttendance(prof.id, 'LUNCH_OUT')} className="py-2 px-3 rounded-xl bg-amber-100 text-amber-900 font-bold hover:bg-amber-200 text-center">☕ Salió Colación</button>
+                                                <button onClick={() => updateStaffAttendance(prof.id, 'LUNCH_IN')} className="py-2 px-3 rounded-xl bg-indigo-100 text-indigo-900 font-bold hover:bg-indigo-200 text-center">🔙 Volvió Colación</button>
+                                                <button onClick={() => updateStaffAttendance(prof.id, 'EXIT')} className="py-2 px-3 rounded-xl bg-rose-100 text-rose-900 font-bold hover:bg-rose-200 text-center">🚪 Firmó Salida</button>
+                                            </div>
+
+                                            <div className="flex gap-2 pt-2 border-t border-amber-200/60">
+                                                <button onClick={() => openStaffModal(prof)} className="flex-1 py-2 rounded-xl bg-slate-900 text-white font-bold text-xs hover:bg-slate-800">✏️ Editar Ficha</button>
+                                                <button onClick={() => handleDeleteStaff(prof.id)} className="py-2 px-3 rounded-xl bg-rose-100 text-rose-700 font-bold text-xs hover:bg-rose-200">🗑️</button>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {activeTab === 'servicios' && (
+                            <div className="bg-white rounded-3xl border border-[#EAE3D2] p-6 shadow-sm space-y-6">
+                                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pb-4 border-b border-slate-100">
+                                    <div>
+                                        <h2 className="text-lg font-bold font-serif text-slate-900">💇‍♀️ Catálogo Completo de Servicios ({filteredCatalog.length} / {catalog.length})</h2>
+                                        <p className="text-xs text-slate-500">Carta oficial de tratamientos con precios, duraciones, fotos reales y opciones de reserva instantánea.</p>
+                                    </div>
+                                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full md:w-auto">
+                                        <input
+                                            type="text"
+                                            placeholder="🔎 Buscar servicio o tratamiento..."
+                                            value={catalogSearchQuery}
+                                            onChange={(e) => setCatalogSearchQuery(e.target.value)}
+                                            className="w-full md:w-64 p-2.5 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-[#D4AF37] outline-none font-medium"
+                                        />
+                                        {currentUser.role === 'ADMIN' && (
+                                            <button onClick={openAddServiceModal} className="px-4 py-2.5 rounded-xl bg-[#D4AF37] text-white font-bold text-xs shadow-sm hover:opacity-95 whitespace-nowrap">+ Agregar Servicio</button>
+                                        )}
+                                    </div>
+                                </div>
+
+                                {/* Pestañas de Categoría para Filtrado Rápido */}
+                                <div className="flex gap-1.5 text-xs pb-2 border-b border-slate-100 overflow-x-auto scrollbar-none">
+                                    {CATALOG_CATEGORIES.map(cat => (
+                                        <button
+                                            key={cat.id}
+                                            onClick={() => setCatalogCategoryFilter(cat.id)}
+                                            className={`px-3.5 py-2 rounded-xl font-bold uppercase transition-all whitespace-nowrap ${
+                                                catalogCategoryFilter === cat.id ? 'bg-[#212121] text-white shadow-sm' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                                            }`}
+                                        >
+                                            {cat.label}
+                                        </button>
+                                    ))}
+                                </div>
+
+                                {/* Grilla de Servicios */}
+                                {filteredCatalog.length === 0 ? (
+                                    <div className="py-12 text-center text-slate-400 italic bg-slate-50 rounded-2xl border border-dashed text-xs">
+                                        No se encontraron servicios con el nombre o categoría seleccionada.
+                                    </div>
+                                ) : (
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                                        {filteredCatalog.map(srv => (
+                                            <div key={srv.id} className="p-5 rounded-3xl bg-[#FFFDF9] border border-amber-200 space-y-3 flex flex-col justify-between shadow-sm hover:shadow-md transition-all">
+                                                <div className="space-y-2">
+                                                    <div className="relative">
+                                                        <img src={srv.image} alt={srv.name} className="w-full h-40 object-cover rounded-2xl border border-amber-100" onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=600&q=80'; }} />
+                                                        <span className="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-full bg-slate-900/80 backdrop-blur text-white text-[9px] font-bold uppercase tracking-wider">{srv.category}</span>
+                                                    </div>
+                                                    <h3 className="font-bold text-slate-900 text-base leading-snug">{srv.name}</h3>
+
+                                                    <p className="text-xs text-slate-600 line-clamp-2">{srv.description}</p>
+                                                                                        <div><label className="font-bold">Foto Perfil (URL):</label><input type="text" value={staffForm.photo} onChange={(e) => setStaffForm({ ...staffForm, photo: e.target.value })} className="w-full p-2.5 rounded-xl border mt-1" /></div>
+
+                                                    <div className="flex justify-between items-center text-xs font-bold pt-1">
+                                                        <span className="text-[#B38F2D] text-base">{formatCLP(srv.basePrice)}</span>
+                                                        <span className="text-slate-500 bg-slate-100 px-2 py-1 rounded-lg">⏱️ {srv.duration} min</span>
+                                                    </div>
+
+                                                    {srv.hasVariants && Array.isArray(srv.variants) && srv.variants.length > 0 && (
+                                                        <div className="p-2.5 rounded-xl bg-amber-50/80 border border-amber-200/80 text-[11px] space-y-1">
+                                                            <span className="font-bold text-amber-900 block text-[10px] uppercase">Opciones / Variantes:</span>
+                                                            {srv.variants.map((v, idx) => (
+                                                                <div key={idx} className="flex justify-between items-center text-slate-700">
+                                                                    <span>• {v.name}</span>
+                                                                    <span className="font-bold text-[#B38F2D]">{formatCLP(v.price)}</span>
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                    )}
+                                                </div>
+                                                <div className="flex gap-2 pt-3 border-t border-amber-200 text-xs">
+                                                    {currentUser.role === 'ADMIN' && (
+                                                        <button onClick={() => openEditServiceModal(srv)} className="py-2 px-3 rounded-xl bg-slate-900 text-white font-bold hover:bg-slate-800">✏️ Editar</button>
+                                                    )}
+                                                    <button onClick={() => startBookingForClient(null, srv.id)} className="flex-1 py-2 rounded-xl bg-[#D4AF37] text-white font-bold hover:opacity-95 shadow-sm text-center">📅 Reservar Cita</button>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        )}
+
+                        {activeTab === 'ventas' && (
+                            <div className="bg-white rounded-3xl border border-[#EAE3D2] p-6 shadow-sm space-y-6">
+                                <div className="flex justify-between items-center pb-4 border-b border-slate-100">
+                                    <h2 className="text-lg font-bold font-serif text-slate-900">💰 Ventas & POS</h2>
+                                    <button onClick={() => setIsReportModalOpen(true)} className="px-4 py-2 rounded-xl bg-[#D4AF37] text-white font-bold text-xs">🖨️ Arqueo de Caja</button>
+                                </div>
+                                <div className="overflow-x-auto">
+                                    <table className="w-full text-left text-xs text-slate-700">
+                                        <thead className="bg-[#F7F4EA] font-bold uppercase text-[10px]">
+                                            <tr>
+                                                <th className="py-3 px-4">Fecha & Hora</th>
+                                                <th className="py-3 px-4">Clienta</th>
+                                                <th className="py-3 px-4">Servicio</th>
+                                                <th className="py-3 px-4">Monto Pagado</th>
+                                                <th className="py-3 px-4">Medio Pago</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-slate-100">
+                                            {reservations.map(r => (
+                                                <tr key={r.id}>
+                                                    <td className="py-3 px-4 font-mono">{r.date} {r.time}</td>
+                                                    <td className="py-3 px-4 font-bold">{r.clientName}</td>
+                                                    <td className="py-3 px-4">{Array.isArray(r.items) ? r.items.map(i => i.serviceName).join(', ') : ''}</td>
+                                                    <td className="py-3 px-4 font-bold text-emerald-700">{formatCLP(r.paidAmount)}</td>
+                                                    <td className="py-3 px-4"><span className="px-2 py-0.5 bg-amber-100 font-bold rounded">{r.paymentMethod}</span></td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        )}
+
+                        {activeTab === 'giftcards' && (
+                            <div className="bg-white rounded-3xl border border-[#EAE3D2] p-6 shadow-sm space-y-6">
+                                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pb-4 border-b border-slate-100">
+                                    <div>
+                                        <h2 className="text-lg font-bold font-serif text-slate-900">🎁 Gift Cards & Cupones de Regalo ({giftCards.length})</h2>
+                                        <p className="text-xs text-slate-500">Busca por código de Gift Card o nombre de beneficiaria.</p>
+                                    </div>
+                                    <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
+                                        <input
+                                            type="text"
+                                            placeholder="🔎 Buscar Código (ej: DIVAS-8842)..."
+                                            value={searchGiftCardQuery}
+                                            onChange={(e) => setSearchGiftCardQuery(e.target.value)}
+                                            className="w-full md:w-72 p-2.5 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-[#D4AF37] outline-none font-medium"
+                                        />
+                                        <button onClick={() => openGiftCardModal(null)} className="px-4 py-2.5 rounded-xl bg-[#D4AF37] text-white font-bold text-xs shadow-sm hover:opacity-95 whitespace-nowrap">+ Emitir Gift Card</button>
+                                    </div>
+                                </div>
+
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    {giftCards.filter(gc =>
+                                        (gc.code || '').toLowerCase().includes(searchGiftCardQuery.toLowerCase()) ||
+                                        (gc.recipientName || '').toLowerCase().includes(searchGiftCardQuery.toLowerCase()) ||
+                                        (gc.senderName || '').toLowerCase().includes(searchGiftCardQuery.toLowerCase()) ||
+                                        (gc.serviceName || '').toLowerCase().includes(searchGiftCardQuery.toLowerCase())
+                                    ).length === 0 ? (
+                                        <div className="col-span-2 text-center py-8 text-slate-400 italic bg-slate-50 rounded-2xl border border-dashed text-xs">
+                                            No se encontraron Gift Cards con el criterio o código "{searchGiftCardQuery}".
+                                        </div>
+                                    ) : (
+                                        giftCards.filter(gc =>
+                                            (gc.code || '').toLowerCase().includes(searchGiftCardQuery.toLowerCase()) ||
+                                            (gc.recipientName || '').toLowerCase().includes(searchGiftCardQuery.toLowerCase()) ||
+                                            (gc.senderName || '').toLowerCase().includes(searchGiftCardQuery.toLowerCase()) ||
+                                            (gc.serviceName || '').toLowerCase().includes(searchGiftCardQuery.toLowerCase())
+                                        ).map(gc => (
+                                            <div key={gc.id} className="p-6 rounded-3xl bg-amber-50/70 border-2 border-[#D4AF37] shadow-sm space-y-3">
+                                                <div className="flex justify-between items-start">
+                                                    <h3 className="text-lg font-bold font-serif text-slate-900">{gc.serviceName}</h3>
+                                                    <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${gc.status === 'Activa' ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-700'}`}>{gc.status}</span>
+                                                </div>
+                                                <div className="text-2xl font-bold text-[#B38F2D]">{formatCLP(gc.amount)}</div>
+                                                <div className="text-xs space-y-1">
+                                                    <div><strong>Para:</strong> {gc.recipientName}</div>
+                                                    <div><strong>De:</strong> {gc.senderName}</div>
+                                                    <div className="italic text-amber-900">“{gc.message}”</div>
+                                                    <div>Código Canje: <strong className="font-mono bg-[#D4AF37] text-white px-2 py-0.5 rounded text-xs">{gc.code}</strong></div>
+                                                </div>
+                                                <div className="flex gap-2 pt-2 border-t border-amber-200">
+                                                    <button onClick={() => { setSelectedGiftCardToPrint(gc); setIsPrintGiftCardModalOpen(true); }} className="flex-1 py-2 bg-slate-900 text-white font-bold text-xs rounded-xl hover:bg-slate-800">🖨️ Ver / Imprimir</button>
+                                                    <button onClick={() => toggleGiftCardStatus(gc.id)} className="px-3 py-2 bg-amber-100 text-amber-900 font-bold rounded-xl text-xs hover:bg-amber-200">
+                                                        {gc.status === 'Activa' ? 'Marcar Canjeada' : 'Marcar Activa'}
+                                                    </button>
+                                                    <button onClick={() => handleDeleteGiftCard(gc.id)} className="p-2 bg-rose-100 text-rose-700 font-bold rounded-xl text-xs hover:bg-rose-200">🗑️</button>
+                                                </div>
+                                            </div>
+                                        ))
+                                    )}
+                                </div>
+                            </div>
+                        )}
+
+                        {activeTab === 'auditoria' && (
+                            <div className="bg-white rounded-3xl border border-[#EAE3D2] p-6 shadow-sm space-y-4">
+                                <h2 className="text-lg font-bold font-serif text-slate-900">🛡️ Auditoría del Sistema</h2>
+                                <div className="space-y-2 text-xs font-mono">
+                                    {auditLogs.map(a => (
+                                        <div key={a.id} className="p-3 bg-slate-50 border rounded-xl flex justify-between">
+                                            <div><strong>{a.userName}</strong> — {a.action}: {a.details}</div>
+                                            <div className="text-slate-400">{new Date(a.timestamp).toLocaleTimeString()}</div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+                    </main>
+
+                    {isClientModalOpen && (
+                        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+                            <div className="bg-white rounded-3xl border border-[#EAE3D2] max-w-lg w-full p-6 shadow-2xl space-y-4">
+                                <div className="flex justify-between items-center pb-2 border-b">
+                                    <h3 className="font-bold font-serif text-slate-900">{editingClient ? 'Editar Clienta' : 'Nueva Clienta'}</h3>
+                                    <button onClick={() => setIsClientModalOpen(false)}>✕</button>
+                                </div>
+                                <div className="space-y-3 text-xs">
+                                    <div className="grid grid-cols-2 gap-3">
+                                        <div><label className="font-bold">Nombre Completo:</label><input type="text" value={clientForm.name} onChange={(e) => setClientForm({ ...clientForm, name: e.target.value })} className="w-full p-2.5 rounded-xl border mt-1" /></div>
+                                        <div><label className="font-bold">RUT:</label><input type="text" value={clientForm.rut} onChange={(e) => setClientForm({ ...clientForm, rut: e.target.value })} className="w-full p-2.5 rounded-xl border mt-1 font-mono" /></div>
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-3">
+                                        <div><label className="font-bold">Teléfono / WhatsApp:</label><input type="text" value={clientForm.phone} onChange={(e) => setClientForm({ ...clientForm, phone: e.target.value })} className="w-full p-2.5 rounded-xl border mt-1" /></div>
+                                        <div><label className="font-bold">Correo Electrónico:</label><input type="email" value={clientForm.email} onChange={(e) => setClientForm({ ...clientForm, email: e.target.value })} className="w-full p-2.5 rounded-xl border mt-1" /></div>
+                                    </div>
+                                    <div><label className="font-bold">Dirección:</label><input type="text" value={clientForm.address} onChange={(e) => setClientForm({ ...clientForm, address: e.target.value })} className="w-full p-2.5 rounded-xl border mt-1" /></div>
+                                </div>
+                                <div className="flex gap-2 pt-3 border-t">
+                                    <button onClick={() => setIsClientModalOpen(false)} className="flex-1 py-2.5 bg-slate-100 font-bold text-xs rounded-xl">Cancelar</button>
+                                    <button onClick={handleSaveClient} className="flex-1 py-2.5 bg-slate-900 text-white font-bold text-xs rounded-xl">Guardar Clienta</button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {isBookingModalOpen && (
+                        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+                            <div className="bg-white rounded-3xl border max-w-lg w-full p-6 shadow-2xl space-y-4">
+                                <div className="flex justify-between items-center pb-2 border-b">
+                                    <h3 className="font-bold font-serif text-slate-900">Nueva Cita SPA DIVAS ELEY</h3>
+                                    <button onClick={() => setIsBookingModalOpen(false)}>✕</button>
+                                </div>
+                                <div className="space-y-3 text-xs">
+                                    <div className="grid grid-cols-2 gap-3">
+                                        <input type="text" placeholder="Nombre Clienta" value={bookingForm.clientFirstName} onChange={(e) => setBookingForm({ ...bookingForm, clientFirstName: e.target.value })} className="p-2.5 rounded-xl border" />
+                                        <input type="text" placeholder="RUT Clienta" value={bookingForm.clientRut} onChange={(e) => setBookingForm({ ...bookingForm, clientRut: e.target.value })} className="p-2.5 rounded-xl border font-mono" />
+                                    </div>
+                                    <div>
+                                        <select value={bookingForm.serviceId} onChange={(e) => setBookingForm({ ...bookingForm, serviceId: e.target.value })} className="w-full p-2.5 rounded-xl border">
+                                            {catalog.map(s => <option key={s.id} value={s.id}>{s.name} - {formatCLP(s.basePrice)}</option>)}
+                                        </select>
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-3">
+                                        <input type="date" value={bookingForm.date} onChange={(e) => setBookingForm({ ...bookingForm, date: e.target.value })} className="p-2 rounded-xl border" />
+                                        <input type="time" value={bookingForm.time} onChange={(e) => setBookingForm({ ...bookingForm, time: e.target.value })} className="p-2 rounded-xl border" />
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-3">
+                                        <div>
+                                            <label className="font-bold block mb-1">Abono %:</label>
+                                            <select value={bookingForm.abonoPercentage} onChange={(e) => setBookingForm({ ...bookingForm, abonoPercentage: Number(e.target.value) })} className="w-full p-2 rounded-xl border">
+                                                <option value={20}>20% Abono</option>
+                                                <option value={50}>50% Abono</option>
+                                                <option value={100}>100% Pago Completo</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label className="font-bold block mb-1">Medio Pago:</label>
+                                            <select value={bookingForm.paymentMethod} onChange={(e) => setBookingForm({ ...bookingForm, paymentMethod: e.target.value })} className="w-full p-2 rounded-xl border">
+                                                {PAYMENT_METHODS.map(m => <option key={m.id} value={m.id}>{m.label}</option>)}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="flex gap-2 pt-3 border-t">
+                                    <button onClick={() => setIsBookingModalOpen(false)} className="flex-1 py-2.5 bg-slate-100 font-bold text-xs rounded-xl">Cancelar</button>
+                                    <button onClick={handleCreateReservation} className="flex-1 py-2.5 bg-slate-900 text-white font-bold text-xs rounded-xl">Crear Cita</button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {isFichaClinicalModalOpen && selectedClientForFicha && (
+                        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4 modal-print-container">
+                            <div className="bg-white rounded-3xl border border-[#EAE3D2] max-w-4xl w-full p-6 shadow-2xl space-y-4 max-h-[95vh] overflow-y-auto">
+                                <div className="flex justify-between items-center pb-3 border-b border-slate-100 no-print">
+                                    <div className="flex items-center space-x-3">
+                                        <img src={OFFICIAL_LOGO} alt="SPA DIVAS ELEY" className="h-8 w-auto object-contain" />
+                                        <div>
+                                            <h3 className="text-base font-bold font-serif text-slate-900">Ficha Técnica Clínica: {selectedClientForFicha.name}</h3>
+                                            <span className="text-xs text-slate-500 font-mono">RUT: {selectedClientForFicha.rut} | Tel: {selectedClientForFicha.phone}</span>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center space-x-2">
+                                        <button onClick={() => window.print()} className="px-3.5 py-1.5 rounded-xl bg-slate-900 text-white text-xs font-bold hover:bg-slate-800 flex items-center space-x-1.5">
+                                            <span>📄 Guardar / Descargar PDF Ficha</span>
+                                        </button>
+                                        <button onClick={() => setIsFichaClinicalModalOpen(false)} className="text-slate-400 hover:text-slate-700 font-bold text-lg">✕</button>
+                                    </div>
+                                </div>
+
+                                <div className="flex gap-2 border-b border-slate-200 pb-2 no-print">
+                                    <button onClick={() => setFichaTypeTab('facial')} className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${fichaTypeTab === 'facial' ? 'bg-[#D4AF37] text-white shadow-sm' : 'bg-slate-100 text-slate-700'}`}>
+                                        🌸 1 & 2. FICHA TÉCNICA DIAGNÓSTICO FACIAL (ANAMNESIS & EXAMEN PIEL)
+                                    </button>
+                                    <button onClick={() => setFichaTypeTab('body')} className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${fichaTypeTab === 'body' ? 'bg-[#212121] text-white shadow-sm' : 'bg-slate-100 text-slate-700'}`}>
+                                        🔥 3. FICHA TÉCNICA DE MOLDEO CORPORAL (SEGUIMIENTO 12 SESIONES)
+                                    </button>
+                                </div>
+
+                                <div className="print-only text-center pb-4 border-b border-slate-300">
+                                    <img src={OFFICIAL_LOGO} alt="SPA DIVAS ELEY" className="h-12 mx-auto object-contain mb-1" />
+                                    <h2 className="text-lg font-bold font-serif uppercase text-slate-900">SPA DIVAS ELEY — REGISTRO CLÍNICO TÉCNICO</h2>
+                                    <p className="text-xs text-slate-600">Clienta: {selectedClientForFicha.name} | RUT: {selectedClientForFicha.rut} | Fecha Registro: {new Date().toLocaleDateString('es-CL')}</p>
+                                </div>
+
+                                {/* FORMULARIO FACIAL */}
+                                {(fichaTypeTab === 'facial' || window.matchMedia('print').matches) && (
+                                    <div className="space-y-6 text-xs text-slate-800">
+                                        <div className="bg-amber-50/70 p-4 rounded-2xl border border-amber-200 space-y-3">
+                                            <h4 className="font-bold text-amber-900 font-serif text-sm">ANAMNESIS & ANTECEDENTES PERSONALES DE LA CLIENTA</h4>
+                                            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                                                <div>
+                                                    <label className="font-bold text-slate-700">Estudiante / Profesional:</label>
+                                                    <input type="text" value={facialForm.estudiante} onChange={(e) => setFacialForm({ ...facialForm, estudiante: e.target.value })} className="w-full p-2 rounded-xl border mt-1" />
+                                                </div>
+                                                <div>
+                                                    <label className="font-bold text-slate-700">Nombre Clienta:</label>
+                                                    <input type="text" value={selectedClientForFicha.name} readOnly className="w-full p-2 rounded-xl border mt-1 bg-slate-100 font-bold" />
+                                                </div>
+                                                <div>
+                                                    <label className="font-bold text-slate-700">Edad:</label>
+                                                    <input type="text" value={facialForm.edad} onChange={(e) => setFacialForm({ ...facialForm, edad: e.target.value })} className="w-full p-2 rounded-xl border mt-1" />
+                                                </div>
+                                                <div>
+                                                    <label className="font-bold text-slate-700">Ocupación:</label>
+                                                    <input type="text" value={facialForm.ocupacion} onChange={(e) => setFacialForm({ ...facialForm, ocupacion: e.target.value })} className="w-full p-2 rounded-xl border mt-1" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="space-y-3">
+                                            <h4 className="font-bold text-slate-900 border-b pb-1 font-serif text-sm">EXAMEN DE LA PIEL & BIOTIPO DERMATOLÓGICO</h4>
+                                            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 bg-amber-50/50 p-4 rounded-2xl border border-amber-200">
+                                                <div>
+                                                    <span className="font-bold block mb-1 text-slate-900">TEXTURA:</span>
+                                                    {['FINA', 'MEDIA', 'GRUESA'].map(opt => (
+                                                        <label key={opt} className="block cursor-pointer my-0.5">
+                                                            <input type="radio" name="textura" checked={facialForm.textura === opt} onChange={() => setFacialForm({ ...facialForm, textura: opt })} className="mr-1.5 accent-[#D4AF37]" /> ({facialForm.textura === opt ? 'X' : ' '}) {opt}
+                                                        </label>
+                                                    ))}
+                                                </div>
+                                                <div>
+                                                    <span className="font-bold block mb-1 text-slate-900">OSTIUM:</span>
+                                                    {['VISIBLE', 'DILATADO', 'OBSTRUIDOS'].map(opt => (
+                                                        <label key={opt} className="block cursor-pointer my-0.5">
+                                                            <input type="radio" name="ostium" checked={facialForm.ostium === opt} onChange={() => setFacialForm({ ...facialForm, ostium: opt })} className="mr-1.5 accent-[#D4AF37]" /> ({facialForm.ostium === opt ? 'X' : ' '}) {opt}
+                                                        </label>
+                                                    ))}
+                                                </div>
+                                                <div>
+                                                    <span className="font-bold block mb-1 text-slate-900">ASPECTOS:</span>
+                                                    {['OPACO', 'MARCHITO', 'LUMINOSO'].map(opt => (
+                                                        <label key={opt} className="block cursor-pointer my-0.5">
+                                                            <input type="radio" name="aspecto" checked={facialForm.aspecto === opt} onChange={() => setFacialForm({ ...facialForm, aspecto: opt })} className="mr-1.5 accent-[#D4AF37]" /> ({facialForm.aspecto === opt ? 'X' : ' '}) {opt}
+                                                        </label>
+                                                    ))}
+                                                </div>
+                                                <div>
+                                                    <span className="font-bold block mb-1 text-slate-900">TACTO:</span>
+                                                    {['ÁSPERO', 'UNTUOSO', 'ESCAMOSO'].map(opt => (
+                                                        <label key={opt} className="block cursor-pointer my-0.5">
+                                                            <input type="radio" name="tacto" checked={facialForm.tacto === opt} onChange={() => setFacialForm({ ...facialForm, tacto: opt })} className="mr-1.5 accent-[#D4AF37]" /> ({facialForm.tacto === opt ? 'X' : ' '}) {opt}
+                                                        </label>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* FORMULARIO CORPORAL */}
+                                {(fichaTypeTab === 'body' || window.matchMedia('print').matches) && (
+                                    <div className="space-y-6 text-xs text-slate-800">
+                                        <div className="bg-purple-50/70 p-4 rounded-2xl border border-purple-200 space-y-3">
+                                            <h4 className="font-bold text-purple-900 font-serif text-sm">FICHA TÉCNICA DE MOLDEO CORPORAL & ANTECEDENTES MÉDICOS</h4>
+                                            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                                                <div><label className="font-bold">Nombre y Apellido:</label><input type="text" value={selectedClientForFicha.name} readOnly className="w-full p-2 rounded-xl border mt-1 bg-slate-100 font-bold" /></div>
+                                                <div><label className="font-bold">Edad:</label><input type="text" value={bodyForm.edad} onChange={(e) => setBodyForm({ ...bodyForm, edad: e.target.value })} className="w-full p-2 rounded-xl border mt-1" /></div>
+                                                <div><label className="font-bold">Teléfono:</label><input type="text" value={bodyForm.telefono} onChange={(e) => setBodyForm({ ...bodyForm, telefono: e.target.value })} className="w-full p-2 rounded-xl border mt-1" /></div>
+                                                <div><label className="font-bold">Fecha Evaluación:</label><input type="date" value={bodyForm.fechaEvaluacion} onChange={(e) => setBodyForm({ ...bodyForm, fechaEvaluacion: e.target.value })} className="w-full p-2 rounded-xl border mt-1" /></div>
+                                            </div>
+                                        </div>
+
+                                        <div className="space-y-3">
+                                            <h4 className="font-bold text-slate-900 font-serif text-sm">CONTROL DE SESIONES Y SEGUIMIENTO DE EVOLUCIÓN (12 SESIONES)</h4>
+                                            <div className="overflow-x-auto">
+                                                <table className="w-full text-left text-xs border border-slate-200 rounded-xl overflow-hidden">
+                                                    <thead className="bg-[#212121] text-white uppercase text-[10px]">
+                                                        <tr>
+                                                            <th className="p-2.5 text-center w-24">N° Sesión</th>
+                                                            <th className="p-2.5 w-32">Fecha Cita</th>
+                                                            <th className="p-2.5">Técnicas Aplicadas</th>
+                                                            <th className="p-2.5">Observaciones & Medidas</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody className="divide-y divide-slate-200 bg-white">
+                                                        {bodyForm.sessions.map((s, idx) => (
+                                                            <tr key={s.id} className="hover:bg-slate-50">
+                                                                <td className="p-2 font-bold text-center bg-slate-100 text-slate-900">Sesión {s.id}</td>
+                                                                <td className="p-2">
+                                                                    <input type="date" value={s.fecha} onChange={(e) => {
+                                                                        const updated = [...bodyForm.sessions];
+                                                                        updated[idx].fecha = e.target.value;
+                                                                        setBodyForm({ ...bodyForm, sessions: updated });
+                                                                    }} className="w-full p-1.5 border rounded-lg text-xs" />
+                                                                </td>
+                                                                <td className="p-2">
+                                                                    <input type="text" placeholder="Ej: Maderoterapia + Cavitación" value={s.tecnicas} onChange={(e) => {
+                                                                        const updated = [...bodyForm.sessions];
+                                                                        updated[idx].tecnicas = e.target.value;
+                                                                        setBodyForm({ ...bodyForm, sessions: updated });
+                                                                    }} className="w-full p-1.5 border rounded-lg text-xs" />
+                                                                </td>
+                                                                <td className="p-2">
+                                                                    <input type="text" placeholder="Ej: Cintura antes: 68cm -> después: 67.5cm (-0.5cm)" value={s.observaciones} onChange={(e) => {
+                                                                        const updated = [...bodyForm.sessions];
+                                                                        updated[idx].observaciones = e.target.value;
+                                                                        setBodyForm({ ...bodyForm, sessions: updated });
+                                                                    }} className="w-full p-1.5 border rounded-lg font-mono text-[11px]" />
+                                                                </td>
+                                                            </tr>
+                                                        ))}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+
+                                <div className="flex gap-2 pt-3 border-t border-slate-200 no-print">
+                                    <button onClick={() => setIsFichaClinicalModalOpen(false)} className="flex-1 py-2.5 bg-slate-100 text-slate-700 font-bold text-xs rounded-xl">Cancelar</button>
+                                    <button onClick={handleSaveClinicalFichas} className="flex-1 py-2.5 bg-slate-900 text-white font-bold text-xs rounded-xl shadow-md">Guardar Cambios Fichas Técnicas</button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {isReportModalOpen && (
+                        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 modal-print-container">
+                            <div className="bg-white rounded-3xl border border-[#EAE3D2] max-w-3xl w-full p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+                                <div className="flex justify-between items-center pb-2 border-b no-print">
+                                    <div>
+                                        <h3 className="font-bold font-serif text-slate-900 text-lg">💰 Reporte General de Ventas y Citas</h3>
+                                        <p className="text-xs text-slate-500">Periodo del <strong>{reportStartDate}</strong> al <strong>{reportEndDate}</strong></p>
+                                    </div>
+                                    <button onClick={() => setIsReportModalOpen(false)} className="text-slate-400 font-bold text-lg hover:text-slate-600">✕</button>
+                                </div>
+
+                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                                    <div className="p-3.5 bg-emerald-50 border border-emerald-200 rounded-2xl">
+                                        <span className="text-slate-500 block uppercase font-bold text-[10px]">Total Recaudado (Abonos)</span>
+                                        <span className="text-lg font-bold text-emerald-800">{formatCLP(reportSummary.totalRecaudado)}</span>
+                                    </div>
+                                    <div className="p-3.5 bg-blue-50 border border-blue-200 rounded-2xl">
+                                        <span className="text-slate-500 block uppercase font-bold text-[10px]">Total Ventas Contratadas</span>
+                                        <span className="text-lg font-bold text-blue-900">{formatCLP(reportSummary.totalVentas)}</span>
+                                    </div>
+                                    <div className="p-3.5 bg-rose-50 border border-rose-200 rounded-2xl">
+                                        <span className="text-slate-500 block uppercase font-bold text-[10px]">Saldos Pendientes</span>
+                                        <span className="text-lg font-bold text-rose-700">{formatCLP(reportSummary.totalSaldos)}</span>
+                                    </div>
+                                </div>
+
+                                <div className="space-y-2 pt-2">
+                                    <h4 className="font-bold text-slate-900 text-xs uppercase tracking-wider">Detalle de Citas en el Periodo</h4>
+                                    <div className="overflow-x-auto border rounded-2xl">
+                                        <table className="w-full text-left text-xs text-slate-700">
+                                            <thead className="bg-[#212121] text-white uppercase text-[10px]">
+                                                <tr>
+                                                    <th className="p-2.5">Fecha/Hora</th>
+                                                    <th className="p-2.5">Clienta</th>
+                                                    <th className="p-2.5">Servicio</th>
+                                                    <th className="p-2.5">Total</th>
+                                                    <th className="p-2.5">Pagado</th>
+                                                    <th className="p-2.5">Saldo</th>
+                                                    <th className="p-2.5">Medio</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody className="divide-y divide-slate-200">
+                                                {reportFilteredReservations.length === 0 ? (
+                                                    <tr>
+                                                        <td colSpan="7" className="p-4 text-center text-slate-400 italic">No hay citas registradas en el rango de fechas seleccionado.</td>
+                                                    </tr>
+                                                ) : (
+                                                    reportFilteredReservations.map(r => (
+                                                        <tr key={r.id}>
+                                                            <td className="p-2.5 font-mono">{r.date} {r.time}</td>
+                                                            <td className="p-2.5 font-bold text-slate-900">{r.clientName}</td>
+                                                            <td className="p-2.5">{Array.isArray(r.items) ? r.items.map(i => i.serviceName).join(', ') : ''}</td>
+                                                            <td className="p-2.5 font-bold">{formatCLP(r.total)}</td>
+                                                            <td className="p-2.5 font-bold text-emerald-700">{formatCLP(r.paidAmount)}</td>
+                                                            <td className="p-2.5 font-bold text-rose-600">{formatCLP(r.balance)}</td>
+                                                            <td className="p-2.5"><span className="px-2 py-0.5 bg-amber-100 font-bold rounded">{r.paymentMethod}</span></td>
+                                                        </tr>
+                                                    ))
+                                                )}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <div className="flex gap-2 pt-3 border-t border-slate-200 no-print">
+                                    <button onClick={() => window.print()} className="flex-1 py-2.5 bg-slate-900 text-white font-bold text-xs rounded-xl shadow-md">🖨️ Imprimir / Guardar PDF Reporte</button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {isGiftCardModalOpen && (
+                        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+                            <div className="bg-white rounded-3xl border border-[#EAE3D2] max-w-md w-full p-6 shadow-2xl space-y-4">
+                                <div className="flex justify-between items-center pb-2 border-b">
+                                    <h3 className="font-bold font-serif text-slate-900">Emitir / Editar Gift Card</h3>
+                                    <button onClick={() => setIsGiftCardModalOpen(false)}>✕</button>
+                                </div>
+                                <div className="space-y-3 text-xs">
+                                    <div><label className="font-bold block mb-1">Tratamiento / Servicio:</label><input type="text" value={giftCardForm.serviceName} onChange={(e) => setGiftCardForm({ ...giftCardForm, serviceName: e.target.value })} className="w-full p-2.5 rounded-xl border" /></div>
+                                    <div className="grid grid-cols-2 gap-3">
+                                        <div><label className="font-bold block mb-1">Para (Beneficiaria):</label><input type="text" value={giftCardForm.recipientName} onChange={(e) => setGiftCardForm({ ...giftCardForm, recipientName: e.target.value })} className="w-full p-2.5 rounded-xl border" /></div>
+                                        <div><label className="font-bold block mb-1">De (Comprador/a):</label><input type="text" value={giftCardForm.senderName} onChange={(e) => setGiftCardForm({ ...giftCardForm, senderName: e.target.value })} className="w-full p-2.5 rounded-xl border" /></div>
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-3">
+                                        <div><label className="font-bold block mb-1">Monto ($ CLP):</label><input type="number" value={giftCardForm.amount} onChange={(e) => setGiftCardForm({ ...giftCardForm, amount: Number(e.target.value) })} className="w-full p-2.5 rounded-xl border font-bold" /></div>
+                                        <div><label className="font-bold block mb-1">Código Canje:</label><input type="text" value={giftCardForm.code} onChange={(e) => setGiftCardForm({ ...giftCardForm, code: e.target.value })} className="w-full p-2.5 rounded-xl border font-mono font-bold" /></div>
+                                    </div>
+                                    <div><label className="font-bold block mb-1">Mensaje Personalizado:</label><textarea rows="2" value={giftCardForm.message} onChange={(e) => setGiftCardForm({ ...giftCardForm, message: e.target.value })} className="w-full p-2.5 rounded-xl border"></textarea></div>
+                                </div>
+                                <div className="flex gap-2 pt-3 border-t">
+                                    <button onClick={() => setIsGiftCardModalOpen(false)} className="flex-1 py-2.5 bg-slate-100 font-bold text-xs rounded-xl">Cancelar</button>
+                                    <button onClick={handleSaveGiftCard} className="flex-1 py-2.5 bg-[#D4AF37] text-white font-bold text-xs rounded-xl">Guardar Gift Card</button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {isPrintGiftCardModalOpen && selectedGiftCardToPrint && (
+                        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 modal-print-container">
+                            <div className="bg-white rounded-3xl border border-[#D4AF37] max-w-lg w-full p-8 shadow-2xl space-y-6 text-center">
+                                <div className="no-print flex justify-end">
+                                    <button onClick={() => setIsPrintGiftCardModalOpen(false)} className="text-slate-400 font-bold text-lg">✕</button>
+                                </div>
+                                <div className="p-8 border-4 border-[#D4AF37] rounded-3xl bg-gradient-to-br from-[#FFFDF9] via-[#FAF7EE] to-[#F4EEDC] space-y-4 shadow-inner">
+                                    <img src={OFFICIAL_LOGO} alt="SPA DIVAS ELEY" className="h-16 mx-auto object-contain" />
+                                    <h2 className="text-xl font-bold font-serif text-slate-900 uppercase tracking-widest">GIFT CARD REGALO LUJO</h2>
+                                    <div className="text-2xl font-bold text-[#B38F2D]">{formatCLP(selectedGiftCardToPrint.amount)}</div>
+                                    <p className="text-sm font-bold text-slate-800">{selectedGiftCardToPrint.serviceName}</p>
+                                    <div className="text-xs space-y-1 text-slate-700 py-2 border-y border-amber-300">
+                                        <div><strong>Para:</strong> {selectedGiftCardToPrint.recipientName}</div>
+                                        <div><strong>De:</strong> {selectedGiftCardToPrint.senderName}</div>
+                                        <div className="italic font-serif text-amber-900">“{selectedGiftCardToPrint.message}”</div>
+                                    </div>
+                                    <div className="pt-2">
+                                        <span className="text-[10px] text-slate-500 uppercase block font-bold">CÓDIGO DE CANJE EN SUCURSAL:</span>
+                                        <span className="text-lg font-mono font-bold bg-[#212121] text-[#D4AF37] px-4 py-1 rounded-xl inline-block mt-1">{selectedGiftCardToPrint.code}</span>
+                                    </div>
+                                    <div className="text-[10px] text-slate-400 italic pt-2">📍 {SPA_ADDRESS}</div>
+                                </div>
+                                <div className="flex gap-2 no-print">
+                                    <button onClick={() => window.print()} className="w-full py-3 bg-slate-900 text-white font-bold text-xs rounded-xl shadow-md">🖨️ Imprimir / Descargar Voucher PDF</button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {isEditServiceModalOpen && (
+                        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+                            <div className="bg-white rounded-3xl border border-[#EAE3D2] max-w-md w-full p-6 shadow-2xl space-y-4">
+                                <div className="flex justify-between items-center pb-2 border-b">
+                                    <h3 className="font-bold font-serif text-slate-900">{serviceToEdit ? 'Editar Servicio' : 'Nuevo Servicio'}</h3>
+                                    <button onClick={() => setIsEditServiceModalOpen(false)}>✕</button>
+                                </div>
+                                <div className="space-y-3 text-xs">
+                                    <div><label className="font-bold block mb-1">Nombre Servicio:</label><input type="text" value={editServiceForm.name} onChange={(e) => setEditServiceForm({ ...editServiceForm, name: e.target.value })} className="w-full p-2.5 rounded-xl border" /></div>
+                                    <div>
+                                        <label className="font-bold block mb-1">Categoría:</label>
+                                        <select value={editServiceForm.category} onChange={(e) => setEditServiceForm({ ...editServiceForm, category: e.target.value })} className="w-full p-2.5 rounded-xl border">
+                                            {CATALOG_CATEGORIES.filter(c => c.id !== 'all').map(c => <option key={c.id} value={c.categoryName}>{c.label}</option>)}
+                                        </select>
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-3">
+                                        <div><label className="font-bold block mb-1">Precio Base ($):</label><input type="number" value={editServiceForm.basePrice} onChange={(e) => setEditServiceForm({ ...editServiceForm, basePrice: Number(e.target.value) })} className="w-full p-2.5 rounded-xl border font-bold" /></div>
+                                        <div><label className="font-bold block mb-1">Duración (min):</label><input type="number" value={editServiceForm.duration} onChange={(e) => setEditServiceForm({ ...editServiceForm, duration: Number(e.target.value) })} className="w-full p-2.5 rounded-xl border" /></div>
+                                    </div>
+                                    <div><label className="font-bold block mb-1">URL Imagen:</label><input type="text" value={editServiceForm.image} onChange={(e) => setEditServiceForm({ ...editServiceForm, image: e.target.value })} className="w-full p-2.5 rounded-xl border" /></div>
+                                    <div><label className="font-bold block mb-1">Descripción:</label><textarea rows="2" value={editServiceForm.description} onChange={(e) => setEditServiceForm({ ...editServiceForm, description: e.target.value })} className="w-full p-2.5 rounded-xl border"></textarea></div>
+                                </div>
+                                <div className="flex gap-2 pt-3 border-t">
+                                    <button onClick={() => setIsEditServiceModalOpen(false)} className="flex-1 py-2.5 bg-slate-100 font-bold text-xs rounded-xl">Cancelar</button>
+                                    <button onClick={handleSaveServiceEdits} className="flex-1 py-2.5 bg-slate-900 text-white font-bold text-xs rounded-xl">Guardar Servicio</button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {isStaffModalOpen && (
+                        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+                            <div className="bg-white rounded-3xl border border-[#EAE3D2] max-w-md w-full p-6 shadow-2xl space-y-4">
+                                <div className="flex justify-between items-center pb-2 border-b">
+                                    <h3 className="font-bold font-serif text-slate-900">{staffToEdit ? 'Editar Ficha Staff' : 'Nuevo Profesional'}</h3>
+                                    <button onClick={() => setIsStaffModalOpen(false)}>✕</button>
+                                </div>
+                                <div className="space-y-3 text-xs">
+                                    <div><label className="font-bold block mb-1">Nombre Completo:</label><input type="text" value={staffForm.name} onChange={(e) => setStaffForm({ ...staffForm, name: e.target.value })} className="w-full p-2.5 rounded-xl border" /></div>
+                                    <div className="grid grid-cols-2 gap-3">
+                                        <div><label className="font-bold block mb-1">Correo Electrónico:</label><input type="email" value={staffForm.email} onChange={(e) => setStaffForm({ ...staffForm, email: e.target.value })} className="w-full p-2.5 rounded-xl border" /></div>
+                                        <div><label className="font-bold block mb-1">Contraseña:</label><input type="text" value={staffForm.password} onChange={(e) => setStaffForm({ ...staffForm, password: e.target.value })} className="w-full p-2.5 rounded-xl border font-mono" /></div>
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-3">
+                                        <div>
+                                            <label className="font-bold block mb-1">Rol Sistema:</label>
+                                            <select value={staffForm.role} onChange={(e) => setStaffForm({ ...staffForm, role: e.target.value })} className="w-full p-2.5 rounded-xl border">
+                                                <option value="ADMIN">ADMINISTRADOR</option>
+                                                <option value="RECEPCION">RECEPCIÓN</option>
+                                                <option value="PROFESIONAL">PROFESIONAL</option>
+                                            </select>
+                                        </div>
+                                       
+                                       <div><label className="font-bold">Foto Perfil (URL):</label><input type="text" value={staffForm.photo} onChange={(e) => setStaffForm({ ...staffForm, photo: e.target.value })} className="w-full p-2.5 rounded-xl border mt-1" /></div>
+                                         <div><label className="font-bold block mb-1">Especialidad:</label><input type="text" value={staffForm.specialty} onChange={(e) => setStaffForm({ ...staffForm, specialty: e.target.value })} className="w-full p-2.5 rounded-xl border" /></div>
+                                    </div>
+                                </div>
+                                <div className="flex gap-2 pt-3 border-t">
+                                    <button onClick={() => setIsStaffModalOpen(false)} className="flex-1 py-2.5 bg-slate-100 font-bold text-xs rounded-xl">Cancelar</button>
+                                    <button onClick={handleSaveStaff} className="flex-1 py-2.5 bg-slate-900 text-white font-bold text-xs rounded-xl">Guardar Datos</button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {}
+                    {isEditReservationModalOpen && (
+                        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+                            <div className="bg-white rounded-3xl border border-[#EAE3D2] max-w-lg w-full p-6 shadow-2xl space-y-4">
+                                <div className="flex justify-between items-center pb-2 border-b">
+                                    <div className="flex items-center space-x-2">
+                                        <span className="p-1.5 rounded-xl bg-amber-100 text-amber-900 text-xs font-bold">🔒 Solo Admin</span>
+                                        <h3 className="font-bold font-serif text-slate-900 text-base">Editar Cita de Clienta</h3>
+                                    </div>
+                                    <button onClick={() => setIsEditReservationModalOpen(false)} className="text-slate-400 font-bold hover:text-slate-600">✕</button>
+                                </div>
+                                <div className="space-y-3 text-xs">
+                                    <div>
+                                        <label className="font-bold text-slate-700 block mb-1">Clienta:</label>
+                                        <input type="text" value={editReservationForm.clientName} onChange={(e) => setEditReservationForm({ ...editReservationForm, clientName: e.target.value })} className="w-full p-2.5 rounded-xl border border-slate-200 font-bold text-slate-900 focus:ring-2 focus:ring-[#D4AF37] outline-none" />
+                                    </div>
+                                    <div>
+                                        <label className="font-bold text-slate-700 block mb-1">Tratamiento / Servicio:</label>
+                                        <select value={editReservationForm.serviceId} onChange={(e) => {
+                                            const s = catalog.find(cat => cat.id === e.target.value);
+                                            setEditReservationForm({
+                                                ...editReservationForm,
+                                                serviceId: e.target.value,
+                                                total: s ? s.basePrice : editReservationForm.total
+                                            });
+                                        }} className="w-full p-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-[#D4AF37] outline-none">
+                                            {catalog.map(s => <option key={s.id} value={s.id}>{s.name} - {formatCLP(s.basePrice)}</option>)}
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label className="font-bold text-slate-700 block mb-1">Profesional Asignada:</label>
+                                        <select value={editReservationForm.professionalId} onChange={(e) => setEditReservationForm({ ...editReservationForm, professionalId: e.target.value })} className="w-full p-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-[#D4AF37] outline-none">
+                                            {users.map(u => <option key={u.id} value={u.id}>{u.name} ({u.role})</option>)}
+                                        </select>
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-3">
+                                        <div>
+                                            <label className="font-bold text-slate-700 block mb-1">Fecha:</label>
+                                            <input type="date" value={editReservationForm.date} onChange={(e) => setEditReservationForm({ ...editReservationForm, date: e.target.value })} className="w-full p-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-[#D4AF37] outline-none" />
+                                        </div>
+                                        <div>
+                                            <label className="font-bold text-slate-700 block mb-1">Hora:</label>
+                                            <input type="time" value={editReservationForm.time} onChange={(e) => setEditReservationForm({ ...editReservationForm, time: e.target.value })} className="w-full p-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-[#D4AF37] outline-none" />
+                                        </div>
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-3">
+                                        <div>
+                                            <label className="font-bold text-slate-700 block mb-1">Monto Total ($):</label>
+                                            <input type="number" value={editReservationForm.total} onChange={(e) => setEditReservationForm({ ...editReservationForm, total: Number(e.target.value) })} className="w-full p-2.5 rounded-xl border border-slate-200 font-bold focus:ring-2 focus:ring-[#D4AF37] outline-none" />
+                                        </div>
+                                        <div>
+                                            <label className="font-bold text-slate-700 block mb-1">Abonado / Pagado ($):</label>
+                                            <input type="number" value={editReservationForm.paidAmount} onChange={(e) => setEditReservationForm({ ...editReservationForm, paidAmount: Number(e.target.value) })} className="w-full p-2.5 rounded-xl border border-slate-200 font-bold text-emerald-700 focus:ring-2 focus:ring-[#D4AF37] outline-none" />
+                                        </div>
+                                    </div>
+                                    <div className="p-3 bg-amber-50 rounded-xl border border-amber-200 flex justify-between items-center text-xs">
+                                        <span className="font-bold text-slate-700">Saldo Pendiente Calculado:</span>
+                                        <span className="font-bold text-rose-600 text-sm">{formatCLP(Math.max(0, Number(editReservationForm.total) - Number(editReservationForm.paidAmount)))}</span>
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-3">
+                                        <div>
+                                            <label className="font-bold text-slate-700 block mb-1">Medio de Pago:</label>
+                                            <select value={editReservationForm.paymentMethod} onChange={(e) => setEditReservationForm({ ...editReservationForm, paymentMethod: e.target.value })} className="w-full p-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-[#D4AF37] outline-none">
+                                                {PAYMENT_METHODS.map(m => <option key={m.id} value={m.id}>{m.label}</option>)}
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label className="font-bold text-slate-700 block mb-1">Estado Cita:</label>
+                                            <select value={editReservationForm.status} onChange={(e) => setEditReservationForm({ ...editReservationForm, status: e.target.value })} className="w-full p-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-[#D4AF37] outline-none font-bold">
+                                                <option value="confirmada">🟢 CONFIRMADA</option>
+                                                <option value="por_confirmar">🟡 POR CONFIRMAR</option>
+                                                <option value="atendida">🔵 ATENDIDA</option>
+                                                <option value="cancelada">🔴 CANCELADA</option>
+                                                <option value="no_asistio">❌ NO ASISTIÓ</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="flex gap-2 pt-3 border-t border-slate-100">
+                                    <button onClick={() => setIsEditReservationModalOpen(false)} className="flex-1 py-2.5 bg-slate-100 font-bold text-xs text-slate-700 rounded-xl hover:bg-slate-200">Cancelar</button>
+                                    <button onClick={handleSaveReservationEdits} className="flex-1 py-2.5 bg-gradient-to-r from-[#D4AF37] to-[#B38F2D] text-white font-bold text-xs rounded-xl shadow-md hover:opacity-95">Guardar Cambios Cita</button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {isClearDemoModalOpen && (
+                        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+                            <div className="bg-white rounded-3xl border border-rose-200 max-w-sm w-full p-6 shadow-2xl space-y-4 text-center">
+                                <span className="text-3xl block">⚠️</span>
+                                <h3 className="font-bold font-serif text-slate-900 text-base">¿Restaurar Datos Demo?</h3>
+                                <p className="text-xs text-slate-500">Se eliminarán los registros guardados en tu navegador y se restaurarán los valores por defecto.</p>
+                                <div className="flex gap-2 pt-2">
+                                    <button onClick={() => setIsClearDemoModalOpen(false)} className="flex-1 py-2.5 bg-slate-100 font-bold text-xs rounded-xl">Cancelar</button>
+                                    <button onClick={handleClearDemoData} className="flex-1 py-2.5 bg-rose-600 text-white font-bold text-xs rounded-xl">Sí, Restaurar</button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {toast && (
+                        <div className="fixed bottom-5 right-5 z-50 p-4 rounded-2xl bg-[#212121] text-white text-xs font-bold shadow-2xl border border-amber-300 flex items-center space-x-2 animate-bounce">
+                            <span>✨ {toast.message}</span>
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        const rootElement = document.getElementById('root');
+        const root = ReactDOM.createRoot(rootElement);
+        root.render(<App />);
+    </script>
+</body>
+</html>
