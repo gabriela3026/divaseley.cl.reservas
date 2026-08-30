@@ -36,7 +36,7 @@
         }
     </script>
 
-    <!-- High Performance Cloudflare CDNs for React and Babel -->
+    <!-- High Performance CDNs for React, ReactDOM and Babel -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.10/babel.min.js"></script>
@@ -91,6 +91,7 @@
     <div id="error-fallback" style="display:none;"></div>
     <div id="root"></div>
 
+    <!-- Firebase Script Loader with Fallback -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -151,6 +152,7 @@
         }
     </script>
 
+    <!-- Main React Application -->
     <script type="text/babel">
         const { useState, useEffect, useMemo, useRef } = React;
 
@@ -159,11 +161,11 @@
         const SPA_ADDRESS = "Valdivia 548, Galería Monte Dorado stand 34 y 35, Los Ángeles";
 
         const PAYMENT_METHODS = [
-            { id: 'Transferencia BancoEstado', label: 'Transferencia BancoEstado', icon: '🏦' },
-            { id: 'Transferencia MACH', label: 'Transferencia MACH', icon: '📱' },
-            { id: 'Mercado Pago', label: 'Mercado Pago', icon: '💳' },
+            { id: 'Transferencia Banco de chile', label: 'Transferencia Banco de chile', icon: '🏦' },
+            { id: 'Transferencia Banco mercado pago', label: 'Transferencia Banco mercado pago', icon: '📱' },
+            { id: 'Maquina Mercado Pago ', label: 'Maquina Mercado Pago', icon: '💳' },
             { id: 'Efectivo', label: 'Efectivo', icon: '💵' },
-            { id: 'Débito / Crédito', label: 'Débito / Crédito', icon: '💳' },
+            { id: 'Débito / Crédito BCH', label: 'Débito / Crédito', icon: '💳' },
             { id: 'GIFT_CARD', label: 'Gift Card', icon: '🎁' },
             { id: 'Canje de Sesiones', label: 'Canje de Sesiones / Plan', icon: '🎟️' },
             { id: 'MIXTO', label: 'Pago Mixto', icon: '🔄' }
@@ -202,12 +204,13 @@
         };
 
         const INITIAL_USER_ACCOUNTS = [
-            { id: 'acc-1', email: 'gabrielamanrique@divaseley.cl', password: 'admin1234', name: 'Gabriela Manrique', role: 'ADMIN', phone: '+56 9 8765 4321', avatar: 'GM', specialty: 'Directora & Master Spa', photo: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=300&q=80', entryTime: '08:45', lunchOut: '13:00', lunchIn: '14:00', exitTime: '', status: 'PRESENT' },
-            { id: 'acc-2', email: 'nicolinostroza@divaseley.cl', password: 'admin1234', name: 'Nicol Inostroza', role: 'ADMIN', phone: '+56 9 8765 4322', avatar: 'NI', specialty: 'Especialista Cosmetología', photo: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=300&q=80', entryTime: '09:00', lunchOut: '13:30', lunchIn: '14:30', exitTime: '', status: 'PRESENT' },
+            { id: 'acc-1', email: 'gabrielamanrique@divaseley.cl', password: 'admin1234', name: 'Gabriela Manrique', role: 'ADMIN', phone: '+56 9 8765 4321', avatar: 'GM', specialty: 'Directora & Master Spa', photo: 'https://imagehttps://6a932510923dbf1a1a865199.imgix.net/sandbox/345950.jpgs.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=300&q=80', entryTime: '08:45', lunchOut: '13:00', lunchIn: '14:00', exitTime: '', status: 'PRESENT' },
+            { id: 'acc-2', email: 'nicolinostroza@divaseley.cl', password: 'admin1234', name: 'Nicol Inostroza', role: 'ADMIN', phone: '+56 9 8765 4322', avatar: 'GM', specialty: 'Especialista Cosmetología', photo: 'https://static.wixstatic.com/media/378f49_44cd8fcb014a4fb8a081f04858932bae~mv2.jpg/v1/fill/w_228,h_228,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/378f49_44cd8fcb014a4fb8a081f04858932bae~mv2.jpg', entryTime: '09:00', lunchOut: '13:30', lunchIn: '14:30', exitTime: '', status: 'PRESENT' },
             { id: 'acc-3', email: 'recepcion@divaseley.cl', password: 'Rec1234', name: 'Recepción DIVAS', role: 'RECEPCION', phone: '+56 9 1234 5678', avatar: 'RC', specialty: 'Atención al Cliente', photo: 'https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?auto=format&fit=crop&w=300&q=80', entryTime: '08:30', lunchOut: '13:00', lunchIn: '14:00', exitTime: '', status: 'PRESENT' },
-            { id: 'acc-4', email: 'cami@divaseley.cl', password: 'prof1234', name: 'Camila Rodríguez', role: 'PROFESIONAL', phone: '+56 9 8123 4567', avatar: 'CR', specialty: 'Lash Designer & Master', photo: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80', entryTime: '09:00', lunchOut: '13:00', lunchIn: '14:00', exitTime: '', status: 'PRESENT' },
-            { id: 'acc-5', email: 'kati@divaseley.cl', password: 'prof12345', name: 'Carolina Rodríguez', role: 'PROFESIONAL', phone: '+56 9 8234 5678', avatar: 'CR', specialty: 'Especialista Corporal', photo: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80', entryTime: '10:15', lunchOut: '13:30', lunchIn: '', exitTime: '', status: 'LUNCH' },
-            { id: 'acc-6', email: 'aline@divaseley.cl', password: 'prof12345', name: 'Aline Pereira', role: 'PROFESIONAL', phone: '+56 9 8345 6789', avatar: 'AP', specialty: 'Maquillista, Peinados & Esmaltado', photo: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80', entryTime: '09:00', lunchOut: '13:30', lunchIn: '14:30', exitTime: '', status: 'PRESENT' }
+            { id: 'acc-4', email: 'katy@divaseley.cl', password: 'prof12345', name: 'Katty Rodríguez', role: 'PROFESIONAL', phone: '+56 9 8234 5678', avatar: 'CR', specialty: 'Especialista Corporal', photo: 'https://static.wixstatic.com/media/378f49_ee034c56b93742c7911b2b998bfa941c~mv2.jpg/v1/fill/w_228,h_228,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/378f49_ee034c56b93742c7911b2b998bfa941c~mv2.jpg', entryTime: '10:15', lunchOut: '13:30', lunchIn: '', exitTime: '', status: 'LUNCH' },
+            { id: 'acc-5', email: 'cami@divaseley.cl', password: 'prof12345', name: 'Camila Rodríguez', role: 'PROFESIONAL', phone: '+56 9 8123 4567', avatar: 'CR', specialty: 'Lash Designer & Master', photo: 'https://static.wixstatic.com/media/378f49_56ccca079421490e86d5c33709635b11~mv2.jpg/v1/fill/w_228,h_228,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/378f49_56ccca079421490e86d5c33709635b11~mv2.jpg', entryTime: '09:00', lunchOut: '13:00', lunchIn: '14:00', exitTime: '', status: 'PRESENT' },
+            { id: 'acc-6', email: 'fran@divaseley.cl', password: 'prof12345', name: 'Carolina Rodríguez', role: 'PROFESIONAL', phone: '+56 9 8234 5678', avatar: 'CR', specialty: 'Especialista Corporal', photo: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80', entryTime: '10:15', lunchOut: '13:30', lunchIn: '', exitTime: '', status: 'LUNCH' },
+            { id: 'acc-7', email: 'aline@divaseley.cl', password: 'prof12345', name: 'Aline Pereira', role: 'PROFESIONAL', phone: '+56 9 8345 6789', avatar: 'AP', specialty: 'Maquillista, Peinados & Esmaltado', photo: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80', entryTime: '09:00', lunchOut: '13:30', lunchIn: '14:30', exitTime: '', status: 'PRESENT' }
         ];
 
         const INITIAL_CATALOG = [
@@ -295,7 +298,6 @@
             { id: 'mas-2', name: 'Masaje Cuerpo Completo + Aromaterapia', category: '💆‍♀️ MASAJES RELAJANTES', tag: 'masajes', image: 'https://6a891d2297833836f65581a1.imgix.net/sandbox/MASAJE%20RELAJANTE%20AROMATERAPIA.jpg', basePrice: 50000, duration: 60, description: 'Aceites esenciales y aromaterapia.', hasVariants: false }
         ];
 
-
         const DEFAULT_FACIAL_FICHA = {
             estudiante: 'Cosmetóloga Senior', nombre: 'Valeria Silva', edad: '29', direccion: 'Av. Alemania 120, Los Ángeles', telefono: '+56987654321', email: 'valeria.silva@gmail.com', ocupacion: 'Ingeniera Comercial', hijos: '0', enfermedadCronica: 'Ninguna', medicamentacionActual: 'Ninguna', alergiaCosmeticos: 'Ninguna', cirugiasTratamientos: 'Lifting de Pestañas previo', sol: 'Moderado con protector 50+', tabaco: 'No', drogas: 'No', proteccionPiel: 'Protector solar diario', dietaHabitual: 'Equilibrada', deportes: 'Pilates 2 veces por semana', ingestionLiquidos: '2 Litros diarios', corticoides: 'No', textura: 'FINA', ostium: 'OBSTRUIDOS', aspecto: 'LUMINOSO', tacto: 'ÁSPERO', secrecionSudoripara: 'Normal', secrecionSebacea: 'Defecto', emulsion: 'Epicutánea alipídica', phCutaneo: '5.5 (Equilibrado)', vellosidad: 'NO'
         };
@@ -381,6 +383,9 @@
                 if (saved !== null && saved !== undefined) {
                     const parsed = JSON.parse(saved);
                     if (Array.isArray(parsed) || (typeof parsed === 'object' && parsed !== null)) {
+                        if (key === 'divas_catalog' && Array.isArray(parsed) && parsed.length < fallback.length) {
+                            return fallback;
+                        }
                         return parsed;
                     }
                 }
@@ -570,18 +575,6 @@
                 showToast('🧹 Se han borrado todas las ventas y citas registradas correctamente.');
                 setIsResetDemoModalOpen(false);
             };
-
-            const kpis = useMemo(() => {
-                const todayStr = new Date().toISOString().split('T')[0];
-                const safeRes = Array.isArray(reservations) ? reservations : [];
-                const todayRes = safeRes.filter(r => r && r.date === todayStr);
-                const salesToday = todayRes.reduce((sum, r) => sum + (r.paidAmount || 0), 0);
-                const salesMonth = safeRes.reduce((sum, r) => sum + (r.paidAmount || 0), 0);
-                const pendingPayments = safeRes.reduce((sum, r) => sum + (r.balance || 0), 0);
-                return {
-                    salesToday, salesMonth, todayResCount: todayRes.length, pendingPayments, totalClients: clients.length
-                };
-            }, [reservations, clients]);
 
             const dashKpis = useMemo(() => {
                 const safeRes = Array.isArray(reservations) ? reservations : [];
@@ -1330,6 +1323,25 @@
                 logAudit('CAMBIO_ESTADO_CITA', 'RESERVATION', `Cita #${resId} de ${resObj?.clientName || ''} cambió a ${newStatus}`);
             };
 
+            const handleDeleteReservation = (resId) => {
+                const resObj = reservations.find(r => r.id === resId);
+                if (!resObj) return;
+
+                if (currentUser.role === 'PROFESIONAL') {
+                    showToast('Las profesionales no pueden eliminar citas.', 'error');
+                    return;
+                }
+
+                setReservations(prev => {
+                    const updated = prev.filter(r => r.id !== resId);
+                    saveToStorage('divas_reservations', updated);
+                    return updated;
+                });
+
+                logAudit('ELIMINAR_RESERVA', 'RESERVATION', `Cita #${resId} de ${resObj.clientName} eliminada por ${currentUser.name}`);
+                showToast(`Cita de ${resObj.clientName} eliminada del sistema.`);
+            };
+
             const openReservationEditModal = (res) => {
                 if (currentUser.role !== 'ADMIN') {
                     showToast('Solo las Administradoras pueden editar reservas completamente.', 'error');
@@ -1597,7 +1609,7 @@
                         </div>
                     </aside>
 
-                    {}
+                    {/* Main Content Area */}
                     <div className="flex-1 flex flex-col min-w-0 overflow-y-auto">
                         {/* Top Header */}
                         <header className="bg-white border-b border-[#EAE3D2] px-6 py-4 flex justify-between items-center sticky top-0 z-30 shadow-xs">
@@ -1635,8 +1647,9 @@
                             </div>
                         </header>
 
-                        {}
+                        {/* Main View Container */}
                         <main className="p-4 sm:p-6 space-y-6">
+                            {/* DASHBOARD TAB */}
                             {activeTab === 'dashboard' && (
                                 <div className="space-y-6">
                                     {currentUser.role === 'PROFESIONAL' ? (
@@ -1856,7 +1869,6 @@
                                 </div>
                             )}
 
-                            {}
                             {/* RESERVAS TAB */}
                             {activeTab === 'reservas' && (
                                 <div className="space-y-6">
@@ -1994,12 +2006,21 @@
                                                             </td>
                                                             <td className="p-3 text-right space-x-1">
                                                                 {currentUser.role !== 'PROFESIONAL' && (
-                                                                    <button
-                                                                        onClick={() => sendWhatsAppConfirmation(res)}
-                                                                        className="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[10px] rounded-lg shadow-xs"
-                                                                    >
-                                                                        💬 WhatsApp
-                                                                    </button>
+                                                                    <>
+                                                                        <button
+                                                                            onClick={() => sendWhatsAppConfirmation(res)}
+                                                                            className="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[10px] rounded-lg shadow-xs"
+                                                                        >
+                                                                            💬 WhatsApp
+                                                                        </button>
+                                                                        <button
+                                                                            onClick={() => handleDeleteReservation(res.id)}
+                                                                            className="px-2.5 py-1 bg-rose-600 hover:bg-rose-700 text-white font-bold text-[10px] rounded-lg shadow-xs"
+                                                                            title="Eliminar esta cita"
+                                                                        >
+                                                                            🗑️ Eliminar
+                                                                        </button>
+                                                                    </>
                                                                 )}
 
                                                                 {currentUser.role === 'ADMIN' && (
@@ -2020,7 +2041,6 @@
                                 </div>
                             )}
 
-                            {}
                             {/* CLIENTAS TAB */}
                             {activeTab === 'fichas' && (
                                 <div className="space-y-6">
@@ -2092,7 +2112,6 @@
                                 </div>
                             )}
 
-                            {}
                             {/* CATALOGO TAB */}
                             {activeTab === 'catalogo' && (
                                 <div className="space-y-6">
@@ -2152,6 +2171,15 @@
                                                             <span className="font-bold text-emerald-700 font-mono text-sm">{formatCLP(srv.basePrice)}</span>
                                                         </div>
                                                         <p className="text-xs text-slate-500 line-clamp-2">{srv.description}</p>
+                                                        {srv.hasVariants && Array.isArray(srv.variants) && (
+                                                            <div className="pt-1 flex flex-wrap gap-1">
+                                                                {srv.variants.map((v, vIdx) => (
+                                                                    <span key={vIdx} className="px-2 py-0.5 bg-amber-50 text-[#8C6E20] border border-amber-200 text-[10px] font-bold rounded-md">
+                                                                        {v.name}: {formatCLP(v.price)}
+                                                                    </span>
+                                                                ))}
+                                                            </div>
+                                                        )}
                                                     </div>
 
                                                     <div className="pt-2 border-t border-slate-100 flex gap-2">
@@ -2175,7 +2203,6 @@
                                 </div>
                             )}
 
-                            {}
                             {/* GIFT CARDS TAB */}
                             {activeTab === 'giftcards' && (
                                 <div className="space-y-6">
@@ -2235,7 +2262,6 @@
                                 </div>
                             )}
 
-                            {}
                             {/* PROMOCIONES TAB */}
                             {activeTab === 'promociones' && (
                                 <div className="space-y-6">
@@ -2300,7 +2326,6 @@
                                 </div>
                             )}
 
-                            {}
                             {/* ASISTENCIA TAB */}
                             {activeTab === 'asistencia' && (
                                 <div className="space-y-6">
@@ -2364,533 +2389,384 @@
                         </main>
                     </div>
 
-                    {}
                     {/* MODAL: RESERVA / POS */}
                     {isBookingModalOpen && (
                         <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
                             <div className="bg-white rounded-3xl border-2 border-[#D4AF37] max-w-2xl w-full p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
                                 <div className="flex justify-between items-center pb-2 border-b border-slate-100">
                                     <h3 className="font-bold font-serif text-slate-900 text-lg">✨ Agendar Nueva Cita & Registro POS</h3>
-                                    <button onClick={() => setIsBookingModalOpen(false)} className="text-slate-400 font-bold text-xl">✕</button>
+                                    <button onClick={() => setIsBookingModalOpen(false)} className="text-slate-400 hover:text-slate-700 font-bold text-xl">✕</button>
                                 </div>
 
                                 <div className="space-y-4 text-xs">
                                     <div className="grid grid-cols-2 gap-2">
                                         <div>
                                             <label className="font-bold block text-slate-700">Nombre Clienta:</label>
-                                            <input type="text" value={bookingForm.clientFirstName} onChange={(e) => setBookingForm({...bookingForm, clientFirstName: e.target.value})} className="w-full p-2.5 rounded-xl border outline-none" />
+                                            <input type="text" value={bookingForm.clientFirstName} onChange={(e) => setBookingForm({...bookingForm, clientFirstName: e.target.value})} className="w-full p-2.5 rounded-xl border border-slate-200 outline-none" />
                                         </div>
                                         <div>
                                             <label className="font-bold block text-slate-700">Apellido:</label>
-                                            <input type="text" value={bookingForm.clientLastName} onChange={(e) => setBookingForm({...bookingForm, clientLastName: e.target.value})} className="w-full p-2.5 rounded-xl border outline-none" />
+                                            <input type="text" value={bookingForm.clientLastName} onChange={(e) => setBookingForm({...bookingForm, clientLastName: e.target.value})} className="w-full p-2.5 rounded-xl border border-slate-200 outline-none" />
                                         </div>
                                     </div>
 
                                     <div className="grid grid-cols-3 gap-2">
                                         <div>
-                                            <label className="font-bold block text-slate-700">RUT:</label>
-                                            <input type="text" value={bookingForm.clientRut} onChange={(e) => setBookingForm({...bookingForm, clientRut: e.target.value})} className="w-full p-2.5 rounded-xl border outline-none" />
+                                            <label className="font-bold block text-slate-700">RUT Clienta:</label>
+                                            <input type="text" value={bookingForm.clientRut} onChange={(e) => setBookingForm({...bookingForm, clientRut: e.target.value})} className="w-full p-2.5 rounded-xl border border-slate-200 outline-none font-mono" />
                                         </div>
                                         <div>
                                             <label className="font-bold block text-slate-700">Teléfono:</label>
-                                            <input type="text" value={bookingForm.clientPhone} onChange={(e) => setBookingForm({...bookingForm, clientPhone: e.target.value})} className="w-full p-2.5 rounded-xl border outline-none" />
+                                            <input type="text" value={bookingForm.clientPhone} onChange={(e) => setBookingForm({...bookingForm, clientPhone: e.target.value})} className="w-full p-2.5 rounded-xl border border-slate-200 outline-none" />
                                         </div>
                                         <div>
                                             <label className="font-bold block text-slate-700">Email:</label>
-                                            <input type="email" value={bookingForm.clientEmail} onChange={(e) => setBookingForm({...bookingForm, clientEmail: e.target.value})} className="w-full p-2.5 rounded-xl border outline-none" />
+                                            <input type="email" value={bookingForm.clientEmail} onChange={(e) => setBookingForm({...bookingForm, clientEmail: e.target.value})} className="w-full p-2.5 rounded-xl border border-slate-200 outline-none" />
                                         </div>
                                     </div>
 
                                     <div>
-                                        <label className="font-bold block text-slate-700 mb-1">Seleccionar Tratamiento(s) del Carrito:</label>
-                                        <div className="max-h-36 overflow-y-auto border rounded-xl p-2 space-y-1">
-                                            {catalog.map(srv => {
+                                        <label className="font-bold block text-slate-700 mb-1">Seleccionar Servicios del Catálogo:</label>
+                                        <input
+                                            type="text"
+                                            placeholder="🔍 Filtrar servicios..."
+                                            value={bookingSearchService}
+                                            onChange={(e) => setBookingSearchService(e.target.value)}
+                                            className="w-full p-2 mb-2 rounded-xl border border-slate-200 text-xs"
+                                        />
+                                        <div className="max-h-36 overflow-y-auto border border-slate-200 rounded-xl p-2 space-y-1 bg-slate-50">
+                                            {catalog.filter(s => s.name.toLowerCase().includes(bookingSearchService.toLowerCase())).map(srv => {
                                                 const isSelected = bookingForm.selectedServiceIds.includes(srv.id);
                                                 return (
-                                                    <div
-                                                        key={srv.id}
-                                                        onClick={() => toggleServiceInCart(srv.id)}
-                                                        className={`p-2 rounded-lg cursor-pointer flex justify-between items-center transition-all ${isSelected ? 'bg-amber-100 border border-[#D4AF37] font-bold' : 'hover:bg-slate-50'}`}
-                                                    >
-                                                        <span>{srv.name}</span>
-                                                        <span className="font-mono text-slate-800">{formatCLP(srv.basePrice)}</span>
+                                                    <div key={srv.id} onClick={() => toggleServiceInCart(srv.id)} className={`p-2 rounded-lg flex justify-between items-center cursor-pointer transition-all ${isSelected ? 'bg-amber-100 border border-[#D4AF37] font-bold' : 'bg-white border border-slate-200 hover:bg-slate-100'}`}>
+                                                        <span>{isSelected ? '✅' : '➕'} {srv.name} ({srv.category})</span>
+                                                        <span className="font-mono text-emerald-700">{formatCLP(srv.basePrice)}</span>
                                                     </div>
                                                 );
                                             })}
                                         </div>
                                     </div>
 
-                                    <div className="p-3 bg-amber-50 rounded-2xl border border-amber-200 space-y-2">
-                                        <label className="font-bold block text-[#8C6E20]">Cobro / Control de Sesión (Ej. Sesión 1 a 12):</label>
-                                        <select
-                                            value={bookingForm.sessionTag}
-                                            onChange={(e) => handleSessionTagChange(e.target.value)}
-                                            className="w-full p-2 rounded-xl border border-amber-300 font-bold bg-white text-xs"
-                                        >
-                                            <option value="SIN_SESION">Tratamiento Individual (Precio Normal)</option>
-                                            <option value="Sesión 1 de 12">Sesión 1 de 12 (Cobro Inicial Plan)</option>
-                                            {[...Array(11)].map((_, i) => {
-                                                const num = i + 2;
-                                                return <option key={num} value={`Sesión ${num} de 12`}>{`Sesión ${num} de 12 (Canje Gratis $0)`}</option>;
-                                            })}
-                                        </select>
-                                    </div>
-
-                                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                                        <div>
-                                            <label className="font-bold block text-slate-700">Fecha Cita:</label>
-                                            <input type="date" value={bookingForm.date} onChange={(e) => setBookingForm({...bookingForm, date: e.target.value})} className="w-full p-2 rounded-xl border" />
-                                        </div>
-                                        <div>
-                                            <label className="font-bold block text-slate-700">Hora:</label>
-                                            <input type="time" value={bookingForm.time} onChange={(e) => setBookingForm({...bookingForm, time: e.target.value})} className="w-full p-2 rounded-xl border" />
-                                        </div>
-                                        <div>
-                                            <label className="font-bold block text-slate-700">Profesional:</label>
-                                            <select value={bookingForm.professionalId} onChange={(e) => setBookingForm({...bookingForm, professionalId: e.target.value})} className="w-full p-2 rounded-xl border font-bold">
-                                                {users.map(u => <option key={u.id} value={u.id}>{u.name}</option>)}
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <label className="font-bold block text-slate-700">Medio Pago:</label>
-                                            <select value={bookingForm.paymentMethod} onChange={(e) => setBookingForm({...bookingForm, paymentMethod: e.target.value})} className="w-full p-2 rounded-xl border font-bold">
-                                                {PAYMENT_METHODS.map(m => <option key={m.id} value={m.id}>{m.label}</option>)}
-                                            </select>
-                                        </div>
-                                    </div>
-
                                     <div className="grid grid-cols-2 gap-2">
                                         <div>
-                                            <label className="font-bold block text-slate-700">Código Cupón Promocional:</label>
-                                            <input type="text" placeholder="Ej. DIVA20" value={bookingForm.promoCodeInput} onChange={(e) => setBookingForm({...bookingForm, promoCodeInput: e.target.value})} className="w-full p-2 rounded-xl border uppercase font-mono font-bold" />
+                                            <label className="font-bold block text-slate-700">Etiqueta de Sesión (Planes):</label>
+                                            <select value={bookingForm.sessionTag} onChange={(e) => handleSessionTagChange(e.target.value)} className="w-full p-2.5 rounded-xl border border-slate-200 outline-none font-bold text-amber-900 bg-amber-50">
+                                                <option value="SIN_SESION">Servicio Individual / Normal</option>
+                                                <option value="Sesión 1 de 12">Sesión 1 de 12 (Pago Inicial Plan)</option>
+                                                <option value="Sesión 2 de 12">Sesión 2 de 12 (Canje de Plan)</option>
+                                                <option value="Sesión 3 de 12">Sesión 3 de 12 (Canje de Plan)</option>
+                                                <option value="Sesión 4 de 12">Sesión 4 de 12 (Canje de Plan)</option>
+                                                <option value="Sesión 5 de 12">Sesión 5 de 12 (Canje de Plan)</option>
+                                                <option value="Sesión 6 de 12">Sesión 6 de 12 (Canje de Plan)</option>
+                                                <option value="Sesión 7 de 12">Sesión 7 de 12 (Canje de Plan)</option>
+                                                <option value="Sesión 8 de 12">Sesión 8 de 12 (Canje de Plan)</option>
+                                                <option value="Sesión 9 de 12">Sesión 9 de 12 (Canje de Plan)</option>
+                                                <option value="Sesión 10 de 12">Sesión 10 de 12 (Canje de Plan)</option>
+                                                <option value="Sesión 11 de 12">Sesión 11 de 12 (Canje de Plan)</option>
+                                                <option value="Sesión 12 de 12">Sesión 12 de 12 (Canje de Plan)</option>
+                                            </select>
                                         </div>
                                         <div>
-                                            <label className="font-bold block text-slate-700">% Abono Hoy:</label>
-                                            <select value={bookingForm.abonoPercentage} onChange={(e) => setBookingForm({...bookingForm, abonoPercentage: Number(e.target.value)})} className="w-full p-2 rounded-xl border font-bold">
-                                                <option value={50}>50% Reserva</option>
-                                                <option value={100}>100% Pago Total</option>
-                                                <option value={0}>0% Sin Abono</option>
+                                            <label className="font-bold block text-slate-700">Especialista Asignada:</label>
+                                            <select value={bookingForm.professionalId} onChange={(e) => setBookingForm({...bookingForm, professionalId: e.target.value})} className="w-full p-2.5 rounded-xl border border-slate-200 outline-none">
+                                                {users.map(u => (
+                                                    <option key={u.id} value={u.id}>{u.name} ({u.specialty || u.role})</option>
+                                                ))}
                                             </select>
                                         </div>
                                     </div>
 
-                                    <div className="p-4 rounded-2xl bg-slate-900 text-white space-y-1 font-mono text-xs">
-                                        <div className="flex justify-between"><span>Subtotal Servicios:</span> <span>{formatCLP(cartCalculated.baseTotal)}</span></div>
-                                        {cartCalculated.discountAmount > 0 && <div className="flex justify-between text-amber-300"><span>Descuento Cupón:</span> <span>-{formatCLP(cartCalculated.discountAmount)}</span></div>}
-                                        <div className="flex justify-between font-bold text-sm text-[#D4AF37]"><span>Total Final Cita:</span> <span>{formatCLP(cartCalculated.total)}</span></div>
-                                        <div className="flex justify-between text-emerald-400"><span>Abono Hoy:</span> <span>{formatCLP(cartCalculated.abono)}</span></div>
-                                        <div className="flex justify-between text-rose-300"><span>Saldo Pendiente:</span> <span>{formatCLP(cartCalculated.saldo)}</span></div>
-                                    </div>
-
-                                    <div className="flex gap-2 pt-2">
-                                        <button onClick={() => setIsBookingModalOpen(false)} className="flex-1 py-3 bg-slate-100 rounded-xl font-bold">Cancelar</button>
-                                        <button onClick={handleCreateReservation} className="flex-1 py-3 bg-[#D4AF37] text-white rounded-xl font-bold shadow-md">Confirmar Reserva ✨</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-
-                    {}
-                    {/* MODAL: RESET DEMO DATA */}
-                    {isResetDemoModalOpen && (
-                        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
-                            <div className="bg-white rounded-3xl border-2 border-rose-500 max-w-md w-full p-6 shadow-2xl space-y-4 text-center">
-                                <span className="text-4xl block">🧹</span>
-                                <h3 className="font-bold font-serif text-slate-900 text-lg">¿Borrar Ventas y Citas Registradas?</h3>
-                                <p className="text-xs text-slate-600">Esta acción reiniciará todos los registros maestros de citas y ventas para dejar la caja limpia.</p>
-                                <div className="flex gap-2 pt-2">
-                                    <button onClick={() => setIsResetDemoModalOpen(false)} className="flex-1 py-2.5 bg-slate-100 rounded-xl font-bold text-xs">Cancelar</button>
-                                    <button onClick={handleResetDemoData} className="flex-1 py-2.5 bg-rose-600 text-white rounded-xl font-bold text-xs shadow-md">Sí, Borrar Todo</button>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-
-                    {}
-                    {/* MODAL: EDITAR RESERVA (ADMIN) */}
-                    {isReservationEditModalOpen && editingReservation && (
-                        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
-                            <div className="bg-white rounded-3xl border-2 border-[#D4AF37] max-w-md w-full p-6 shadow-2xl space-y-4">
-                                <div className="flex justify-between items-center pb-2 border-b border-slate-100">
-                                    <h3 className="font-bold font-serif text-slate-900 text-lg">✏️ Modificar Reserva (Admin)</h3>
-                                    <button onClick={() => setIsReservationEditModalOpen(false)} className="text-slate-400 font-bold">✕</button>
-                                </div>
-
-                                <div className="space-y-3 text-xs">
-                                    <div>
-                                        <label className="font-bold block text-slate-700">Clienta:</label>
-                                        <input
-                                            type="text"
-                                            value={editingReservation.clientName || ''}
-                                            onChange={(e) => setEditingReservation({ ...editingReservation, clientName: e.target.value })}
-                                            className="w-full p-2 rounded-xl border text-xs"
-                                        />
-                                    </div>
                                     <div className="grid grid-cols-2 gap-2">
                                         <div>
                                             <label className="font-bold block text-slate-700">Fecha Cita:</label>
-                                            <input
-                                                type="date"
-                                                value={editingReservation.date || ''}
-                                                onChange={(e) => setEditingReservation({ ...editingReservation, date: e.target.value })}
-                                                className="w-full p-2 rounded-xl border text-xs font-bold"
-                                            />
+                                            <input type="date" value={bookingForm.date} onChange={(e) => setBookingForm({...bookingForm, date: e.target.value})} className="w-full p-2.5 rounded-xl border border-slate-200 outline-none font-bold" />
                                         </div>
                                         <div>
-                                            <label className="font-bold block text-slate-700">Hora:</label>
-                                            <input
-                                                type="time"
-                                                value={editingReservation.time || ''}
-                                                onChange={(e) => setEditingReservation({ ...editingReservation, time: e.target.value })}
-                                                className="w-full p-2 rounded-xl border text-xs"
-                                            />
+                                            <label className="font-bold block text-slate-700">Hora Cita:</label>
+                                            <input type="time" value={bookingForm.time} onChange={(e) => setBookingForm({...bookingForm, time: e.target.value})} className="w-full p-2.5 rounded-xl border border-slate-200 outline-none font-bold" />
                                         </div>
                                     </div>
 
-                                    <div className="grid grid-cols-2 gap-2">
+                                    <div className="grid grid-cols-3 gap-2">
                                         <div>
-                                            <label className="font-bold block text-slate-700">Total ($ CLP):</label>
-                                            <input
-                                                type="number"
-                                                value={editingReservation.total || 0}
-                                                onChange={(e) => {
-                                                    const tot = Number(e.target.value);
-                                                    const paid = editingReservation.paidAmount || 0;
-                                                    setEditingReservation({ ...editingReservation, total: tot, balance: Math.max(0, tot - paid) });
-                                                }}
-                                                className="w-full p-2 rounded-xl border text-xs font-mono"
-                                            />
+                                            <label className="font-bold block text-slate-700">Cupón de Descuento:</label>
+                                            <input type="text" placeholder="Ej: DIVA20" value={bookingForm.promoCodeInput} onChange={(e) => setBookingForm({...bookingForm, promoCodeInput: e.target.value})} className="w-full p-2.5 rounded-xl border border-slate-200 outline-none font-mono uppercase" />
                                         </div>
                                         <div>
-                                            <label className="font-bold block text-slate-700">Monto Pagado ($ CLP):</label>
-                                            <input
-                                                type="number"
-                                                value={editingReservation.paidAmount || 0}
-                                                onChange={(e) => {
-                                                    const paid = Number(e.target.value);
-                                                    const tot = editingReservation.total || 0;
-                                                    setEditingReservation({ ...editingReservation, paidAmount: paid, balance: Math.max(0, tot - paid) });
-                                                }}
-                                                className="w-full p-2 rounded-xl border text-xs font-mono"
-                                            />
+                                            <label className="font-bold block text-slate-700">Medio de Pago:</label>
+                                            <select value={bookingForm.paymentMethod} onChange={(e) => setBookingForm({...bookingForm, paymentMethod: e.target.value})} className="w-full p-2.5 rounded-xl border border-slate-200 outline-none">
+                                                {PAYMENT_METHODS.map(m => (
+                                                    <option key={m.id} value={m.id}>{m.label}</option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label className="font-bold block text-slate-700">% Abono en Caja:</label>
+                                            <select value={bookingForm.abonoPercentage} onChange={(e) => setBookingForm({...bookingForm, abonoPercentage: Number(e.target.value)})} className="w-full p-2.5 rounded-xl border border-slate-200 outline-none">
+                                                <option value={50}>50% (Abono Estándar)</option>
+                                                <option value={100}>100% (Pago Total)</option>
+                                                <option value={25}>25% (Reserva Parcial)</option>
+                                                <option value={0}>0% (Sin Abono)</option>
+                                            </select>
                                         </div>
                                     </div>
 
-                                    <div>
-                                        <label className="font-bold block text-slate-700">Medio de Pago:</label>
-                                        <select
-                                            value={editingReservation.paymentMethod || 'Efectivo'}
-                                            onChange={(e) => setEditingReservation({ ...editingReservation, paymentMethod: e.target.value })}
-                                            className="w-full p-2 rounded-xl border text-xs font-bold"
-                                        >
-                                            {PAYMENT_METHODS.map(m => (
-                                                <option key={m.id} value={m.id}>{m.label}</option>
-                                            ))}
-                                        </select>
+                                    {/* Calculated Total Box */}
+                                    <div className="p-4 bg-gradient-to-r from-amber-50 to-amber-100/50 rounded-2xl border border-amber-300/80 space-y-1">
+                                        <div className="flex justify-between"><span>Base Total Servicios:</span> <span className="font-bold">{formatCLP(cartCalculated.baseTotal)}</span></div>
+                                        {cartCalculated.discountAmount > 0 && (
+                                            <div className="flex justify-between text-emerald-800 font-bold"><span>Descuento Promocional:</span> <span>-{formatCLP(cartCalculated.discountAmount)}</span></div>
+                                        )}
+                                        <div className="flex justify-between text-slate-900 font-bold text-sm"><span>Total Cita:</span> <span>{formatCLP(cartCalculated.total)}</span></div>
+                                        <div className="flex justify-between text-emerald-700 font-bold"><span>Abono Recibido Ahora:</span> <span>{formatCLP(cartCalculated.abono)}</span></div>
+                                        <div className="flex justify-between text-rose-700 font-bold"><span>Saldo Pendiente:</span> <span>{formatCLP(cartCalculated.saldo)}</span></div>
                                     </div>
+                                </div>
 
-                                    <div className="flex gap-2 pt-2">
-                                        <button onClick={() => setIsReservationEditModalOpen(false)} className="flex-1 py-2 bg-slate-100 rounded-xl font-bold">Cancelar</button>
-                                        <button onClick={handleSaveReservationEdit} className="flex-1 py-2 bg-[#D4AF37] text-white rounded-xl font-bold shadow-md">Guardar Cambios</button>
-                                    </div>
+                                <div className="flex justify-end space-x-2 pt-2 border-t border-slate-100">
+                                    <button onClick={() => setIsBookingModalOpen(false)} className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs rounded-xl">Cancelar</button>
+                                    <button onClick={handleCreateReservation} className="px-5 py-2 bg-[#D4AF37] hover:bg-[#B38F2D] text-white font-bold text-xs rounded-xl shadow-md">Confirmar y Guardar Cita ✨</button>
                                 </div>
                             </div>
                         </div>
                     )}
 
-                    {}
-                    {/* MODAL CLIENTA */}
+                    {/* MODAL: CLIENTA EDIT/CREATE */}
                     {isClientModalOpen && (
-                        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+                        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-3">
                             <div className="bg-white rounded-3xl border-2 border-[#D4AF37] max-w-md w-full p-6 shadow-2xl space-y-4">
                                 <div className="flex justify-between items-center pb-2 border-b border-slate-100">
-                                    <h3 className="font-bold font-serif text-slate-900 text-lg">
-                                        {editingClient ? '✏️ Editar Clienta' : '➕ Registrar Clienta'}
-                                    </h3>
+                                    <h3 className="font-bold font-serif text-slate-900 text-base">{editingClient ? '✏️ Editar Datos de Clienta' : '➕ Registrar Nueva Clienta'}</h3>
                                     <button onClick={() => setIsClientModalOpen(false)} className="text-slate-400 font-bold">✕</button>
                                 </div>
 
                                 <form onSubmit={handleSaveClient} className="space-y-3 text-xs">
-                                    <div>
-                                        <label className="font-bold block text-slate-700">Nombre Completo:</label>
-                                        <input type="text" required value={clientForm.name} onChange={(e) => setClientForm({...clientForm, name: e.target.value})} className="w-full p-2.5 rounded-xl border outline-none" />
-                                    </div>
+                                    <div><label className="font-bold block text-slate-700">Nombre Completo:</label><input type="text" required value={clientForm.name} onChange={(e) => setClientForm({...clientForm, name: e.target.value})} className="w-full p-2.5 rounded-xl border border-slate-200 outline-none" /></div>
                                     <div className="grid grid-cols-2 gap-2">
-                                        <div>
-                                            <label className="font-bold block text-slate-700">RUT:</label>
-                                            <input type="text" required value={clientForm.rut} onChange={(e) => setClientForm({...clientForm, rut: e.target.value})} className="w-full p-2.5 rounded-xl border outline-none" />
-                                        </div>
-                                        <div>
-                                            <label className="font-bold block text-slate-700">Teléfono:</label>
-                                            <input type="text" value={clientForm.phone} onChange={(e) => setClientForm({...clientForm, phone: e.target.value})} className="w-full p-2.5 rounded-xl border outline-none" />
-                                        </div>
+                                        <div><label className="font-bold block text-slate-700">RUT:</label><input type="text" required value={clientForm.rut} onChange={(e) => setClientForm({...clientForm, rut: e.target.value})} className="w-full p-2.5 rounded-xl border border-slate-200 outline-none font-mono" /></div>
+                                        <div><label className="font-bold block text-slate-700">Teléfono:</label><input type="text" value={clientForm.phone} onChange={(e) => setClientForm({...clientForm, phone: e.target.value})} className="w-full p-2.5 rounded-xl border border-slate-200 outline-none" /></div>
                                     </div>
-                                    <div>
-                                        <label className="font-bold block text-slate-700">Email:</label>
-                                        <input type="email" value={clientForm.email} onChange={(e) => setClientForm({...clientForm, email: e.target.value})} className="w-full p-2.5 rounded-xl border outline-none" />
-                                    </div>
-                                    <div>
-                                        <label className="font-bold block text-slate-700">Dirección:</label>
-                                        <input type="text" value={clientForm.address} onChange={(e) => setClientForm({...clientForm, address: e.target.value})} className="w-full p-2.5 rounded-xl border outline-none" />
-                                    </div>
+                                    <div><label className="font-bold block text-slate-700">Correo Electrónico:</label><input type="email" value={clientForm.email} onChange={(e) => setClientForm({...clientForm, email: e.target.value})} className="w-full p-2.5 rounded-xl border border-slate-200 outline-none" /></div>
+                                    <div><label className="font-bold block text-slate-700">Dirección:</label><input type="text" value={clientForm.address} onChange={(e) => setClientForm({...clientForm, address: e.target.value})} className="w-full p-2.5 rounded-xl border border-slate-200 outline-none" /></div>
 
-                                    <div className="flex gap-2 pt-2">
-                                        <button type="button" onClick={() => setIsClientModalOpen(false)} className="flex-1 py-2.5 bg-slate-100 rounded-xl font-bold">Cancelar</button>
-                                        <button type="submit" className="flex-1 py-2.5 bg-[#D4AF37] text-white rounded-xl font-bold">Guardar Datos</button>
+                                    <div className="flex justify-end space-x-2 pt-2">
+                                        <button type="button" onClick={() => setIsClientModalOpen(false)} className="px-4 py-2 bg-slate-100 text-slate-800 font-bold rounded-xl">Cancelar</button>
+                                        <button type="submit" className="px-5 py-2 bg-[#D4AF37] text-white font-bold rounded-xl shadow-md">Guardar Clienta</button>
                                     </div>
                                 </form>
                             </div>
                         </div>
                     )}
 
-                    {/* MODAL SERVICIO */}
+                    {/* MODAL: CATALOG SERVICE EDIT/CREATE */}
                     {isServiceModalOpen && (
-                        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+                        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-3">
                             <div className="bg-white rounded-3xl border-2 border-[#D4AF37] max-w-md w-full p-6 shadow-2xl space-y-4">
                                 <div className="flex justify-between items-center pb-2 border-b border-slate-100">
-                                    <h3 className="font-bold font-serif text-slate-900 text-lg">
-                                        {editingService ? '✏️ Editar Servicio' : '➕ Nuevo Servicio'}
-                                    </h3>
+                                    <h3 className="font-bold font-serif text-slate-900 text-base">{editingService ? '✏️ Editar Servicio del Catálogo' : '➕ Nuevo Servicio Catálogo'}</h3>
                                     <button onClick={() => setIsServiceModalOpen(false)} className="text-slate-400 font-bold">✕</button>
                                 </div>
 
                                 <form onSubmit={handleSaveService} className="space-y-3 text-xs">
-                                    <div>
-                                        <label className="font-bold block text-slate-700">Nombre del Tratamiento:</label>
-                                        <input type="text" required value={serviceForm.name} onChange={(e) => setServiceForm({...serviceForm, name: e.target.value})} className="w-full p-2.5 rounded-xl border outline-none" />
-                                    </div>
-                                    <div>
-                                        <label className="font-bold block text-slate-700">Categoría:</label>
-                                        <select value={serviceForm.tag} onChange={(e) => { const catObj = CATALOG_CATEGORIES.find(c => c.id === e.target.value); setServiceForm({...serviceForm, tag: e.target.value, category: catObj ? catObj.categoryName : '💇‍♀️ SERVICIOS CAPILARES'}); }} className="w-full p-2.5 rounded-xl border outline-none font-bold">
-                                            {CATALOG_CATEGORIES.filter(c => c.id !== 'all').map(c => <option key={c.id} value={c.id}>{c.label}</option>)}
-                                        </select>
-                                    </div>
+                                    <div><label className="font-bold block text-slate-700">Nombre del Servicio:</label><input type="text" required value={serviceForm.name} onChange={(e) => setServiceForm({...serviceForm, name: e.target.value})} className="w-full p-2.5 rounded-xl border border-slate-200 outline-none" /></div>
                                     <div className="grid grid-cols-2 gap-2">
                                         <div>
-                                            <label className="font-bold block text-slate-700">Precio Base ($ CLP):</label>
-                                            <input type="number" required value={serviceForm.basePrice} onChange={(e) => setServiceForm({...serviceForm, basePrice: Number(e.target.value)})} className="w-full p-2.5 rounded-xl border font-mono font-bold" />
+                                            <label className="font-bold block text-slate-700">Categoría:</label>
+                                            <select value={serviceForm.tag} onChange={(e) => {
+                                                const catObj = CATALOG_CATEGORIES.find(c => c.id === e.target.value);
+                                                setServiceForm({...serviceForm, tag: e.target.value, category: catObj?.categoryName || 'SERVICIOS'});
+                                            }} className="w-full p-2.5 rounded-xl border border-slate-200 outline-none">
+                                                {CATALOG_CATEGORIES.filter(c => c.id !== 'all').map(c => (
+                                                    <option key={c.id} value={c.id}>{c.label}</option>
+                                                ))}
+                                            </select>
                                         </div>
-                                        <div>
-                                            <label className="font-bold block text-slate-700">Duración (Min):</label>
-                                            <input type="number" required value={serviceForm.duration} onChange={(e) => setServiceForm({...serviceForm, duration: Number(e.target.value)})} className="w-full p-2.5 rounded-xl border" />
-                                        </div>
+                                        <div><label className="font-bold block text-slate-700">Precio Base ($ CLP):</label><input type="number" required value={serviceForm.basePrice} onChange={(e) => setServiceForm({...serviceForm, basePrice: Number(e.target.value)})} className="w-full p-2.5 rounded-xl border border-slate-200 outline-none font-mono" /></div>
                                     </div>
-                                    <div>
-                                        <label className="font-bold block text-slate-700">Descripción:</label>
-                                        <textarea value={serviceForm.description} onChange={(e) => setServiceForm({...serviceForm, description: e.target.value})} className="w-full p-2.5 rounded-xl border h-16" />
-                                    </div>
-                                    <div>
-                                        <label className="font-bold block text-slate-700">URL Imagen Promocional:</label>
-                                        <input type="text" value={serviceForm.image} onChange={(e) => setServiceForm({...serviceForm, image: e.target.value})} className="w-full p-2.5 rounded-xl border outline-none" />
-                                    </div>
+                                    <div><label className="font-bold block text-slate-700">URL Imagen Imagen:</label><input type="text" value={serviceForm.image} onChange={(e) => setServiceForm({...serviceForm, image: e.target.value})} className="w-full p-2.5 rounded-xl border border-slate-200 outline-none" /></div>
+                                    <div><label className="font-bold block text-slate-700">Descripción:</label><textarea value={serviceForm.description} onChange={(e) => setServiceForm({...serviceForm, description: e.target.value})} className="w-full p-2.5 rounded-xl border border-slate-200 outline-none" rows="2" /></div>
 
-                                    <div className="flex gap-2 pt-2">
-                                        <button type="button" onClick={() => setIsServiceModalOpen(false)} className="flex-1 py-2.5 bg-slate-100 rounded-xl font-bold">Cancelar</button>
-                                        <button type="submit" className="flex-1 py-2.5 bg-[#D4AF37] text-white rounded-xl font-bold">Guardar Servicio</button>
+                                    <div className="flex justify-end space-x-2 pt-2">
+                                        <button type="button" onClick={() => setIsServiceModalOpen(false)} className="px-4 py-2 bg-slate-100 text-slate-800 font-bold rounded-xl">Cancelar</button>
+                                        <button type="submit" className="px-5 py-2 bg-[#D4AF37] text-white font-bold rounded-xl shadow-md">Guardar Servicio</button>
                                     </div>
                                 </form>
                             </div>
                         </div>
                     )}
 
-                    {}
-                    {/* MODAL GIFT CARD */}
+                    {/* MODAL: GIFT CARD EDIT/CREATE */}
                     {isGiftCardModalOpen && (
-                        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+                        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-3">
                             <div className="bg-white rounded-3xl border-2 border-[#D4AF37] max-w-md w-full p-6 shadow-2xl space-y-4">
                                 <div className="flex justify-between items-center pb-2 border-b border-slate-100">
-                                    <h3 className="font-bold font-serif text-slate-900 text-lg">
-                                        {editingGiftCard ? '✏️ Editar Gift Card' : '➕ Emitir Gift Card'}
-                                    </h3>
+                                    <h3 className="font-bold font-serif text-slate-900 text-base">{editingGiftCard ? '✏️ Editar Gift Card' : '🎁 Emitir Nueva Gift Card Lujo'}</h3>
                                     <button onClick={() => setIsGiftCardModalOpen(false)} className="text-slate-400 font-bold">✕</button>
                                 </div>
 
                                 <form onSubmit={handleSaveGiftCard} className="space-y-3 text-xs">
-                                    <div>
-                                        <label className="font-bold block text-slate-700">Destinataria:</label>
-                                        <input type="text" required value={giftCardForm.recipientName} onChange={(e) => setGiftCardForm({...giftCardForm, recipientName: e.target.value})} className="w-full p-2.5 rounded-xl border" />
-                                    </div>
-                                    <div>
-                                        <label className="font-bold block text-slate-700">Remitente:</label>
-                                        <input type="text" value={giftCardForm.senderName} onChange={(e) => setGiftCardForm({...giftCardForm, senderName: e.target.value})} className="w-full p-2.5 rounded-xl border" />
-                                    </div>
-                                    <div>
-                                        <label className="font-bold block text-slate-700">Servicio Regalado:</label>
-                                        <input type="text" value={giftCardForm.serviceName} onChange={(e) => setGiftCardForm({...giftCardForm, serviceName: e.target.value})} className="w-full p-2.5 rounded-xl border" />
-                                    </div>
                                     <div className="grid grid-cols-2 gap-2">
-                                        <div>
-                                            <label className="font-bold block text-slate-700">Monto Valor ($):</label>
-                                            <input type="number" required value={giftCardForm.amount} onChange={(e) => setGiftCardForm({...giftCardForm, amount: Number(e.target.value)})} className="w-full p-2.5 rounded-xl border font-mono font-bold" />
-                                        </div>
-                                        <div>
-                                            <label className="font-bold block text-slate-700">Código:</label>
-                                            <input type="text" value={giftCardForm.code} onChange={(e) => setGiftCardForm({...giftCardForm, code: e.target.value})} className="w-full p-2.5 rounded-xl border font-mono font-bold" />
-                                        </div>
+                                        <div><label className="font-bold block text-slate-700">Para (Destinataria):</label><input type="text" required value={giftCardForm.recipientName} onChange={(e) => setGiftCardForm({...giftCardForm, recipientName: e.target.value})} className="w-full p-2.5 rounded-xl border border-slate-200 outline-none" /></div>
+                                        <div><label className="font-bold block text-slate-700">De (Remitente):</label><input type="text" value={giftCardForm.senderName} onChange={(e) => setGiftCardForm({...giftCardForm, senderName: e.target.value})} className="w-full p-2.5 rounded-xl border border-slate-200 outline-none" /></div>
                                     </div>
-                                    <div>
-                                        <label className="font-bold block text-slate-700">Mensaje Dedicatoria:</label>
-                                        <input type="text" value={giftCardForm.message} onChange={(e) => setGiftCardForm({...giftCardForm, message: e.target.value})} className="w-full p-2.5 rounded-xl border" />
+                                    <div><label className="font-bold block text-slate-700">Tratamiento / Servicio Incluido:</label><input type="text" value={giftCardForm.serviceName} onChange={(e) => setGiftCardForm({...giftCardForm, serviceName: e.target.value})} className="w-full p-2.5 rounded-xl border border-slate-200 outline-none" /></div>
+                                    <div className="grid grid-cols-2 gap-2">
+                                        <div><label className="font-bold block text-slate-700">Monto ($ CLP):</label><input type="number" required value={giftCardForm.amount} onChange={(e) => setGiftCardForm({...giftCardForm, amount: Number(e.target.value)})} className="w-full p-2.5 rounded-xl border border-slate-200 outline-none font-mono" /></div>
+                                        <div><label className="font-bold block text-slate-700">Código Voucher:</label><input type="text" value={giftCardForm.code} onChange={(e) => setGiftCardForm({...giftCardForm, code: e.target.value})} className="w-full p-2.5 rounded-xl border border-slate-200 outline-none font-mono uppercase" /></div>
                                     </div>
+                                    <div><label className="font-bold block text-slate-700">Mensaje Especial:</label><textarea value={giftCardForm.message} onChange={(e) => setGiftCardForm({...giftCardForm, message: e.target.value})} className="w-full p-2.5 rounded-xl border border-slate-200 outline-none" rows="2" /></div>
 
-                                    <div className="flex gap-2 pt-2">
-                                        <button type="button" onClick={() => setIsGiftCardModalOpen(false)} className="flex-1 py-2.5 bg-slate-100 rounded-xl font-bold">Cancelar</button>
-                                        <button type="submit" className="flex-1 py-2.5 bg-[#D4AF37] text-white rounded-xl font-bold">Emitir Gift Card</button>
+                                    <div className="flex justify-end space-x-2 pt-2">
+                                        <button type="button" onClick={() => setIsGiftCardModalOpen(false)} className="px-4 py-2 bg-slate-100 text-slate-800 font-bold rounded-xl">Cancelar</button>
+                                        <button type="submit" className="px-5 py-2 bg-[#D4AF37] text-white font-bold rounded-xl shadow-md">Emitir Gift Card</button>
                                     </div>
                                 </form>
                             </div>
                         </div>
                     )}
 
-                    {/* MODAL STAFF */}
+                    {/* MODAL: PRINTABLE GIFT CARD VOUCHER */}
+                    {selectedGiftCardForPrint && (
+                        <div className="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-md flex items-center justify-center p-4">
+                            <div className="bg-white rounded-3xl border-4 border-[#D4AF37] max-w-lg w-full p-8 shadow-2xl space-y-6 text-center relative modal-print-container">
+                                <div className="no-print absolute top-4 right-4 flex space-x-2">
+                                    <button onClick={() => window.print()} className="px-3 py-1.5 bg-[#D4AF37] text-white font-bold text-xs rounded-xl shadow-md">🖨️ Imprimir Voucher</button>
+                                    <button onClick={() => setSelectedGiftCardForPrint(null)} className="px-3 py-1.5 bg-slate-200 text-slate-700 font-bold text-xs rounded-xl">✕ Cerrar</button>
+                                </div>
+
+                                <img src={OFFICIAL_LOGO} alt="SPA DIVAS ELEY" className="h-20 mx-auto object-contain" />
+                                <div>
+                                    <h2 className="text-2xl font-bold font-serif text-slate-900 tracking-wide">GIFT CARD LUXURY VOUCHER</h2>
+                                    <p className="text-xs text-[#B38F2D] font-serif italic">{BRAND_SLOGAN}</p>
+                                </div>
+
+                                <div className="p-6 bg-[#FAF7EE] rounded-3xl border-2 border-dashed border-[#D4AF37] space-y-3">
+                                    <p className="text-sm font-bold text-slate-600">PARA: <span className="text-slate-900 text-lg font-serif">{selectedGiftCardForPrint.recipientName}</span></p>
+                                    <p className="text-xs text-slate-500">DE PARTE DE: <span className="font-bold text-slate-800">{selectedGiftCardForPrint.senderName}</span></p>
+                                    <p className="text-xs italic text-slate-700">"{selectedGiftCardForPrint.message}"</p>
+                                    
+                                    <div className="pt-2 border-t border-amber-200 space-y-1">
+                                        <p className="text-xs font-bold text-[#8C6E20]">INCLUYE EL SERVICIO:</p>
+                                        <p className="text-base font-bold text-slate-900 font-serif">{selectedGiftCardForPrint.serviceName}</p>
+                                        <p className="text-2xl font-black font-serif text-[#B38F2D]">{formatCLP(selectedGiftCardForPrint.amount)}</p>
+                                    </div>
+
+                                    <div className="pt-2">
+                                        <span className="px-4 py-1.5 bg-[#212121] text-[#D4AF37] font-mono font-bold text-sm rounded-xl">
+                                            CÓDIGO: {selectedGiftCardForPrint.code}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div className="text-[10px] text-slate-500 space-y-1">
+                                    <p>📍 Valdivia 548, Galería Monte Dorado stand 34 y 35, Los Ángeles</p>
+                                    <p>Válido hasta: {selectedGiftCardForPrint.expirationDate}</p>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* MODAL: STAFF EDIT/CREATE */}
                     {isStaffModalOpen && (
-                        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+                        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-3">
                             <div className="bg-white rounded-3xl border-2 border-[#D4AF37] max-w-md w-full p-6 shadow-2xl space-y-4">
                                 <div className="flex justify-between items-center pb-2 border-b border-slate-100">
-                                    <h3 className="font-bold font-serif text-slate-900 text-lg">
-                                        {editingStaff ? '✏️ Editar Ficha Profesional' : '➕ Incorporar Profesional'}
-                                    </h3>
+                                    <h3 className="font-bold font-serif text-slate-900 text-base">{editingStaff ? '✏️ Editar Ficha de Profesional' : '➕ Incorporar Nueva Profesional'}</h3>
                                     <button onClick={() => setIsStaffModalOpen(false)} className="text-slate-400 font-bold">✕</button>
                                 </div>
 
                                 <form onSubmit={handleSaveStaff} className="space-y-3 text-xs">
-                                    <div>
-                                        <label className="font-bold block text-slate-700">Nombre Completo:</label>
-                                        <input type="text" required value={staffForm.name} onChange={(e) => setStaffForm({...staffForm, name: e.target.value})} className="w-full p-2.5 rounded-xl border" />
-                                    </div>
+                                    <div><label className="font-bold block text-slate-700">Nombre Completo:</label><input type="text" required value={staffForm.name} onChange={(e) => setStaffForm({...staffForm, name: e.target.value})} className="w-full p-2.5 rounded-xl border border-slate-200 outline-none" /></div>
                                     <div className="grid grid-cols-2 gap-2">
-                                        <div>
-                                            <label className="font-bold block text-slate-700">Email:</label>
-                                            <input type="email" required value={staffForm.email} onChange={(e) => setStaffForm({...staffForm, email: e.target.value})} className="w-full p-2.5 rounded-xl border" />
-                                        </div>
-                                        <div>
-                                            <label className="font-bold block text-slate-700">Contraseña:</label>
-                                            <input type="text" required value={staffForm.password} onChange={(e) => setStaffForm({...staffForm, password: e.target.value})} className="w-full p-2.5 rounded-xl border font-mono" />
-                                        </div>
+                                        <div><label className="font-bold block text-slate-700">Correo Electrónico:</label><input type="email" required value={staffForm.email} onChange={(e) => setStaffForm({...staffForm, email: e.target.value})} className="w-full p-2.5 rounded-xl border border-slate-200 outline-none" /></div>
+                                        <div><label className="font-bold block text-slate-700">Contraseña Access:</label><input type="text" required value={staffForm.password} onChange={(e) => setStaffForm({...staffForm, password: e.target.value})} className="w-full p-2.5 rounded-xl border border-slate-200 outline-none font-mono" /></div>
                                     </div>
                                     <div className="grid grid-cols-2 gap-2">
                                         <div>
                                             <label className="font-bold block text-slate-700">Rol Sistema:</label>
-                                            <select value={staffForm.role} onChange={(e) => setStaffForm({...staffForm, role: e.target.value})} className="w-full p-2.5 rounded-xl border font-bold">
+                                            <select value={staffForm.role} onChange={(e) => setStaffForm({...staffForm, role: e.target.value})} className="w-full p-2.5 rounded-xl border border-slate-200 outline-none">
                                                 <option value="PROFESIONAL">PROFESIONAL</option>
-                                                <option value="RECEPCION">RECEPCION</option>
-                                                <option value="ADMIN">ADMIN</option>
+                                                <option value="RECEPCION">RECEPCIÓN</option>
+                                                <option value="ADMIN">ADMINISTRADORA</option>
                                             </select>
                                         </div>
-                                        <div>
-                                            <label className="font-bold block text-slate-700">Teléfono:</label>
-                                            <input type="text" value={staffForm.phone} onChange={(e) => setStaffForm({...staffForm, phone: e.target.value})} className="w-full p-2.5 rounded-xl border" />
-                                        </div>
+                                        <div><label className="font-bold block text-slate-700">Especialidad Principal:</label><input type="text" value={staffForm.specialty} onChange={(e) => setStaffForm({...staffForm, specialty: e.target.value})} className="w-full p-2.5 rounded-xl border border-slate-200 outline-none" /></div>
                                     </div>
-                                    <div>
-                                        <label className="font-bold block text-slate-700">Especialidad:</label>
-                                        <input type="text" value={staffForm.specialty} onChange={(e) => setStaffForm({...staffForm, specialty: e.target.value})} className="w-full p-2.5 rounded-xl border" />
-                                    </div>
-                                    <div>
-                                        <label className="font-bold block text-slate-700">URL Foto Perfil:</label>
-                                        <input type="text" value={staffForm.photo} onChange={(e) => setStaffForm({...staffForm, photo: e.target.value})} className="w-full p-2.5 rounded-xl border" />
-                                    </div>
+                                    <div><label className="font-bold block text-slate-700">Teléfono:</label><input type="text" value={staffForm.phone} onChange={(e) => setStaffForm({...staffForm, phone: e.target.value})} className="w-full p-2.5 rounded-xl border border-slate-200 outline-none" /></div>
+                                    <div><label className="font-bold block text-slate-700">URL Foto Perfil:</label><input type="text" value={staffForm.photo} onChange={(e) => setStaffForm({...staffForm, photo: e.target.value})} className="w-full p-2.5 rounded-xl border border-slate-200 outline-none" /></div>
 
-                                    <div className="flex gap-2 pt-2">
-                                        <button type="button" onClick={() => setIsStaffModalOpen(false)} className="flex-1 py-2.5 bg-slate-100 rounded-xl font-bold">Cancelar</button>
-                                        <button type="submit" className="flex-1 py-2.5 bg-[#D4AF37] text-white rounded-xl font-bold">Guardar Profesional</button>
+                                    <div className="flex justify-end space-x-2 pt-2">
+                                        <button type="button" onClick={() => setIsStaffModalOpen(false)} className="px-4 py-2 bg-slate-100 text-slate-800 font-bold rounded-xl">Cancelar</button>
+                                        <button type="submit" className="px-5 py-2 bg-[#D4AF37] text-white font-bold rounded-xl shadow-md">Guardar Profesional</button>
                                     </div>
                                 </form>
                             </div>
                         </div>
                     )}
 
-                    {}
-                    {/* MODAL PROMOCION */}
+                    {/* MODAL: PROMOTION EDIT/CREATE */}
                     {isPromoModalOpen && (
-                        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+                        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-3">
                             <div className="bg-white rounded-3xl border-2 border-[#D4AF37] max-w-md w-full p-6 shadow-2xl space-y-4">
                                 <div className="flex justify-between items-center pb-2 border-b border-slate-100">
-                                    <h3 className="font-bold font-serif text-slate-900 text-lg">
-                                        {editingPromo ? '✏️ Editar Promoción' : '➕ Nueva Promoción'}
-                                    </h3>
+                                    <h3 className="font-bold font-serif text-slate-900 text-base">{editingPromo ? '✏️ Editar Promoción' : '➕ Nueva Promoción / Cupón'}</h3>
                                     <button onClick={() => setIsPromoModalOpen(false)} className="text-slate-400 font-bold">✕</button>
                                 </div>
 
                                 <form onSubmit={handleSavePromo} className="space-y-3 text-xs">
-                                    <div>
-                                        <label className="font-bold block text-slate-700">Título Banner:</label>
-                                        <input type="text" required value={promoForm.title} onChange={(e) => setPromoForm({...promoForm, title: e.target.value})} className="w-full p-2.5 rounded-xl border" />
-                                    </div>
+                                    <div><label className="font-bold block text-slate-700">Título Oferta:</label><input type="text" required value={promoForm.title} onChange={(e) => setPromoForm({...promoForm, title: e.target.value})} className="w-full p-2.5 rounded-xl border border-slate-200 outline-none" /></div>
                                     <div className="grid grid-cols-2 gap-2">
-                                        <div>
-                                            <label className="font-bold block text-slate-700">Código Cupón:</label>
-                                            <input type="text" required value={promoForm.code} onChange={(e) => setPromoForm({...promoForm, code: e.target.value.toUpperCase()})} className="w-full p-2.5 rounded-xl border font-mono font-bold uppercase" />
-                                        </div>
+                                        <div><label className="font-bold block text-slate-700">Código Cupón:</label><input type="text" required value={promoForm.code} onChange={(e) => setPromoForm({...promoForm, code: e.target.value})} className="w-full p-2.5 rounded-xl border border-slate-200 outline-none font-mono uppercase" /></div>
                                         <div>
                                             <label className="font-bold block text-slate-700">Tipo Descuento:</label>
-                                            <select value={promoForm.discountType} onChange={(e) => setPromoForm({...promoForm, discountType: e.target.value})} className="w-full p-2.5 rounded-xl border font-bold">
+                                            <select value={promoForm.discountType} onChange={(e) => setPromoForm({...promoForm, discountType: e.target.value})} className="w-full p-2.5 rounded-xl border border-slate-200 outline-none">
                                                 <option value="PERCENT">Porcentaje (%)</option>
                                                 <option value="FIXED">Monto Fijo ($ CLP)</option>
                                             </select>
                                         </div>
                                     </div>
-                                    <div>
-                                        <label className="font-bold block text-slate-700">Valor Descuento ({promoForm.discountType === 'PERCENT' ? '%' : '$ CLP'}):</label>
-                                        <input type="number" required value={promoForm.discountValue} onChange={(e) => setPromoForm({...promoForm, discountValue: Number(e.target.value)})} className="w-full p-2.5 rounded-xl border font-mono font-bold" />
-                                    </div>
-                                    <div>
-                                        <label className="font-bold block text-slate-700">Descripción:</label>
-                                        <textarea value={promoForm.description} onChange={(e) => setPromoForm({...promoForm, description: e.target.value})} className="w-full p-2.5 rounded-xl border h-16" />
-                                    </div>
-                                    <div>
-                                        <label className="font-bold block text-slate-700">URL Imagen Banner:</label>
-                                        <input type="text" value={promoForm.image} onChange={(e) => setPromoForm({...promoForm, image: e.target.value})} className="w-full p-2.5 rounded-xl border" />
-                                    </div>
+                                    <div><label className="font-bold block text-slate-700">Valor Descuento ({promoForm.discountType === 'PERCENT' ? '%' : '$ CLP'}):</label><input type="number" required value={promoForm.discountValue} onChange={(e) => setPromoForm({...promoForm, discountValue: Number(e.target.value)})} className="w-full p-2.5 rounded-xl border border-slate-200 outline-none font-mono" /></div>
+                                    <div><label className="font-bold block text-slate-700">Descripción:</label><textarea value={promoForm.description} onChange={(e) => setPromoForm({...promoForm, description: e.target.value})} className="w-full p-2.5 rounded-xl border border-slate-200 outline-none" rows="2" /></div>
 
-                                    <div className="flex gap-2 pt-2">
-                                        <button type="button" onClick={() => setIsPromoModalOpen(false)} className="flex-1 py-2.5 bg-slate-100 rounded-xl font-bold">Cancelar</button>
-                                        <button type="submit" className="flex-1 py-2.5 bg-[#D4AF37] text-white rounded-xl font-bold">Guardar Promoción</button>
+                                    <div className="flex justify-end space-x-2 pt-2">
+                                        <button type="button" onClick={() => setIsPromoModalOpen(false)} className="px-4 py-2 bg-slate-100 text-slate-800 font-bold rounded-xl">Cancelar</button>
+                                        <button type="submit" className="px-5 py-2 bg-[#D4AF37] text-white font-bold rounded-xl shadow-md">Guardar Oferta</button>
                                     </div>
                                 </form>
                             </div>
                         </div>
                     )}
 
-                    {/* MODAL CRM BROADCAST */}
+                    {/* MODAL: CRM BROADCAST TO CLIENTS */}
                     {isCrmModalOpen && selectedPromoForCrm && (
-                        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+                        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-3">
                             <div className="bg-white rounded-3xl border-2 border-[#D4AF37] max-w-xl w-full p-6 shadow-2xl space-y-4 max-h-[85vh] overflow-y-auto">
                                 <div className="flex justify-between items-center pb-2 border-b border-slate-100">
                                     <div>
-                                        <h3 className="font-bold font-serif text-slate-900 text-lg">📣 Difusión CRM por WhatsApp & Correo</h3>
-                                        <p className="text-xs text-slate-500">Promoción: <strong>{selectedPromoForCrm.title}</strong> (Código: {selectedPromoForCrm.code})</p>
+                                        <h3 className="font-bold font-serif text-slate-900 text-base">📣 Difusión CRM — {selectedPromoForCrm.title}</h3>
+                                        <p className="text-xs text-slate-500">Selecciona clientas para enviarles la promoción directamente.</p>
                                     </div>
                                     <button onClick={() => setIsCrmModalOpen(false)} className="text-slate-400 font-bold">✕</button>
                                 </div>
 
-                                <div className="space-y-3 text-xs">
-                                    <p className="text-slate-600">Selecciona una clienta para enviarle directamente el cupón de descuento:</p>
-
-                                    <div className="max-h-60 overflow-y-auto divide-y divide-slate-100 border rounded-2xl p-2">
-                                        {clients.map(client => (
-                                            <div key={client.id} className="p-2.5 flex items-center justify-between hover:bg-amber-50/50">
-                                                <div>
-                                                    <p className="font-bold text-slate-900">{client.name}</p>
-                                                    <p className="text-[10px] text-slate-500">{client.phone} | {client.email}</p>
-                                                </div>
-                                                <div className="flex gap-1.5">
-                                                    <button onClick={() => sendCrmWhatsApp(client, selectedPromoForCrm)} className="px-2.5 py-1 bg-emerald-600 text-white rounded-lg font-bold text-[10px]">💬 WhatsApp</button>
-                                                    <button onClick={() => sendCrmEmail(client, selectedPromoForCrm)} className="px-2.5 py-1 bg-slate-800 text-amber-300 rounded-lg font-bold text-[10px]">✉️ Email</button>
-                                                </div>
+                                <div className="space-y-3">
+                                    {clients.map(client => (
+                                        <div key={client.id} className="p-3 bg-slate-50 rounded-2xl border border-slate-200 flex justify-between items-center text-xs">
+                                            <div>
+                                                <p className="font-bold text-slate-900">{client.name}</p>
+                                                <p className="text-[10px] text-slate-500">{client.phone} | {client.email}</p>
                                             </div>
-                                        ))}
-                                    </div>
-                                </div>
-
-                                <div className="pt-2 border-t border-slate-100">
-                                    <button onClick={() => setIsCrmModalOpen(false)} className="w-full py-2.5 bg-slate-100 text-slate-700 font-bold rounded-xl">Cerrar CRM</button>
+                                            <div className="flex space-x-2">
+                                                <button onClick={() => sendCrmWhatsApp(client, selectedPromoForCrm)} className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[10px] rounded-xl">💬 WhatsApp</button>
+                                                <button onClick={() => sendCrmEmail(client, selectedPromoForCrm)} className="px-3 py-1.5 bg-slate-800 hover:bg-slate-900 text-white font-bold text-[10px] rounded-xl">✉️ Email</button>
+                                            </div>
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
                         </div>
                     )}
- {}
+
                     {/* MODAL: FICHA TÉCNICA CLÍNICA FACIAL Y CORPORAL COMPLETA */}
                     {isFichaClinicalModalOpen && selectedClientForFicha && (
                         <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4 modal-print-container">
@@ -3161,8 +3037,8 @@
                                                     </thead>
                                                     <tbody className="divide-y divide-slate-200 bg-white">
                                                         {Array.isArray(bodyForm.sessions) && bodyForm.sessions.map((s, idx) => (
-                                                            <tr key={s.id} className="hover:bg-slate-50">
-                                                                <td className="p-2 font-bold text-center bg-slate-100 text-slate-900">Sesión {s.id}</td>
+                                                            <tr key={s.id || idx} className="hover:bg-slate-50">
+                                                                <td className="p-2 font-bold text-center bg-slate-100 text-slate-900">Sesión {s.id || (idx + 1)}</td>
                                                                 <td className="p-2">
                                                                     <input type="date" value={s.fecha || ''} onChange={(e) => {
                                                                         const updated = [...bodyForm.sessions];
@@ -3201,163 +3077,113 @@
                         </div>
                     )}
 
-                    {/* MODAL REPORTE DE VENTAS */}
+                    {/* MODAL: ADMIN EDIT RESERVATION */}
+                    {isReservationEditModalOpen && editingReservation && (
+                        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-3">
+                            <div className="bg-white rounded-3xl border-2 border-[#D4AF37] max-w-md w-full p-6 shadow-2xl space-y-4">
+                                <div className="flex justify-between items-center pb-2 border-b border-slate-100">
+                                    <h3 className="font-bold font-serif text-slate-900 text-base">✏️ Editar Cita #{editingReservation.id}</h3>
+                                    <button onClick={() => setIsReservationEditModalOpen(false)} className="text-slate-400 font-bold">✕</button>
+                                </div>
+
+                                <div className="space-y-3 text-xs">
+                                    <div><label className="font-bold block text-slate-700">Clienta:</label><input type="text" value={editingReservation.clientName} onChange={(e) => setEditingReservation({...editingReservation, clientName: e.target.value})} className="w-full p-2.5 rounded-xl border border-slate-200 outline-none" /></div>
+                                    <div className="grid grid-cols-2 gap-2">
+                                        <div><label className="font-bold block text-slate-700">Fecha:</label><input type="date" value={editingReservation.date} onChange={(e) => setEditingReservation({...editingReservation, date: e.target.value})} className="w-full p-2.5 rounded-xl border border-slate-200 outline-none" /></div>
+                                        <div><label className="font-bold block text-slate-700">Hora:</label><input type="time" value={editingReservation.time} onChange={(e) => setEditingReservation({...editingReservation, time: e.target.value})} className="w-full p-2.5 rounded-xl border border-slate-200 outline-none" /></div>
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-2">
+                                        <div><label className="font-bold block text-slate-700">Total Cita ($ CLP):</label><input type="number" value={editingReservation.total} onChange={(e) => setEditingReservation({...editingReservation, total: Number(e.target.value)})} className="w-full p-2.5 rounded-xl border border-slate-200 outline-none font-mono" /></div>
+                                        <div><label className="font-bold block text-slate-700">Monto Pagado ($ CLP):</label><input type="number" value={editingReservation.paidAmount} onChange={(e) => setEditingReservation({...editingReservation, paidAmount: Number(e.target.value), balance: Math.max(0, editingReservation.total - Number(e.target.value))})} className="w-full p-2.5 rounded-xl border border-slate-200 outline-none font-mono" /></div>
+                                    </div>
+
+                                    <div className="flex justify-end space-x-2 pt-2">
+                                        <button onClick={() => setIsReservationEditModalOpen(false)} className="px-4 py-2 bg-slate-100 text-slate-800 font-bold rounded-xl">Cancelar</button>
+                                        <button onClick={handleSaveReservationEdit} className="px-5 py-2 bg-[#D4AF37] text-white font-bold rounded-xl shadow-md">Guardar Cambios Cita</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* MODAL: FINANCIAL REPORT */}
                     {isReportModalOpen && (
-                        <div className="fixed inset-0 z-50 bg-slate-900/65 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 modal-print-container">
-                            <div className="bg-white rounded-3xl border-2 border-[#D4AF37] max-w-4xl w-full p-6 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
-                                <div className="flex justify-between items-center pb-3 border-b border-slate-100 no-print">
-                                    <div className="flex items-center space-x-3">
-                                        <span className="p-2.5 rounded-2xl bg-[#D4AF37] text-white font-bold text-lg">📑</span>
-                                        <div>
-                                            <h3 className="font-bold font-serif text-slate-900 text-lg">Reporte de Ventas & Arqueo POS</h3>
-                                            <p className="text-xs text-slate-500">Período: <strong>{reportStartDate}</strong> al <strong>{reportEndDate}</strong></p>
-                                        </div>
+                        <div className="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-md flex items-center justify-center p-3">
+                            <div className="bg-white rounded-3xl border-2 border-[#D4AF37] max-w-3xl w-full p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto modal-print-container">
+                                <div className="no-print flex justify-between items-center pb-2 border-b border-slate-100">
+                                    <h3 className="font-bold font-serif text-slate-900 text-lg">📑 Informe Financiero y Producción por Profesional</h3>
+                                    <button onClick={() => setIsReportModalOpen(false)} className="text-slate-400 font-bold text-xl">✕</button>
+                                </div>
+
+                                <div className="no-print p-4 bg-slate-50 rounded-2xl flex items-center space-x-3 text-xs">
+                                    <span className="font-bold text-slate-700">Rango Informe:</span>
+                                    <input type="date" value={reportStartDate} onChange={(e) => setReportStartDate(e.target.value)} className="p-2 border rounded-xl" />
+                                    <span>a</span>
+                                    <input type="date" value={reportEndDate} onChange={(e) => setReportEndDate(e.target.value)} className="p-2 border rounded-xl" />
+                                </div>
+
+                                <div className="space-y-4 text-xs">
+                                    <div className="grid grid-cols-3 gap-3">
+                                        <div className="p-4 bg-emerald-50 rounded-2xl border border-emerald-200"><span className="text-[10px] font-bold text-emerald-800">TOTAL RECAUDADO POS</span><div className="text-xl font-bold font-serif text-emerald-900">{formatCLP(reportSummary.totalRecaudado)}</div></div>
+                                        <div className="p-4 bg-amber-50 rounded-2xl border border-amber-200"><span className="text-[10px] font-bold text-amber-800">TOTAL CITAS</span><div className="text-xl font-bold font-serif text-amber-900">{formatCLP(reportSummary.totalVentas)}</div></div>
+                                        <div className="p-4 bg-rose-50 rounded-2xl border border-rose-200"><span className="text-[10px] font-bold text-rose-800">PENDIENTE COBRO</span><div className="text-xl font-bold font-serif text-rose-900">{formatCLP(reportSummary.totalSaldos)}</div></div>
                                     </div>
-                                    <div className="flex items-center space-x-2">
-                                        <button onClick={() => window.print()} className="px-4 py-2 bg-slate-900 text-white font-bold text-xs rounded-xl">🖨️ Imprimir PDF</button>
-                                        <button onClick={() => setIsReportModalOpen(false)} className="text-slate-400 font-bold text-xl p-1">✕</button>
-                                    </div>
-                                </div>
 
-                                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
-                                    <div className="p-4 rounded-2xl bg-slate-50 border"><span className="text-[10px] text-slate-500 font-bold uppercase block">Total Recaudado</span><span className="text-lg font-bold text-emerald-700 font-serif">{formatCLP(reportSummary.totalRecaudado)}</span></div>
-                                    <div className="p-4 rounded-2xl bg-slate-50 border"><span className="text-[10px] text-slate-500 font-bold uppercase block">Ventas Totales</span><span className="text-lg font-bold text-slate-900 font-serif">{formatCLP(reportSummary.totalVentas)}</span></div>
-                                    <div className="p-4 rounded-2xl bg-slate-50 border"><span className="text-[10px] text-slate-500 font-bold uppercase block">Saldos Pendientes</span><span className="text-lg font-bold text-rose-600 font-serif">{formatCLP(reportSummary.totalSaldos)}</span></div>
-                                    <div className="p-4 rounded-2xl bg-slate-50 border"><span className="text-[10px] text-slate-500 font-bold uppercase block">Cantidad Citas</span><span className="text-lg font-bold text-slate-900 font-serif">{reportSummary.count} Atenciones</span></div>
-                                </div>
-
-                                <div className="space-y-4 pt-2 border-t border-slate-200">
-                                    <h4 className="font-bold text-slate-900 font-serif text-sm">👩‍💼 Producción & Detalle Diario por Profesional:</h4>
-                                    <div className="space-y-6">
-                                        {profSummary.map(prof => {
-                                            const dates = Object.keys(prof.dailyMap).sort().reverse();
-                                            return (
-                                                <div key={prof.profId} className="p-4 rounded-2xl bg-gradient-to-br from-[#FFFDF9] to-[#FAF7EE] border border-amber-200 space-y-3">
-                                                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pb-3 border-b border-amber-200/80">
-                                                        <div className="flex items-center space-x-3">
-                                                            {prof.photo ? (
-                                                                <img src={prof.photo} alt={prof.profName} className="w-10 h-10 rounded-full object-cover border-2 border-[#D4AF37]" />
-                                                            ) : (
-                                                                <div className="w-10 h-10 rounded-full bg-[#D4AF37] text-white font-bold flex items-center justify-center text-xs">
-                                                                    {prof.profName.split(' ').map(n=>n[0]).join('').substring(0,2)}
-                                                                </div>
-                                                            )}
-                                                            <div>
-                                                                <h5 className="font-bold text-slate-900 text-sm">{prof.profName}</h5>
-                                                                <span className="text-[10px] text-[#B38F2D] font-bold uppercase">{prof.specialty || prof.role}</span>
-                                                            </div>
-                                                        </div>
-
-                                                        <div className="flex items-center gap-3 text-xs font-bold">
-                                                            <div className="p-2 rounded-xl bg-white border border-slate-200">
-                                                                <span className="text-[9px] text-slate-400 block uppercase">Servicios</span>
-                                                                <span className="text-slate-900">{prof.totalServices} atenciones</span>
-                                                            </div>
-                                                            <div className="p-2 rounded-xl bg-white border border-slate-200">
-                                                                <span className="text-[9px] text-slate-400 block uppercase">Ventas Generadas</span>
-                                                                <span className="text-[#B38F2D]">{formatCLP(prof.totalSales)}</span>
-                                                            </div>
-                                                            <div className="p-2 rounded-xl bg-emerald-50 border border-emerald-200">
-                                                                <span className="text-[9px] text-emerald-600 block uppercase">Recaudado</span>
-                                                                <span className="text-emerald-800">{formatCLP(prof.totalPaid)}</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    {dates.length === 0 ? (
-                                                        <p className="text-slate-400 italic text-[11px]">Sin atenciones registradas en el período.</p>
-                                                    ) : (
-                                                        dates.map(dateKey => (
-                                                            <div key={dateKey} className="space-y-1">
-                                                                <div className="font-bold font-mono text-[11px] text-slate-700 bg-amber-100/60 px-2 py-1 rounded-md">
-                                                                    📅 {dateKey}
-                                                                </div>
-                                                                <div className="divide-y divide-slate-100 pl-2">
-                                                                    {prof.dailyMap[dateKey].map((item, idx) => (
-                                                                        <div key={idx} className="py-1 flex justify-between items-center text-[10px]">
-                                                                            <div>
-                                                                                <span className="font-bold text-slate-800">{item.time} — {item.clientName}</span>
-                                                                                <span className="text-slate-500 block">{item.serviceName} ({item.paymentMethod})</span>
-                                                                            </div>
-                                                                            <div className="text-right">
-                                                                                <span className="font-bold text-slate-900 block">{formatCLP(item.price)}</span>
-                                                                                <span className="text-emerald-700 font-bold block">Pagado: {formatCLP(item.paidAmount)}</span>
-                                                                            </div>
-                                                                        </div>
-                                                                    ))}
-                                                                </div>
-                                                            </div>
-                                                        ))
-                                                    )}
-                                                </div>
-                                            );
-                                        })}
-                                    </div>
-                                </div>
-
-                                <div className="no-print pt-2 border-t border-slate-100 flex justify-end">
-                                    <button onClick={() => setIsReportModalOpen(false)} className="px-5 py-2.5 bg-slate-100 text-slate-700 font-bold text-xs rounded-xl">Cerrar Reporte</button>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-
-                    {}
-                    {/* Modal para Imprimir Gift Card */}
-                    {selectedGiftCardForPrint && (
-                        <div className="fixed inset-0 z-50 bg-slate-900/65 backdrop-blur-sm flex items-center justify-center p-4 modal-print-container">
-                            <div className="bg-white rounded-3xl border-2 border-[#D4AF37] max-w-lg w-full p-6 shadow-2xl space-y-6">
-                                <div className="flex justify-between items-center pb-2 border-b border-slate-100 no-print">
-                                    <h3 className="font-bold font-serif text-slate-900 text-base">🎁 Imprimir Gift Card Diva</h3>
-                                    <div className="flex items-center space-x-2">
-                                        <button onClick={() => window.print()} className="px-3.5 py-2 bg-[#D4AF37] hover:bg-[#B38F2D] text-white font-bold text-xs rounded-xl shadow-md">🖨️ Imprimir / PDF</button>
-                                        <button onClick={() => setSelectedGiftCardForPrint(null)} className="text-slate-400 font-bold text-lg p-1">✕</button>
-                                    </div>
-                                </div>
-
-                                <div className="p-8 rounded-3xl bg-gradient-to-br from-[#FAF7EE] via-[#FFFDF9] to-[#F4EEDC] border-2 border-[#D4AF37] space-y-6 text-center shadow-xl relative overflow-hidden">
                                     <div className="space-y-2">
-                                        <img src={OFFICIAL_LOGO} alt="SPA DIVAS ELEY" className="h-16 mx-auto object-contain" />
-                                        <h2 className="text-xl font-bold font-serif text-slate-900 tracking-wider">SPA DIVAS ELEY</h2>
-                                        <p className="text-[10px] text-[#B38F2D] font-serif font-bold italic">{BRAND_SLOGAN}</p>
-                                    </div>
-
-                                    <div className="py-3 border-y border-[#D4AF37]/40 space-y-2">
-                                        <span className="text-[10px] font-bold text-[#8C6E20] uppercase tracking-widest block">GIFT CARD / VOUCHER DE REGALO</span>
-                                        <h3 className="text-2xl font-bold font-serif text-slate-900">{selectedGiftCardForPrint.serviceName}</h3>
-                                        <div className="text-3xl font-bold font-serif text-[#B38F2D] mt-1">{formatCLP(selectedGiftCardForPrint.amount)}</div>
-                                    </div>
-
-                                    <div className="text-xs space-y-2 text-slate-700 text-left bg-white/80 p-4 rounded-2xl border border-amber-200">
-                                        <p>👤 <strong>Para:</strong> {selectedGiftCardForPrint.recipientName}</p>
-                                        <p>💝 <strong>De parte de:</strong> {selectedGiftCardForPrint.senderName}</p>
-                                        {selectedGiftCardForPrint.message && <p className="italic text-slate-600">💬 "{selectedGiftCardForPrint.message}"</p>}
-                                        <p className="pt-1">📅 <strong>Válida hasta:</strong> {selectedGiftCardForPrint.expirationDate}</p>
-                                    </div>
-
-                                    <div className="pt-2 flex justify-between items-center text-xs border-t border-[#D4AF37]/30">
-                                        <div className="text-left">
-                                            <p className="text-[10px] text-slate-500 font-bold">CÓDIGO DE CANJE:</p>
-                                            <p className="font-mono text-sm font-bold text-[#B38F2D]">{selectedGiftCardForPrint.code}</p>
-                                        </div>
-                                        <div className="text-right text-[9px] text-slate-500 max-w-[200px]">
-                                            <p className="font-bold text-slate-800">{SPA_ADDRESS}</p>
-                                            <p>Presentar este voucher al agendar tu cita.</p>
+                                        <h4 className="font-bold text-slate-900 font-serif text-sm">👩‍💼 Producción por Profesional del Staff:</h4>
+                                        <div className="overflow-x-auto border border-slate-200 rounded-2xl">
+                                            <table className="w-full text-left text-xs">
+                                                <thead className="bg-[#FAF7EE] text-[#8C6E20] uppercase font-bold text-[10px]">
+                                                    <tr>
+                                                        <th className="p-3">Profesional</th>
+                                                        <th className="p-3">Rol / Especialidad</th>
+                                                        <th className="p-3">Servicios Atendidos</th>
+                                                        <th className="p-3">Total Servicios ($ CLP)</th>
+                                                        <th className="p-3">Total Recaudado ($ CLP)</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody className="divide-y divide-slate-100 font-medium">
+                                                    {profSummary.map(p => (
+                                                        <tr key={p.profId} className="hover:bg-amber-50/30">
+                                                            <td className="p-3 font-bold text-slate-900">{p.profName}</td>
+                                                            <td className="p-3 text-slate-500">{p.specialty}</td>
+                                                            <td className="p-3">{p.totalServices} atenciones</td>
+                                                            <td className="p-3 font-bold text-slate-900">{formatCLP(p.totalSales)}</td>
+                                                            <td className="p-3 font-bold text-emerald-700">{formatCLP(p.totalPaid)}</td>
+                                                        </tr>
+                                                    ))}
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div className="no-print pt-2 border-t border-slate-100 flex justify-end">
-                                    <button onClick={() => setSelectedGiftCardForPrint(null)} className="px-5 py-2.5 bg-slate-100 text-slate-700 font-bold text-xs rounded-xl">Cerrar</button>
+                                <div className="no-print flex justify-end space-x-2 pt-2 border-t border-slate-100">
+                                    <button onClick={() => window.print()} className="px-4 py-2 bg-[#212121] text-amber-300 font-bold text-xs rounded-xl">🖨️ Imprimir Reporte</button>
+                                    <button onClick={() => setIsReportModalOpen(false)} className="px-4 py-2 bg-slate-100 text-slate-800 font-bold text-xs rounded-xl">Cerrar</button>
                                 </div>
                             </div>
                         </div>
                     )}
 
-                    {/* Toast Notification */}
+                    {/* MODAL: RESET DEMO SALES CONFIRM */}
+                    {isResetDemoModalOpen && (
+                        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-3">
+                            <div className="bg-white rounded-3xl border-2 border-rose-500 max-w-sm w-full p-6 shadow-2xl space-y-4 text-center">
+                                <span className="text-4xl">🧹</span>
+                                <h3 className="font-bold text-slate-900 text-base font-serif">¿Reiniciar Ventas y Citas?</h3>
+                                <p className="text-xs text-slate-600">Esta acción borrará los registros de citas de demostración para iniciar el sistema en limpio. Las clientas y el catálogo se mantendrán intactos.</p>
+                                <div className="flex justify-center space-x-2 pt-2">
+                                    <button onClick={() => setIsResetDemoModalOpen(false)} className="px-4 py-2 bg-slate-100 text-slate-800 font-bold text-xs rounded-xl">Cancelar</button>
+                                    <button onClick={handleResetDemoData} className="px-4 py-2 bg-rose-600 text-white font-bold text-xs rounded-xl shadow-md">Sí, Reiniciar</button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* TOAST NOTIFICATION */}
                     {toast && (
-                        <div className={`fixed bottom-5 right-5 z-50 px-5 py-3.5 rounded-2xl text-xs font-bold shadow-2xl transition-all flex items-center space-x-2 ${toast.type === 'error' ? 'bg-rose-600 text-white' : 'bg-[#212121] text-white border border-[#D4AF37]'}`}>
-                            <span>{toast.type === 'error' ? '⚠️' : '✨'}</span>
+                        <div className={`fixed bottom-5 right-5 z-50 px-5 py-3 rounded-2xl shadow-2xl text-xs font-bold flex items-center space-x-2 transition-all transform animate-bounce ${toast.type === 'error' ? 'bg-rose-900 text-white border border-rose-700' : 'bg-[#212121] text-[#D4AF37] border-2 border-[#D4AF37]'}`}>
                             <span>{toast.message}</span>
                         </div>
                     )}
@@ -3365,8 +3191,7 @@
             );
         }
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
+        ReactDOM.createRoot(document.getElementById('root')).render(<App />);
     </script>
 </body>
 </html>
