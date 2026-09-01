@@ -4,7 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SPA DIVAS ELEY — Sistema de Gestión Profesional</title>
-    <!-- Tailwind CSS -->
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDocs, collection } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+                // Credenciales oficiales de SPA DIVAS ELEY
+        const firebaseConfig = {
+            apiKey: "AIzaSyDSqtqy1TjGD5bSrTMjBpJU-iewEf5qnWw",
+            authDomain: "divaseleyreservas.firebaseapp.com",
+            databaseURL: "https://divaseleyreservas-default-rtdb.firebaseio.com",
+            projectId: "divaseleyreservas",
+            storageBucket: "divaseleyreservas.firebasestorage.app",
+            messagingSenderId: "393230170124",
+            appId: "1:393230170124:web:0ac0ef1a20676e88d11629",
+            measurementId: "G-Z5ZDC4NVHS"
+        };
+
+
+        // Inicialización global
+        window.firebaseConfigData = firebaseConfig;
+        window.firebaseApp = initializeApp(firebaseConfig);
+        window.firebaseAuth = getAuth(window.firebaseApp);
+        window.firebaseDb = getFirestore(window.firebaseApp);
+
+        // Persistencia de sesión continua
+        setPersistence(window.firebaseAuth, browserLocalPersistence)
+            .catch((error) => console.error("Error fijando la sesión:", error));
+    </script>
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -28,7 +57,7 @@
             }
         }
     </script>
-    <!-- React & Babel CDNs -->
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.6/babel.min.js"></script>
@@ -64,6 +93,11 @@
         }
         ::-webkit-scrollbar-thumb:hover {
             background: #211900;
+        }
+        @media print {
+            aside, header, button {
+                display: none !important;
+            }
         }
     </style>
 </head>
@@ -548,35 +582,16 @@
             const [isNotification, setIsNotification] = useState({ show: false, message: '', type: 'success' });
             
             const [firebaseConnected, setFirebaseConnected] = useState(true);
-                // Credenciales oficiales de SPA DIVAS ELEY
-        const firebaseConfig = {
-            apiKey: "AIzaSyDSqtqy1TjGD5bSrTMjBpJU-iewEf5qnWw",
-            authDomain: "divaseleyreservas.firebaseapp.com",
-            databaseURL: "https://divaseleyreservas-default-rtdb.firebaseio.com",
-            projectId: "divaseleyreservas",
-            storageBucket: "divaseleyreservas.firebasestorage.app",
-            messagingSenderId: "393230170124",
-            appId: "1:393230170124:web:0ac0ef1a20676e88d11629",
-            measurementId: "G-Z5ZDC4NVHS"
-        };
-
-        try {
-            window.firebaseConfigData = firebaseConfig;
-            window.firebaseApp = initializeApp(firebaseConfig);
-            window.firebaseAuth = getAuth(window.firebaseApp);
-            window.firebaseDb = getFirestore(window.firebaseApp);
-
-            window.firebaseSDK = {
-                doc, setDoc, getDoc, updateDoc, deleteDoc, collection, onSnapshot, query, getDocs, signInAnonymously, signInWithCustomToken, onAuthStateChanged
-            };
-
-            setPersistence(window.firebaseAuth, browserLocalPersistence)
-                .catch((error) => console.warn("Persistencia Firebase Auth:", error));
-
-            window.dispatchEvent(new Event('firebase-ready'));
-        } catch (e) {
-            console.warn("Error al inicializar Firebase:", e);
-        }
+            const [firebaseConfig, setFirebaseConfig] = useState(window.firebaseConfigData || {
+                apiKey: "AIzaSyDSqtqy1TjGD5bSrTMjBpJU-iewEf5qnWw",
+                authDomain: "divaseleyreservas.firebaseapp.com",
+                databaseURL: "https://divaseleyreservas-default-rtdb.firebaseio.com",
+                projectId: "divaseleyreservas",
+                storageBucket: "divaseleyreservas.firebasestorage.app",
+                messagingSenderId: "393230170124",
+                appId: "1:393230170124:web:0ac0ef1a20676e88d11629",
+                measurementId: "G-Z5ZDC4NVHS"
+            });
 
             useEffect(() => {
                 setSafeStorage('divas_users', users);
@@ -622,6 +637,7 @@
                     notify("Cambio de usuario activo: " + target.name + " (" + target.role + ")");
                 }
             };
+
             const isAdmin = currentUser?.role === 'ADMIN';
             const isRecepcion = currentUser?.role === 'RECEPCION';
             const isProfesional = currentUser?.role === 'PROFESIONAL';
